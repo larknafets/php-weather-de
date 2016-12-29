@@ -22,7 +22,7 @@ Following additional scripts/fonts are needed:
 Drop the "src" files to your webspace, wherever you want. Also download the additional resources, see prerequisites.
 Please see "examples" how to implement in existing php/html files. Herein you also find a "config" file example to fill all your accounts information, paths and location data.
 
-## Credits: caclulations/libraries
+## Credits: calculations/libraries
 The following calculations and libraries are used and marked in the code:
 - Moon phase php class taken from: https://github.com/solarissmoke/php-moon-phase
 - Moon php class: original maths and code written by Keith Burnett <bodmas.org>, PHP port written by Matt "dxprog" Hackmann <dxprog.com>
