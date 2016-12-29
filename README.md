@@ -2,7 +2,7 @@
 Shows actual weather data from your Netatmo weather station combined with wetter.com forecast and DWD information as well as BSH tides data.
 
 ## Audience
-The software uses data from wetter.com and Deutscher Wetterdienst (DWD) as well as optional tides data from Bundesamt für Seeschifffahrt und Hdydrographie (BSH); therefore Netatmo weather stations located in Germany to add additional information to the current Netatmo data of your station.
+The software uses data from wetter.com and Deutscher Wetterdienst (DWD) as well as optional tides data from Bundesamt für Seeschifffahrt und Hdydrographie (BSH); therefore it is for Netatmo weather stations located in Germany to add additional information to the current Netatmo data of your station.
 
 ## Prerequisites
 You need a netatmo weather station and the following accounts:
