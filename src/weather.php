@@ -138,19 +138,19 @@ if ($bsh_tides=='yes') {
 <td>Gezeiten</td>
 ';
 	if (intval($tide_text[$tide_date[0]][0][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center">'.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][1].'</td>';
+		echo '<td align="center"><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][0].'</td>';
 	} else
 	if (intval($tide_text[$tide_date[0]][0][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center">'.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][1].'<br />'.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][1].'</td>';
+		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][0].'</td>';
 	} else
 	if (intval($tide_text[$tide_date[0]][1][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center">'.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][1].'<br />'.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][1].'</td>';
+		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][0].'</td>';
 	} else
 	if (intval($tide_text[$tide_date[0]][2][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center">'.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][1].'<br />'.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][1].'</td>';
+		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][0].'</td>';
 	} else
 	if (intval($tide_text[$tide_date[0]][3][4])<=intval($netatmo_station_time)) {
-		echo '<td align="center">'.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][1].'</td>';
+		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][0].'</td>';
 	}
 	echo '
 <td>&nbsp;</td>

@@ -55,9 +55,9 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
 
 function bsh_replace($the_field) {
 	$replace_from = array('H'); // high
-	$replace_to = array('<i class="wi wi-direction-up-right"></i>');
+	$replace_to = array('<i class="wi wi-direction-up"></i>');
 	$replace_from[] = 'N'; // low
-	$replace_to[] = '<i class="wi wi-direction-down-right"></i>';
+	$replace_to[] = '<i class="wi wi-direction-down"></i>';
   $total = count($replace_from);
   for ($i=0; $i<$total; $i++) {
     $the_field = preg_replace('/'.$replace_from[$i].'/',$replace_to[$i],$the_field);
