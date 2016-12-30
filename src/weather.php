@@ -117,7 +117,8 @@ if ($netatmo_ws_rain_id!='') {
 <td align="center"><span class="big"><b>'.round($netatmo_rain_1hrs,1).' mm</b></span> <span class="small">/1h</span>
 <br /><span class="small">'.round($netatmo_rain_24hrs,1).' mm /24h</span></td>
 <td align="center">&nbsp;</td>
-</tr>';
+</tr>
+';
 }
 
 if ($netatmo_ws_wind_id!='') {
@@ -126,10 +127,35 @@ if ($netatmo_ws_wind_id!='') {
 <td>Wind</td>
 <td align="center"><span class="big"><b>'.$netatmo_wind_strength.' km/h</b></span> <span class="small">Böen: '.$netatmo_gust_strength.' km/h</span>
 <br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span></td>
-<td align="center">
-<i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i>
-<i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
-</tr>';
+<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
+</tr>
+';
+}
+
+if ($bsh_tides=='yes') {
+	echo '
+<tr>
+<td>Gezeiten</td>
+';
+	if (intval($tide_text[$tide_date[0]][0][4])>=intval($netatmo_station_time)) {
+		echo '<td align="center">'.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][1].'</td>';
+	} else
+	if (intval($tide_text[$tide_date[0]][0][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][4])>=intval($netatmo_station_time)) {
+		echo '<td align="center">'.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][1].'<br />'.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][1].'</td>';
+	} else
+	if (intval($tide_text[$tide_date[0]][1][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][4])>=intval($netatmo_station_time)) {
+		echo '<td align="center">'.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][1].'<br />'.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][1].'</td>';
+	} else
+	if (intval($tide_text[$tide_date[0]][2][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][4])>=intval($netatmo_station_time)) {
+		echo '<td align="center">'.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][1].'<br />'.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][1].'</td>';
+	} else
+	if (intval($tide_text[$tide_date[0]][3][4])<=intval($netatmo_station_time)) {
+		echo '<td align="center">'.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][1].'</td>';
+	}
+	echo '
+<td>&nbsp;</td>
+</tr>
+';
 }
 
 echo'
@@ -292,10 +318,10 @@ if ($bsh_tides=='yes' && count($tide_text)>0) {
 	echo '<!-- Gezeiten -->
 <tr>
 <td><i class="wi wi-flood"></i></td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][0][3].'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][1][3].'"></i><br />'.$tide_text[$tide_date[$i]][1][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][2][3].'"></i><br />'.$tide_text[$tide_date[$i]][2][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][3][3].'"></i><br />'.$tide_text[$tide_date[$i]][3][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][0][3].'<br />'.$tide_text[$tide_date[$i]][0][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][1][3].'<br />'.$tide_text[$tide_date[$i]][1][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][2][3].'<br />'.$tide_text[$tide_date[$i]][2][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][3][3].'<br />'.$tide_text[$tide_date[$i]][3][1].'</td>
 </tr>
 ';
 }

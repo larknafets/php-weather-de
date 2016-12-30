@@ -29,7 +29,7 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
       } else if (trim($t_data[3])=='N') {
         $c_tide_icon[] = bsh_replace('N');
       } else {
-        $c_tide_icon[] = bsh_replace('NA');
+        $c_tide_icon[] = '';
       }
     }
   }
@@ -45,7 +45,7 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
   			$tide_date[] = $c_tide_date[$i];
   			$tmp_date = $c_tide_date[$i];
   		}
-  		$tide_text[$c_tide_date[$i]][] = array($c_tide_text[$i],$c_tide_time[$i],$c_tide_type[$i],$c_tide_icon[$i]);
+  		$tide_text[$c_tide_date[$i]][] = array($c_tide_text[$i],$c_tide_time[$i],$c_tide_type[$i],$c_tide_icon[$i],$c_tide_time_unix[$i]);
   	}
   }
 
@@ -55,11 +55,9 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
 
 function bsh_replace($the_field) {
 	$replace_from = array('H'); // high
-	$replace_to = array('wi-direction-up-right');
+	$replace_to = array('<i class="wi wi-direction-up-right"></i>');
 	$replace_from[] = 'N'; // low
-	$replace_to[] = 'wi-direction-down-right';
-	$replace_from[] = 'NA'; // unknown
-	$replace_to[] = 'wi-na';
+	$replace_to[] = '<i class="wi wi-direction-down-right"></i>';
   $total = count($replace_from);
   for ($i=0; $i<$total; $i++) {
     $the_field = preg_replace('/'.$replace_from[$i].'/',$replace_to[$i],$the_field);

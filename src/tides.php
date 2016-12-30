@@ -38,10 +38,10 @@ if ($bsh_tides=='yes') {
 	echo '
 <tr>
 <td>Gezeiten</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][0][3].'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][1][3].'"></i><br />'.$tide_text[$tide_date[$i]][1][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][2][3].'"></i><br />'.$tide_text[$tide_date[$i]][2][1].'</td>
-<td align="center"><i class="wi '.$tide_text[$tide_date[$i]][3][3].'"></i><br />'.$tide_text[$tide_date[$i]][3][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][0][3].'<br />'.$tide_text[$tide_date[$i]][0][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][1][3].'<br />'.$tide_text[$tide_date[$i]][1][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][2][3].'<br />'.$tide_text[$tide_date[$i]][2][1].'</td>
+<td align="center">'.$tide_text[$tide_date[$i]][3][3].'<br />'.$tide_text[$tide_date[$i]][3][1].'</td>
 </tr>
 ';
 }
