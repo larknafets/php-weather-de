@@ -9,7 +9,7 @@ Make sure to laod the font before.
 // To use local timezone, setlocale needs to be called.
 // -- setlocale(LC_ALL,langLocale('de'));
 
-// Netatmo Weather Station
+// Netatmo weather station
 // -- An API account is needed.
 // -- https://dev.netatmo.com/
 $netatmo_client_id = 'client id';
@@ -19,14 +19,14 @@ $netatmo_password = 'your password';
 // Netatmo-API-PHP is used.
 // -- https://github.com/Netatmo/Netatmo-API-PHP
 $netatmo_nawsapiclient = '../netatmo/Clients/NAWSApiClient.php'; // Path to NAWSApiClient.php
-$netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station basis
-$netatmo_ws_out_id = 'xx:xx:xx:xx:xx:xx'; // ID of your wind module
+$netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station base module
+$netatmo_ws_out_id = 'xx:xx:xx:xx:xx:xx'; // ID of your outdoor module
 $netatmo_ws_rain_id = 'xx:xx:xx:xx:xx:xx'; // ID of your rain gauge; leave empty if none
 $netatmo_ws_wind_id = 'xx:xx:xx:xx:xx:xx'; // ID of your wind gauge; leave empty if none
 
 
 // DWD - Deutscher Wetter Dienst
-// -- An free GDS account is needed to access dwd ftp server.
+// -- A free GDS account is needed to access dwd ftp server.
 // -- http://www.dwd.de/DE/leistungen/gds/gds.html
 $dwd_ftp_server = 'ftp-outgoingxxx.dwd.de';
 $dwd_ftp_user = 'user';
@@ -84,17 +84,16 @@ $bsh_tides = 'no'; // yes/no
 $bsh_tides_file = '../data_tides.txt';
 
 
-// Your Weather Station
+// Your weather station
 // -- Location data, description, weathermap data
 $weather_station_latitude = 53.777777;
 $weather_station_longitude = 8.222222;
 $weather_station_zenith = 90+(50/60);
-$weather_station_amazon_tag = ''; // Used for netatmo weather station links, like "xxxxx-21"
+$weather_station_amazon_tag = ''; // Amazon promotion ID ("xxxxx-21") for netatmo weather station links
 // Short description if needed.
 $weather_station_text='<p>
 Die private Wetterstation befindet sich in 12345 Musterstad und ist seit Juli 2015 in Betrieb.
 </p>';
-$weather_maps_images_width = 500;
 // Optional to show maps from i.e. DWD; leave empty for none.
 $weather_maps_text='<p>
 <a href="https://www.meteopool.org/de" title="Quelle des Niederschlagsradar: meteopool.org"><img src="https://www.meteopool.org/export/homepagewetter.php?content=wetterradar_270x338" title="Niederschlagsradar(Wetterradar) für Deutschland" alt="Niederschlagsradar(Wetterradar) für Deutschland" /></a>
