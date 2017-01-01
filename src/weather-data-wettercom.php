@@ -9,9 +9,16 @@ $forecast_url = 'http://api.wetter.com/forecast/weather/city/'.$forecast_citycod
 
 $fget_status_code = wettercom_status_code($forecast_url);
 if(!preg_match("/(20|30)./",$fget_status_code)) {
-	echo 'An error occured by fetching Wetter.com API response: HTTP status code: '.$fget_status_code;
+	echo 'Wetter.com API: an error occured by fetching XML response: HTTP status code '.$fget_status_code;
 } else {
-	$forecast_data = new SimpleXMLElement(file_get_contents($forecast_url));
+	$forecast_file = file_get_contents($forecast_url);
+	$forecast_data = '';
+	$sxe = simplexml_load_string($forecast_file);
+	if ($sxe === false) {
+    echo 'Wetter.com API: error reading XML';
+  } else {
+		$forecast_data = new SimpleXMLElement($forecast_file);
+	}
 }
 
 // --- FUNCTIONS ---

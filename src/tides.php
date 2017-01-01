@@ -87,14 +87,11 @@ echo '<td align="center"><i class="wi '.moonphase_icon($moonphase[$i]).'"></i><b
 
 echo '
 <tr>
-<td colspan="5"><div class="foot" align="right">
-';
+<td colspan="5"><div class="small" align="right">';
 if ($bsh_tides=='yes') {
-	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a class="foot" rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a> | ';
+	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a> | ';
 }
-echo 'Sonne/Mond: berechnet
-<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'
-</div></td>
+echo 'Sonne/Mond: berechnet<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'</div></td>
 </tr>
 
 </table>
