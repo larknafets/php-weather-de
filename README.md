@@ -17,6 +17,7 @@ Following additional scripts/fonts are needed:
 - Netatmo-API-PHP, see https://github.com/Netatmo/Netatmo-API-PHP
 - Buffer, see https://github.com/leo/buffer
 - Weather icons font from Eric Flowers, see https://erikflowers.github.io/weather-icons/
+- Moon phase php class from Samir Shah, see https://github.com/solarissmoke/php-moon-phase
 
 ## Installation
 Drop the "src" files to your webspace, wherever you want. Also download the additional resources, see prerequisites.
@@ -24,7 +25,6 @@ Please see "examples" how to implement in existing php/html files. Herein you al
 
 ## Credits: calculations/libraries
 The following calculations and libraries are used and marked in the code:
-- Moon phase php class taken from: https://github.com/solarissmoke/php-moon-phase
 - Moon php class: original maths and code written by Keith Burnett <bodmas.org>, PHP port written by Matt "dxprog" Hackmann <dxprog.com>
 - Wind chill calculation taken from: http://www.freemathhelp.com/wind-chill.html
 - Heat index calculation taken from: https://www.easycalculation.com/weather/Heat-index.php

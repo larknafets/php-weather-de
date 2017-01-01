@@ -10,6 +10,14 @@ if ($bsh_tides=='yes') {
 echo '
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Vorhersage">
 
+<tr height="1">
+<th width="20%"></th>
+<th width="20%"></th>
+<th width="20%"></th>
+<th width="20%"></th>
+<th width="20%"></th>
+</tr>
+
 ';
 
 for ($i=0; $i<=6; $i++) {
@@ -51,7 +59,7 @@ echo '
 <td>Sonne</td>
 <td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[$i])).'</td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[$i])).'</td>
-<td align="center">&nbsp;</td>
+<td align="center"><i class="wi wi-time-'.intval(gmdate('H',intval($suntime[$i]))).'"></i><br />'.gmdate('H:i',intval($suntime[$i])).'</td>
 <td align="center">&nbsp;</td>
 </tr>
 
@@ -80,8 +88,12 @@ echo '<td align="center"><i class="wi '.moonphase_icon($moonphase[$i]).'"></i><b
 echo '
 <tr>
 <td colspan="5"><div class="foot" align="right">
-Gezeiten: Die Veröffentlichung erfolgt mit Genehmigung des <a class="foot" rel="nofollow" target="_blank" title="BSH" href="http://www.bsh.de/">BSH</a>
-| Sonne/Mond: berechnet
+';
+if ($bsh_tides=='yes') {
+	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a class="foot" rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a> | ';
+}
+echo 'Sonne/Mond: berechnet
+<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'
 </div></td>
 </tr>
 

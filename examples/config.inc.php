@@ -8,6 +8,7 @@ Make sure to laod the font before.
 
 // To use local timezone, setlocale needs to be called.
 // -- setlocale(LC_ALL,langLocale('de'));
+// -- date_default_timezone_set('Europe/Berlin');
 
 // Netatmo weather station
 // -- An API account is needed.
@@ -24,6 +25,9 @@ $netatmo_ws_out_id = 'xx:xx:xx:xx:xx:xx'; // ID of your outdoor module
 $netatmo_ws_rain_id = 'xx:xx:xx:xx:xx:xx'; // ID of your rain gauge; leave empty if none
 $netatmo_ws_wind_id = 'xx:xx:xx:xx:xx:xx'; // ID of your wind gauge; leave empty if none
 
+// Include moon phase library from Samir Shah (solarissmoke):
+// -- https://github.com/solarissmoke/php-moon-phase
+$solarissmoke_moonphase_lib = '../solaris/MoonPhase.php';
 
 // DWD - Deutscher Wetter Dienst
 // -- A free GDS account is needed to access dwd ftp server.

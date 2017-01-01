@@ -11,6 +11,7 @@
 echo '<h1>Gezeiten</h1>';
 
 setlocale(LC_ALL,langLocale('de'));
+date_default_timezone_set('Europe/Berlin');
 include(dirname(__FILE__).'/config.inc.php');
 include(dirname(__FILE__).'/src/tides.php');
 

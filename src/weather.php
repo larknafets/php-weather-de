@@ -53,7 +53,11 @@ if ($warning_status==1) {
 
 echo '<p><span class="small"><a href="#aktuell" title="Aktuell">Aktuell</a>
 | <a href="#vorhersage" title="Vorhersage">Vorhersage</a>
-| <a href="#wetterkarten" title="Wetterkarten">Wetterkarten</a>
+';
+if ($weather_maps_text!='') {
+	echo '| <a href="#wetterkarten" title="Wetterkarten">Wetterkarten</a>';
+}
+echo '
 | <a href="#wetterstation" title="Wetterstation">Wetterstation</a>
 </span></p>';
 
@@ -64,49 +68,67 @@ echo '
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Aktuell">
 
 <tr>
-<td colspan="3"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
+<td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
 </tr>
 
 <tr>
 <td>Temperatur</td>
-<td align="center"><span class="big"><b>'.$netatmo_temperature.'&deg;C</b></span>
-<br /><span class="small">'.float_prefix($netatmo_temperature_trend_value).' /3h</span></td>
-<td align="center"><i class="wi '.netatmo_replace($netatmo_temperature_trend).'"></i></td>
+<td align="center">
+	<span class="big"><b>'.$netatmo_temperature.'&nbsp;&deg;C</b></span><br /><span class="small">'.float_prefix($netatmo_temperature_trend_value).'&nbsp;/3h</span>
+</td>
+<td align="center">
+	<i class="wi '.netatmo_replace($netatmo_temperature_trend).'"></i>
+</td>
+<td align="center">
+	<span class="small">min.&nbsp;'.$netatmo_temperature_min.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'
+<br />max.&nbsp;'.$netatmo_temperature_max.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'
+</span>
+</td>
 </tr>
 ';
 
 if ($netatmo_ws_wind_id!='') {
 	echo '<tr>
-<td>Windchill</td>
-<td align="center"><span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).'&deg;C</b></span></td>
-<td align="center">&nbsp;</td>
+<td>Windchill&sup1;</td>
+<td align="center">
+	<span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).'&nbsp;&deg;C</b></span>
+</td>
+<td colspan="2" align="center">&nbsp;</td>
 </tr>';
 }
 
 echo'
 <tr>
-<td>Hitzeindex</td>
-<td align="center"><span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).'&deg;C</b></span></td>
-<td align="center">&nbsp;</td>
+<td>Hitzeindex&sup1;</td>
+<td align="center">
+	<span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).'&nbsp;&deg;C</b></span>
+</td>
+<td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
-<td>Taupunkt</td>
-<td align="center"><span class="big"><b>'.round(calculate_dewpoint($netatmo_temperature, $netatmo_humidity),1).'&deg;C</b></span></td>
-<td align="center">&nbsp;</td>
+<td>Taupunkt&sup1;</td>
+<td align="center">
+	<span class="big"><b>'.round(calculate_dewpoint($netatmo_temperature, $netatmo_humidity),1).'&nbsp;&deg;C</b></span>
+</td>
+<td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Luftdruck</td>
-<td align="center"><span class="big"><b>'.$netatmo_pressure.' mbar</b></span>
-<br /><span class="small">'.float_prefix($netatmo_pressure_trend_value).' /3h</span></td>
-<td align="center"><i class="wi '.netatmo_replace($netatmo_pressure_trend).'"></i></td>
+<td align="center">
+	<span class="big"><b>'.$netatmo_pressure.' mbar</b></span>
+	<br /><span class="small">'.float_prefix($netatmo_pressure_trend_value).'&nbsp;/3h</span></td>
+<td align="center">
+	<i class="wi '.netatmo_replace($netatmo_pressure_trend).'"></i>
+</td>
+<td align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Luftfeuchtigkeit</td>
-<td align="center"><span class="big"><b>'.$netatmo_humidity.'%</b></span></td>
-<td align="center">&nbsp;</td>
+<td align="center"><span class="big"><b>'.$netatmo_humidity.'&nbsp;%</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
 
@@ -114,9 +136,13 @@ if ($netatmo_ws_rain_id!='') {
 	echo '
 <tr>
 <td>Niederschlag</td>
-<td align="center"><span class="big"><b>'.round($netatmo_rain_1hrs,1).' mm</b></span> <span class="small">/1h</span>
-<br /><span class="small">'.round($netatmo_rain_24hrs,1).' mm /24h</span></td>
+<td align="center">
+	<span class="big"><b>'.round($netatmo_rain,1).'&nbsp;mm</b></span>
+</td>
 <td align="center">&nbsp;</td>
+<td align="center">
+	<span class="small">'.round($netatmo_rain_1hrs,1).'&nbsp;mm&nbsp;/1h<br />'.round($netatmo_rain_24hrs,1).'&nbsp;mm&nbsp;/24h</span>
+</td>
 </tr>
 ';
 }
@@ -125,48 +151,94 @@ if ($netatmo_ws_wind_id!='') {
 	echo '
 <tr>
 <td>Wind</td>
-<td align="center"><span class="big"><b>'.$netatmo_wind_strength.' km/h</b></span> <span class="small">Böen: '.$netatmo_gust_strength.' km/h</span>
-<br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span></td>
-<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
+<td align="center">
+	<span class="big"><b>'.$netatmo_wind_strength.'&nbsp;km/h</b> </span><span class="small">Böen: '.$netatmo_gust_strength.'&nbsp;km/h</span>
+	<br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span>
+</td>
+<td align="center">
+	<i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i>
+</td>
+<td align="center">
+	<span class="small">max.&nbsp;'.$netatmo_wind_strength_max.'&nbsp;km/h @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span>
+</td>
 </tr>
 ';
 }
 
-if ($bsh_tides=='yes') {
-	echo '
+echo '
+
 <tr>
-<td>Gezeiten</td>
+<td>&nbsp;</td>
+<td colspan="3" align="right">
+	<hr />
+	<span class="small"><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a>
+	|	&sup1;&nbsp;<a title="berechnete Werte" href="#berechnete_werte">berechnete Werte</a></span>
+</td>
+</tr>
+
+<tr>
+<td>';
+if ($bsh_tides=='yes') { echo 'Gezeiten<br />'; }
+echo 'Sonne/Mond</td>
 ';
+if ($bsh_tides=='yes') {
+	echo '<td align="center">';
 	if (intval($tide_text[$tide_date[0]][0][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center"><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][0].'</td>';
+		echo '<span class="small">Demnächst: '.$tide_text[$tide_date[0]][0][3].'</span> '.$tide_text[$tide_date[0]][0][0];
 	} else
 	if (intval($tide_text[$tide_date[0]][0][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][0][3].' '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][0].'</td>';
+		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][0][3].'</span> '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst: '.$tide_text[$tide_date[0]][1][3].'</span> '.$tide_text[$tide_date[0]][1][0];
 	} else
 	if (intval($tide_text[$tide_date[0]][1][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][1][3].' '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][0].'</td>';
+		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][1][3].'</span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][2][3].'</span> '.$tide_text[$tide_date[0]][2][0];
 	} else
 	if (intval($tide_text[$tide_date[0]][2][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][4])>=intval($netatmo_station_time)) {
-		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][2][3].' '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][0].'</td>';
+		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][2][3].'</span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: '.$tide_text[$tide_date[0]][3][3].'</span> '.$tide_text[$tide_date[0]][3][0];
 	} else
 	if (intval($tide_text[$tide_date[0]][3][4])<=intval($netatmo_station_time)) {
-		echo '<td align="center"><span class="small">Zuletzt:</span> '.$tide_text[$tide_date[0]][3][3].' '.$tide_text[$tide_date[0]][3][0].'</td>';
+		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][3][3].'</span> '.$tide_text[$tide_date[0]][3][0];
 	}
-	echo '
-<td>&nbsp;</td>
+	echo '</td>';
+} else {
+	echo '<td align="center">&nbsp;</td>';
+}
+echo '
+<td align="center">
+';
+if (intval($sunrise[0])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[0]));
+} else
+if (intval($sunset[0])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[0]));
+} else { echo '<i class="wi wi-night-clear"></i>'; }
+echo '
+</td>
+<td align="center">
+';
+if (intval($moonrise[0])>=intval($netatmo_station_time) && intval($moonrise[0])>intval($moonset[0])) {
+	echo '<i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[0]));
+} else
+if (intval($moonset[0])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[0]));
+} else { echo '&nbsp;'; }
+echo '
+</td>
 </tr>
 ';
-}
 
 echo'
-<tr><td colspan="3" align="right"><hr /><span class="small">
-<a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a>
-</span></td></tr>
-
-<tr><td colspan="3"><span class="small">&nbsp;</span></td></tr>
-<tr><td colspan="3">Wetterlage</td></tr>
-<tr><td colspan="3"><span class="small">'.$dwd_actual.'</span></td></tr>
-<tr><td colspan="3" align="right"><hr /><span class="small"><a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a></span></td></tr>
+<tr><td colspan="4">Wetterlage</td></tr>
+<tr><td colspan="4"><span class="small">'.$dwd_actual.'</span></td></tr>
+<tr><td colspan="4" align="right">
+	<hr />
+	<span class="small">';
+if ($bsh_tides=='yes') {
+	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a><br />';
+}
+echo 'Sonne/Mond: berechnet
+| Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>';
+echo'<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'</span>
+</td></tr>
 </table>
 ';
 
@@ -220,16 +292,16 @@ for ($i=0; $i<=2; $i++) {
 <!-- Temperatur -->
 <tr>
 <td rowspan="2"><i class="wi wi-thermometer"></i></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[0]->tx.'&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[1]->tx.'&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[2]->tx.'&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[3]->tx.'&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[0]->tx.'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[1]->tx.'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[2]->tx.'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[3]->tx.'&nbsp;&deg;C</b></span></td>
 </tr>
 <tr>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->tn.'&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->tn.'&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->tn.'&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->tn.'&deg;C</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->tn.'&nbsp;&deg;C</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->tn.'&nbsp;&deg;C</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->tn.'&nbsp;&deg;C</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->tn.'&nbsp;&deg;C</span></td>
 </tr>
 
 <!-- Wolken, Regen, Sonne -->
@@ -244,10 +316,10 @@ for ($i=0; $i<=2; $i++) {
 <!-- Regenwahrscheinlichkeit -->
 <tr>
 <td><i class="wi wi-umbrella"></i></td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[0]->pc.'%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[1]->pc.'%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[2]->pc.'%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[3]->pc.'%</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[0]->pc.'&nbsp;%</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[1]->pc.'&nbsp;%</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[2]->pc.'&nbsp;%</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[3]->pc.'&nbsp;%</td>
 </tr>
 
 <!-- Wind -->
@@ -256,22 +328,22 @@ for ($i=0; $i<=2; $i++) {
 <td align="center">
 <i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[0]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[0]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[0]->ws.' km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[0]->ws.'&nbsp;km/h
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[0]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[0]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[1]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[1]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[1]->ws.' km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[1]->ws.'&nbsp;km/h
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[1]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[1]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[2]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[2]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[2]->ws.' km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[2]->ws.'&nbsp;km/h
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[2]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[2]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[3]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[3]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[3]->ws.' km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[3]->ws.'&nbsp;km/h
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[3]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[3]->wd_txt.'</span></td>
 </tr>
@@ -292,7 +364,7 @@ for ($i=0; $i<=2; $i++) {
 <td><i class="wi wi-day-sunny"></i></td>
 <td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[$i])).'</td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[$i])).'</td>
-<td align="center">&nbsp;</td>
+<td align="center"><i class="wi wi-time-'.intval(gmdate('H',intval($suntime[$i]))).'"></i><br />'.gmdate('H:i',intval($suntime[$i])).'</td>
 <td align="center">&nbsp;</td>
 </tr>
 
@@ -340,9 +412,9 @@ echo '
 | Text: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>
 | Sonne/Mond: berechnet';
 if ($bsh_tides=='yes') {
-	echo '<br />Gezeiten: Die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="BSH" href="http://www.bsh.de/">BSH</a>';
+	echo '<br />Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a>';
 }
-echo'
+echo'<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'
 </span></td>
 </tr>
 
@@ -395,6 +467,7 @@ Es werden folgende Daten von der Station erfasst:
 </ul>
 </p>
 <p>
+<a name="berechnete_werte"></a>
 Folgende Daten werden berechnet:
 <ul>
 ';

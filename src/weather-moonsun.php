@@ -7,7 +7,7 @@ $zenith = $weather_station_zenith;
 $calculate_days = 7;
 
 include('lib_moon.php');
-include('lib_moonphase.php');
+include(dirname(__FILE__).'/'.$solarissmoke_moonphase_lib);
 /*
 phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
 illumination(): the illuminated fraction of the Moon (0 = New, 1 = Full).
@@ -31,6 +31,7 @@ $moonrise = array();
 $moonset = array();
 $sunrise = array();
 $sunset = array();
+$suntime = array();
 $moonphase = array();
 $moonphase_text = array();
 $moonage = array();
@@ -38,11 +39,9 @@ $moonfull = array();
 $moondistance = array();
 $moonilluminated = array();
 
-//$c_now = time();
 $c_now = mktime(0,0,0,date('m'),date('d'),date('Y'));
 $c_now_moonphase = mktime(12,0,0,date('m'),date('d'),date('Y'));
 
-//$moon_basetime = mktime(10,29,59,12,11,2015);
 $moon_basetime = mktime(0,56,36,7,20,2016);
 $moon_days=29.530588861;
 
@@ -59,6 +58,7 @@ for ($i=0; $i<=$calculate_days; $i++) {
 
 	$sunrise[] = date_sunrise($c_now, SUNFUNCS_RET_TIMESTAMP, $latitude, $longitude, $zenith, 0);
 	$sunset[] = date_sunset($c_now, SUNFUNCS_RET_TIMESTAMP, $latitude, $longitude, $zenith, 0);
+  $suntime[] = date_sunset($c_now, SUNFUNCS_RET_TIMESTAMP, $latitude, $longitude, $zenith, 0) - date_sunrise($c_now, SUNFUNCS_RET_TIMESTAMP, $latitude, $longitude, $zenith, 0);
 
 	$moon = new Solaris\MoonPhase($c_now_moonphase);
 	$moonphase_tmp = $moon->phase()*100;
@@ -71,9 +71,9 @@ for ($i=0; $i<=$calculate_days; $i++) {
 
 	$moonage_tmp = round(($moon_days /100 * $moonphase_tmp),1);
 	if ($moonage_tmp <= 1) {
-		$moonage_tmp.= ' Tag';
+		$moonage_tmp.= '&nbsp;Tag';
 	} else {
-		$moonage_tmp.= ' Tage';
+		$moonage_tmp.= '&nbsp;Tage';
 	}
 	$moonage[] = $moonage_tmp;
 
@@ -85,8 +85,8 @@ for ($i=0; $i<=$calculate_days; $i++) {
 		$moonfull[] = '';
 	}
 
-	$moondistance[] = round(($moon->distance()/1000),1).' tkm';
-	$moonilluminated[] = round(($moon->illumination()*100),0).' %';
+	$moondistance[] = round(($moon->distance()/1000),1).'&nbsp;tkm';
+	$moonilluminated[] = round(($moon->illumination()*100),0).'&nbsp;%';
 
 	$c_now = $c_now + (60*60*24);
 	$c_now_moonphase = $c_now_moonphase + (60*60*24);

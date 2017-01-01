@@ -10,7 +10,7 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
   $c_tide_text = array();
 
   $c_now = mktime(0,0,0,strftime('%m',time()),strftime('%d',time()),strftime('%Y',time()));
-  $c_end = $c_now + (60*60*24*6);
+  $c_end = $c_now + (60*60*24*6); // Calculation of next 7 days (incl. today)
 
   $t_file_open = fopen($tides_file,'r');
   while(!feof($t_file_open)) {
