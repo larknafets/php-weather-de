@@ -49,6 +49,8 @@ if (file_exists($tides_file) || filesize($tides_file)>0) {
   	}
   }
 
+} else {
+  echo 'BSH Daten: Datei konnte nicht geladen werden.';
 }
 
 // --- FUNCTIONS ---

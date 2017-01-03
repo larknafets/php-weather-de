@@ -27,6 +27,7 @@ next_last_quarter(): the time of the next last quarter in the current lunar cycl
 phase_name(): the phase name.
 */
 
+$forecast_date = array();
 $moonrise = array();
 $moonset = array();
 $sunrise = array();
@@ -47,6 +48,7 @@ $moon_days=29.530588861;
 
 for ($i=0; $i<=$calculate_days; $i++) {
 
+  $forecast_date[] = $c_now;
   $c_year = date('Y', $c_now);
 	$c_month = date('m', $c_now);
 	$c_day = date('d', $c_now);

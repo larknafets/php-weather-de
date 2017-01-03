@@ -19,7 +19,7 @@ try {
   $access_token = $tokens['access_token'];
 }
 catch(NAClientException $ex) {
-  die('An error occcured while trying to retrive your tokens!');
+  echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorization aufgetreten.';
 }
 
 $ws_id = $netatmo_ws_id;
@@ -31,6 +31,12 @@ $data = $client->getData(NULL, FALSE);
 foreach($data['devices'] as $device) {
 	if ($device['_id']==$ws_id) {
 		$netatmo_station_name = $device['station_name'];
+		$netatmo_station_place_city = $device['place']['city'];
+		$netatmo_station_place_country = $device['place']['country'];
+		$netatmo_station_place_timezone = $device['place']['timezone'];
+		$netatmo_station_place_altitude = $device['place']['altitude'].'m';
+		$netatmo_station_place_longitude = $device['place']['location'][0];
+		$netatmo_station_place_latitude = $device['place']['location'][1];
 		$netatmo_station_time = $device['dashboard_data']['time_utc'];
 		$netatmo_pressure = $device['dashboard_data']['Pressure'];
 		$netatmo_pressure_trend = $device['dashboard_data']['pressure_trend'];
@@ -175,6 +181,37 @@ function calculate_dewpoint($MeasuredAirTempC, $MeasuredHumidityPercent) {
 	$DewPointResultAlpha = ($DewPointFactorA * $MeasuredAirTempC) / ($DewPointFactorB + $MeasuredAirTempC) + log($MeasuredHumidityPercent / 100);
 	$CalcDewPointValue = ($DewPointFactorB * $DewPointResultAlpha) / ($DewPointFactorA - $DewPointResultAlpha);
 	return $CalcDewPointValue;
+}
+
+function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
+	// http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
+	$TC = $w_temp; 		// Temperatur
+	$RP = $w_pressure;		// Luftdruck
+	$Pnn = 1023; // Druck auf NN
+	$RHo = $w_humidity;		// Luftfeuchtigkeit
+
+	//Luftdichte (kg/m³)
+	$luftdichte = round((($Pnn*1000)/(287.058*($TC+273.15)))/10,2);
+	//Sättigungsdruck (hPa)
+	if ($TC > 0) {
+		$pS = round(exp(19.016-(4064.95/($TC+236.25))),2); // für Temperatur über 0°C
+	} else {
+		$pS = round(61.1657 * exp(22.509*(1-273.15/($TC+273.15))),2); // für Temperatur unter 0°C
+	}
+	//Dampdruck
+	$pD = round($pS-($pS-(($pS/100)*$RHo)),2);
+	//Aequivalent-Temperatur in Grad
+	$thetae = ($Pnn/100)+($TC+2.5*(0.622*(($pD/$RP)*1000)));
+	//Schneefallgrenze
+	$sfg = round(($thetae-12)*(1000/12),0);
+/*
+	echo "Luftdichte $luftdichte kg/m&sup3;<br>";
+	echo "Saettigungsdruck $pS hPa<br>";
+	echo "Dampfdruck $pD hPa<br>";
+	echo "Thetae $thetae<br>";
+	echo "Schneefallgrenze $sfg m<br><br>";
+*/
+	return $thetae;
 }
 
 // not used

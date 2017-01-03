@@ -7,45 +7,17 @@ $forecast_citycode = $wettercom_citycode;
 $forecast_checksum = md5($project.$api_key.$forecast_citycode);
 $forecast_url = 'http://api.wetter.com/forecast/weather/city/'.$forecast_citycode.'/project/'.$project.'/cs/'.$forecast_checksum;
 
-$fget_status_code = wettercom_status_code($forecast_url);
-if(!preg_match("/(20|30)./",$fget_status_code)) {
-	echo 'Wetter.com API: an error occured by fetching XML response: HTTP status code '.$fget_status_code;
+$forecast_file = ltrim(file_get_contents($forecast_url));
+$forecast_file_data = get_file_buffer($forecast_url);
+$forecast_data = '';
+$sxe = simplexml_load_string($forecast_file);
+if ($sxe === false) {
+  echo 'Wetter.com Daten: Openweather API liefert fehlerhafte oder keine XML-Daten.';
 } else {
-	$forecast_file = file_get_contents($forecast_url);
-	$forecast_data = '';
-	$sxe = simplexml_load_string($forecast_file);
-	if ($sxe === false) {
-    echo 'Wetter.com API: error reading XML';
-  } else {
-		$forecast_data = new SimpleXMLElement($forecast_file);
-	}
+	$forecast_data = new SimpleXMLElement($forecast_file);
 }
 
 // --- FUNCTIONS ---
-
-function wettercom_status_code($the_url)
-{
-	stream_context_set_default(array('http' => array('method' => 'HEAD')));
-	$headers = @get_headers($the_url,true);
-	if ($headers === false) {
-	 return $headers;
-	} else {
-		return substr($headers[0],9,3);
-	}
-/* Example headers:
-	Array(
-		[0] => HTTP/1.1 200 OK
-		[1] => Date: Sat, 29 May 2004 12:28:13 GMT
-		[2] => Server: Apache/1.3.27 (Unix)  (Red-Hat/Linux)
-		[3] => Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
-		[4] => ETag: "3f80f-1b6-3e1cb03b"
-		[5] => Accept-Ranges: bytes
-		[6] => Content-Length: 438
-	  [7] => Connection: close
-	  [8] => Content-Type: text/html
-	)
-*/
-}
 
 function weathercom_replace($the_field) {
 	$weather_replace_from = array('999'); // keine Angabe

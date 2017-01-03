@@ -1,7 +1,10 @@
 <?php
 
-include(dirname(__FILE__).'/weather-moonsun.php');
+include(dirname(__FILE__).'/'.$buffer_lib);
 include(dirname(__FILE__).'/weather-data-netatmo.php');
+$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
+$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
+include(dirname(__FILE__).'/weather-moonsun.php');
 include(dirname(__FILE__).'/weather-data-wettercom.php');
 include(dirname(__FILE__).'/weather-data-dwd.php');
 if ($bsh_tides=='yes') {
@@ -83,7 +86,7 @@ if ($netatmo_ws_wind_id!='') {
 </tr>';
 }
 
-echo'
+echo '
 <tr>
 <td>Hitzeindex&sup1;</td>
 <td align="center"><span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).'&nbsp;&deg;C</b></span></td>
@@ -108,6 +111,12 @@ echo'
 <td align="center"><span class="big"><b>'.$netatmo_humidity.'&nbsp;%</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
+
+<tr>
+<td>Theta-E&sup1; (experimentell)</td>
+<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),1).'&nbsp;&deg;C</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
+</tr>
 ';
 
 if ($netatmo_ws_rain_id!='') {
@@ -126,23 +135,17 @@ if ($netatmo_ws_wind_id!='') {
 <tr>
 <td>Wind</td>
 <td align="center"><span class="big"><b>'.$netatmo_wind_strength.'&nbsp;km/h</b> </span><span class="small">Böen: '.$netatmo_gust_strength.'&nbsp;km/h</span><br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span></td>
-<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
+<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength).'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
 <td align="center"><span class="small">max.&nbsp;'.$netatmo_wind_strength_max.'&nbsp;km/h @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span></td>
 </tr>
 ';
 }
 
 echo '
-
-<tr>
-<td></td>
-<td colspan="3" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnete Werte" href="#berechnete_werte">berechnete Werte</a></span></td>
-</tr>
-
 <tr>
 <td>';
 if ($bsh_tides=='yes') { echo 'Gezeiten<br />'; }
-echo 'Sonne/Mond</td>
+echo 'Sonne/Mond&sup1;</td>
 ';
 if ($bsh_tides=='yes') {
 	echo '<td align="center">';
@@ -172,7 +175,7 @@ if (intval($sunrise[0])>=intval($netatmo_station_time)) {
 } else
 if (intval($sunset[0])>=intval($netatmo_station_time)) {
 	echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[0]));
-} else { echo '<i class="wi wi-night-clear"></i>'; }
+} else { echo '<i class="wi wi-stars"></i>'; }
 echo '</td>
 <td align="center">';
 if (intval($moonrise[0])>=intval($netatmo_station_time) && intval($moonrise[0])>intval($moonset[0])) {
@@ -185,7 +188,7 @@ echo '</td>
 </tr>
 ';
 
-echo'
+echo '
 <tr>
 <td colspan="4">Wetterlage</td>
 </tr>
@@ -193,11 +196,12 @@ echo'
 <td colspan="4"><span class="small">'.$dwd_actual.'</span></td>
 </tr>
 <tr>
-<td colspan="4" align="right"><span class="small"><hr />';
+<td colspan="4" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />';
+
 if ($bsh_tides=='yes') {
 	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a><br />';
 }
-echo 'Sonne/Mond: berechnet | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'</span></td>
+echo '</span></td>
 </tr>
 </table>
 ';
@@ -233,7 +237,8 @@ for ($i=0; $i<=2; $i++) {
 	}
 	echo '
 <tr>
-<td colspan="5"><br />'.$today_anchor.'<span class="big"><b>'.$today.strftime('%A, der %d.%m.%Y',intval($forecast_data->forecast[0]->date[$i]->d)).'</b></span><br />&nbsp;</td>
+<!-- Vorhersage für: '.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])),' (Wetter.com: '.strftime('%A, der %d.%m.%Y',intval($forecast_data->forecast[0]->date[$i]->d)),') -->
+<td colspan="5"><br />'.$today_anchor.'<span class="big"><b>'.$today.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])).'</b></span><br />&nbsp;</td>
 </tr>
 
 <tr>
@@ -367,11 +372,11 @@ echo '<tr>
 echo '
 <!-- Credits -->
 <tr>
-<td colspan="5" align="right"><span class="small"><a rel="nofollow" target="_blank" title="'.$forecast_data->credit[0]->text.'" href="'.$forecast_data->credit[0]->link.'">'.$forecast_data->credit[0]->text.'</a> | Text: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a> | Sonne/Mond: berechnet';
+<td colspan="5" align="right"><span class="small"><a rel="nofollow" target="_blank" title="'.$forecast_data->credit[0]->text.'" href="'.$forecast_data->credit[0]->link.'">'.$forecast_data->credit[0]->text.'</a> | Sonne/Mond: <a title="berechnet" href="#berechnete_werte">berechnet</a> | Text: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>';
 if ($bsh_tides=='yes') {
 	echo '<br />Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a>';
 }
-echo'<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'</span></td>
+echo '</span></td>
 </tr>
 
 </table>
@@ -397,6 +402,9 @@ echo '
 <a name="wetterstation"></a>
 <h2>Wetterstation</h2>
 '.$weather_station_text.'
+<p>
+Die private Wetterstation befindet sich in '.$netatmo_station_place_city.', Position: '.round($netatmo_station_place_latitude,2).'&deg; Nord '.round($netatmo_station_place_longitude,2).'&deg; Ost, Höhe: '.$netatmo_station_place_altitude.'.
+</p>
 <p>
 Verwendet wird eine
 <a rel="nofollow" href="http://www.amazon.de/gp/product/B0098MGWA8/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B0098MGWA8&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Netatmo Wetterstation</a> mit
@@ -463,6 +471,20 @@ Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Ta
 ';
 
 // --- FUNCTIONS ---
+
+function get_file_buffer($request_url) {
+  global $buffer_cache_time, $buffer_cache_dir;
+  if(!isset($buffer_cache_time)) { $buffer_cache_time = 300; }
+  if(!isset($buffer_cache_dir)) { $buffer_cache_dir = 'cache_buffer'; }
+  if (class_exists('Buffer')) {
+    $cache = new Buffer();
+    $content = $cache->data($request_url,$buffer_cache_time,dirname(__FILE__).'/'.$buffer_cache_dir);
+  } else {
+    $stream_options = array("ssl"=>array("verify_peer"=>false,"verify_peer_name"=>false));
+    $content = file_get_contents($request_url, false, stream_context_create($stream_options));
+  }
+  return $content;
+}
 
 function wind_strength($the_wind_strength) {
 	$wind_bft = array();

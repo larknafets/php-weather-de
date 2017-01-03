@@ -4,11 +4,6 @@ $FTPServer = $dwd_ftp_server;
 $FTPUser = $dwd_ftp_user;
 $FTPPasswort = $dwd_ftp_password;
 
-// Daten zwischenspeichern
-include_once(dirname(__FILE__).'/'.$buffer_lib);
-$lib_buffer_cache_time = $buffer_cache_time;
-$lib_buffer_cache_dir = dirname(__FILE__).'/'.$buffer_cache_dir;
-
 // Vorwarnungen - wird nicht zwischengespeichert
 $OrtCode = $dwd_city_code;
 $OrtText = $dwd_city_text;
@@ -67,7 +62,7 @@ if($VerbindungsID && $LoginErgebnis) {
   }
 }
 else {
-	$warning_info = 'Es konnte keine Verbindung mit dem FTP-Server des DWD hergestellt werden.';
+	$warning_info = 'DWD Daten: Es konnte keine Verbindung mit dem FTP-Server hergestellt werden.';
   $dwd_forecast[] = $warning_info;
   $warning_status = 2;
 }
@@ -90,33 +85,19 @@ if (count($warning_data)==0 && $warning_info=='') {
 }
 
 sort($meineWarnWetterLage);
-$dwd_actual = dwd_use_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineWarnWetterLage[count($meineWarnWetterLage)-1]);
+$dwd_actual = get_file_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineWarnWetterLage[count($meineWarnWetterLage)-1]);
 $dwd_actual = utf8_encode(dwd_replace($dwd_actual));
 sort($meineStandardvorhersagen_0);
-$dwd_forecast_0 = dwd_use_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_0[count($meineStandardvorhersagen_0)-1]);
+$dwd_forecast_0 = get_file_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_0[count($meineStandardvorhersagen_0)-1]);
 $dwd_forecast[] = utf8_encode(dwd_replace($dwd_forecast_0));
 sort($meineStandardvorhersagen_1);
-$dwd_forecast_1 = dwd_use_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_1[count($meineStandardvorhersagen_1)-1]);
+$dwd_forecast_1 = get_file_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_1[count($meineStandardvorhersagen_1)-1]);
 $dwd_forecast[] = utf8_encode(dwd_replace($dwd_forecast_1));
 sort($meineStandardvorhersagen_2);
-$dwd_forecast_2 = dwd_use_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_2[count($meineStandardvorhersagen_2)-1]);
+$dwd_forecast_2 = get_file_buffer('ftp://'.$FTPUser.':'.urlencode($FTPPasswort).'@'.$FTPServer.'/gds/'.$meineStandardvorhersagen_2[count($meineStandardvorhersagen_2)-1]);
 $dwd_forecast[] = utf8_encode(dwd_replace($dwd_forecast_2));
 
 // --- FUNCTIONS ---
-
-function dwd_use_buffer($request_url) {
-  global $lib_buffer_cache_time, $lib_buffer_cache_dir;
-  if(!isset($lib_buffer_cache_time)) { $lib_buffer_cache_time = 300; }
-  if(!isset($lib_buffer_cache_dir)) { $lib_buffer_cache_time = 'cache'; }
-  if (class_exists('Buffer')) {
-    $cache = new Buffer();
-    $content = $cache->data($request_url,$lib_buffer_cache_time,$lib_buffer_cache_dir);
-  } else {
-    $arrContextOptions = array("ssl"=>array("verify_peer"=>false,"verify_peer_name"=>false));
-    $content = file_get_contents($request_url, false, stream_context_create($arrContextOptions));
-  }
-  return $content;
-}
 
 function dwd_replace($the_string) {
     $replace_from = array('<br \/>','<h2>','<\/h2>','<br><\/br>','<p>','<\/p>','<pre style="font-family: sans-serif">','<br \/><pre style="font-family: sans-serif">','<\/pre>','<strong>','<\/strong>');

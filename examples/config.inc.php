@@ -6,9 +6,11 @@ Make sure to laod the font before.
 -- https://erikflowers.github.io/weather-icons/
 */
 
+
 // To use local timezone, setlocale needs to be called.
 // -- setlocale(LC_ALL,langLocale('de'));
 // -- date_default_timezone_set('Europe/Berlin');
+
 
 // Netatmo weather station
 // -- An API account is needed.
@@ -25,9 +27,11 @@ $netatmo_ws_out_id = 'xx:xx:xx:xx:xx:xx'; // ID of your outdoor module
 $netatmo_ws_rain_id = 'xx:xx:xx:xx:xx:xx'; // ID of your rain gauge; leave empty if none
 $netatmo_ws_wind_id = 'xx:xx:xx:xx:xx:xx'; // ID of your wind gauge; leave empty if none
 
+
 // Include moon phase library from Samir Shah (solarissmoke):
 // -- https://github.com/solarissmoke/php-moon-phase
 $solarissmoke_moonphase_lib = '../solaris/MoonPhase.php';
+
 
 // DWD - Deutscher Wetter Dienst
 // -- A free GDS account is needed to access dwd ftp server.
@@ -61,12 +65,6 @@ $dwd_location_warn = 'DWHG';
 // DWMG	= München /	Bayern
 // See: gds/help/legend_warnings.xls / table: Warnlage_Vorabinfo
 
-// Use buffer library for DWD data
-// -- https://github.com/leo/buffer
-$buffer_lib = '../buffer.php';
-$buffer_cache_time = 60*45; // 45 min.
-$buffer_cache_dir = '/../../cache_buffer';
-
 
 // Wetter.com
 // -- An API account is needed.
@@ -80,7 +78,15 @@ $wettercom_citycode = 'city code';
 //die($search_url);
 
 
-// BSH - tides
+// Buffer
+// -- https://github.com/leo/buffer
+// Used for buffering DWD and Wetter.com data
+$buffer_lib = '../buffer.php';
+$buffer_cache_time = 60*45; // 45 min.
+$buffer_cache_dir = '../../cache_buffer';
+
+
+// BSH - Tides
 // -- Tides are only allowed to be shown for 7 days for free.
 // -- http://www.bsh.de/de/Meeresdaten/Vorhersagen/Gezeiten/index.jsp
 // -- You need only to keep the tides data. So skip the first lines of the original file to not run into errors.
@@ -90,9 +96,7 @@ $bsh_tides_file = '../data_tides.txt';
 
 // Your weather station
 // -- Location data, description, weathermap data
-$weather_station_latitude = 53.777777;
-$weather_station_longitude = 8.222222;
-$weather_station_zenith = 90+(50/60);
+$weather_station_zenith = 90+(50/60); // Zenith needed for Sunrise/-set, longitude and latitude taken from Netatmo
 $weather_station_amazon_tag = ''; // Amazon promotion ID ("xxxxx-21") for netatmo weather station links
 // Short description if needed.
 $weather_station_text='<p>

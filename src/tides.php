@@ -1,9 +1,13 @@
 <?php
 
+include(dirname(__FILE__).'/weather-data-netatmo.php');
+$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
+$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
 include(dirname(__FILE__).'/weather-moonsun.php');
 if ($bsh_tides=='yes') {
 	include(dirname(__FILE__).'/weather-data-bsh.php');
 }
+
 
 // Start page output
 
@@ -59,23 +63,7 @@ echo '
 <td>Sonne</td>
 <td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[$i])).'</td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[$i])).'</td>
-<td align="center"><i class="wi wi-time-'.intval(gmdate('H',intval($suntime[$i]))).'"></i><br />'.gmdate('H:i',intval($suntime[$i])).'</td>
 <td align="center">&nbsp;</td>
-</tr>
-
-<tr>
-<td>Mond</td>
-';
-if ($moonrise[$i] > $moonset[$i]) {
-echo '<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[$i])).'</td>
-<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[$i])).'</td>
-';
-} else {
-echo '<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[$i])).'</td>
-<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[$i])).'</td>
-';
-}
-echo '<td align="center"><i class="wi '.moonphase_icon($moonphase[$i]).'"></i><br /><small>'.$moonphase_text[$i].$moonfull[$i].'</small></td>
 <td align="center">&nbsp;</td>
 </tr>
 
@@ -91,7 +79,7 @@ echo '
 if ($bsh_tides=='yes') {
 	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a> | ';
 }
-echo 'Sonne/Mond: berechnet<br />Zeitzone: '.strftime('%Z',time()).' / '.date_default_timezone_get().'</div></td>
+echo 'Sonne: berechnet</div></td>
 </tr>
 
 </table>
