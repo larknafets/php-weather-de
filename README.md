@@ -24,7 +24,7 @@ Drop the "src" files to your webspace, wherever you want. Also download the addi
 Please see "examples" how to implement in existing php/html files. Herein you also find a "config" file example to fill all your accounts information, paths and location data.
 
 ## Credits: calculations/libraries
-The following calculations and libraries are used and marked in the code:
+The following calculations and libraries are used (and also marked as in the code):
 - Moon php class taken from: https://dxprog.com/entry/calculate-moon-rise-and-set-in-php/
 - Wind chill calculation taken from: http://www.freemathhelp.com/wind-chill.html
 - Heat index calculation taken from: https://www.easycalculation.com/weather/Heat-index.php
