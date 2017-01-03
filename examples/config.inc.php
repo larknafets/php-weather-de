@@ -46,7 +46,7 @@ $dwd_location = 'HA';
 // SU = Baden-Württemberg
 $dwd_city_code = 'BRK';
 $dwd_city_text = 'Kreis Wesermarsch - Küste';
-// See gds/help/legend_warnings.pdf / column: DWD-Kennung
+// See ftp: gds/help/legend_warnings.pdf / column: DWD-Kennung
 $dwd_location_warn = 'DWHG';
 // DWHG = Hamburg / Niedersachsen/Bremen
 // DWHH	= Hamburg /	Schleswig-Holstein/Hamburg
@@ -60,7 +60,7 @@ $dwd_location_warn = 'DWHG';
 // DWOI	= Offenbach /	Rheinland-Pfalz/Saarland
 // DWSG	= Stuttgart /	Baden-Württemberg
 // DWMG	= München /	Bayern
-// See: gds/help/legend_warnings.xls / table: Warnlage_Vorabinfo
+// See ftp: gds/help/legend_warnings.xls / table: Warnlage_Vorabinfo
 
 
 // Wetter.com

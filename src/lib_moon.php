@@ -21,6 +21,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
 ******************************************************************************/
 
+// Original: https://dxprog.com/entry/calculate-moon-rise-and-set-in-php/
+// Minor changes, see commented "//" lines.
+
 class Moon {
 
 	/**

@@ -25,7 +25,8 @@ Please see "examples" how to implement in existing php/html files. Herein you al
 
 ## Credits: calculations/libraries
 The following calculations and libraries are used and marked in the code:
-- Moon php class: original maths and code written by Keith Burnett <bodmas.org>, PHP port written by Matt "dxprog" Hackmann <dxprog.com>
+- Moon php class taken from: https://dxprog.com/entry/calculate-moon-rise-and-set-in-php/
 - Wind chill calculation taken from: http://www.freemathhelp.com/wind-chill.html
 - Heat index calculation taken from: https://www.easycalculation.com/weather/Heat-index.php
 - Dew point calculation taken from: http://www.opto22.com/community/showthread.php?t=588
+- Theta-E calculation taken from: http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/

@@ -441,6 +441,7 @@ if ($netatmo_ws_wind_id!='') {
 echo '
 <li>Hitzeindex</li>
 <li>Taupunkt</li>
+<li>Theta-E / Feuchteenergie</li>
 <li>Sonnenauf- und -untergang</li>
 <li>Mondauf- und -untergang</li>
 <li>Mondphase</li>
