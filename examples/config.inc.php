@@ -22,15 +22,12 @@ $netatmo_password = 'your password';
 // Netatmo-API-PHP is used.
 // -- https://github.com/Netatmo/Netatmo-API-PHP
 $netatmo_nawsapiclient = '../netatmo/Clients/NAWSApiClient.php'; // Path to NAWSApiClient.php
-$netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station base module
-$netatmo_ws_out_id = 'xx:xx:xx:xx:xx:xx'; // ID of your outdoor module
-$netatmo_ws_rain_id = 'xx:xx:xx:xx:xx:xx'; // ID of your rain gauge; leave empty if none
-$netatmo_ws_wind_id = 'xx:xx:xx:xx:xx:xx'; // ID of your wind gauge; leave empty if none
+$netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station main module
 
 
 // Include moon phase library from Samir Shah (solarissmoke):
 // -- https://github.com/solarissmoke/php-moon-phase
-$solarissmoke_moonphase_lib = '../solaris/MoonPhase.php';
+$moonphase_lib = '../solaris/MoonPhase.php';
 
 
 // DWD - Deutscher Wetter Dienst
@@ -81,7 +78,7 @@ $wettercom_citycode = 'city code';
 // Buffer
 // -- https://github.com/leo/buffer
 // Used for buffering DWD and Wetter.com data
-$buffer_lib = '../buffer.php';
+$buffer_lib = '../buffer/buffer.php';
 $buffer_cache_time = 60*45; // 45 min.
 $buffer_cache_dir = '../../cache_buffer';
 

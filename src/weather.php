@@ -114,7 +114,7 @@ echo '
 
 <tr>
 <td>Theta-E&sup1; (experimentell)</td>
-<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),1).'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),0).'&nbsp;&deg;C</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
@@ -468,13 +468,17 @@ Der Hitzeindex ist eine weitere gefühlte Temperatur, die sich aus der Lufttempe
 <b>Taupunkt</b><br />
 Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Taupunkt gibt die Temperatur an, auf die man die Luft bei konstantem Wasserdampfgehalt abkühlen muß, damit die Luftfeuchtigkeit 100% beträgt. Die Luft ist dann mit Wasserdampf gesättigt. Bei einer weiteren Abkühlung würde sich der Wasserdampf als Nebel, Tau oder Reif aus der Luft ausscheiden.
 </p>
+<p>
+<b>Theta-E / Feuchteenergie</b><br />
+Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
+</p>
 ';
 
 // --- FUNCTIONS ---
 
 function get_file_buffer($request_url) {
   global $buffer_cache_time, $buffer_cache_dir;
-  if(!isset($buffer_cache_time)) { $buffer_cache_time = 300; }
+  if(!isset($buffer_cache_time)) { $buffer_cache_time = 60*45; } // 45 minutes default, if not given
   if(!isset($buffer_cache_dir)) { $buffer_cache_dir = 'cache_buffer'; }
   if (class_exists('Buffer')) {
     $cache = new Buffer();

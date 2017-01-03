@@ -7,7 +7,7 @@ $zenith = $weather_station_zenith;
 $calculate_days = 7;
 
 include('lib_moon.php');
-include(dirname(__FILE__).'/'.$solarissmoke_moonphase_lib);
+include(dirname(__FILE__).'/'.$moonphase_lib);
 /*
 phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
 illumination(): the illuminated fraction of the Moon (0 = New, 1 = Full).

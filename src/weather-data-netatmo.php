@@ -19,7 +19,7 @@ try {
   $access_token = $tokens['access_token'];
 }
 catch(NAClientException $ex) {
-  echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorization aufgetreten.';
+  echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
 }
 
 $ws_id = $netatmo_ws_id;
@@ -31,6 +31,8 @@ $data = $client->getData(NULL, FALSE);
 foreach($data['devices'] as $device) {
 	if ($device['_id']==$ws_id) {
 		$netatmo_station_name = $device['station_name'];
+		$netatmo_station_laststatusstore = $device['last_status_store'];
+		$netatmo_station_wifistatus = $device['wifi_status'];
 		$netatmo_station_place_city = $device['place']['city'];
 		$netatmo_station_place_country = $device['place']['country'];
 		$netatmo_station_place_timezone = $device['place']['timezone'];
@@ -41,12 +43,13 @@ foreach($data['devices'] as $device) {
 		$netatmo_pressure = $device['dashboard_data']['Pressure'];
 		$netatmo_pressure_trend = $device['dashboard_data']['pressure_trend'];
 		foreach($device['modules'] as $module) {
-			if ($module['_id']==$ws_out_id && $ws_out_id!='' && $module['type']=='NAModule1') {
-	      $netatmo_outdoor_batterystatus = $module['battery_vp'];
-				$netatmo_outdoor_battery = $module['battery_percent'];
-	      $netatmo_outdoor_wifistatus = $module['wifi_status'];
+			if ($module['type']=='NAModule1') {
+				$netatmo_outdoor_name = $module['module_name'];
+				$netatmo_outdoor_lastseen = $module['last_seen'];
+	      $netatmo_outdoor_batterystatus = $module['battery_percent'];
+				$netatmo_outdoor_battery = $module['battery_vp'];
+	      $netatmo_outdoor_rfstatus = $module['rf_status'];
 	      $netatmo_outdoor_firmware = $module['firmware'];
-        $netatmo_outdoor_name = $module['module_name'];
 				$netatmo_outdoor_time = $module['dashboard_data']['time_utc'];
 				$netatmo_temperature = $module['dashboard_data']['Temperature'];
 		    $netatmo_temperature_trend = $module['dashboard_data']['temp_trend'];
@@ -56,23 +59,25 @@ foreach($data['devices'] as $device) {
 				$netatmo_temperature_max_time = $module['dashboard_data']['date_max_temp'];
 		    $netatmo_humidity = $module['dashboard_data']['Humidity'];
 			}
-			if ($module['_id']==$ws_rain_id && $ws_rain_id!='' && $module['type']=='NAModule3') {
-	      $netatmo_rain_batterystatus = $module['battery_vp'];
-				$netatmo_rain_battery = $module['battery_percent'];
-	      $netatmo_rain_wifistatus = $module['wifi_status'];
+			if ($module['type']=='NAModule3') {
+				$netatmo_rain_name = $module['module_name'];
+				$netatmo_rain_lastseen = $module['last_seen'];
+	      $netatmo_rain_batterystatus = $module['battery_percent'];
+				$netatmo_rain_battery = $module['battery_vp'];
+	      $netatmo_rain_rfstatus = $module['rf_status'];
 	      $netatmo_rain_firmware = $module['firmware'];
-        $netatmo_rain_name = $module['module_name'];
 		    $netatmo_rain_time = $module['dashboard_data']['time_utc'];
 				$netatmo_rain = $module['dashboard_data']['Rain'];
 		    $netatmo_rain_1hrs = $module['dashboard_data']['sum_rain_1'];
 		    $netatmo_rain_24hrs = $module['dashboard_data']['sum_rain_24'];
 			}
-			if ($module['_id']==$ws_wind_id && $ws_wind_id!='' && $module['type']=='NAModule2') {
-	      $netatmo_wind_batterystatus = $module['battery_vp'];
-				$netatmo_wind_battery = $module['battery_percent'];
-	      $netatmo_wind_wifistatus = $module['wifi_status'];
+			if ($module['type']=='NAModule2') {
+				$netatmo_wind_name = $module['module_name'];
+				$netatmo_wind_lastseen = $module['last_seen'];
+	      $netatmo_wind_batterystatus = $module['battery_percent'];
+				$netatmo_wind_battery = $module['battery_vp'];
+	      $netatmo_wind_rfstatus = $module['rf_status'];
 	      $netatmo_wind_firmware = $module['firmware'];
-        $netatmo_wind_name = $module['module_name'];
 		    $netatmo_wind_time = $module['dashboard_data']['time_utc'];
 		    $netatmo_wind_strength = $module['dashboard_data']['WindStrength'];
 				$netatmo_wind_strength_max = $module['dashboard_data']['max_wind_str'];
@@ -184,15 +189,17 @@ function calculate_dewpoint($MeasuredAirTempC, $MeasuredHumidityPercent) {
 }
 
 function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
+	// Theta E - Feuchteenergie - Equivalent Potential Temperature
+	// https://storm-chasers.de/lexicon/Entry/49-Theta-E/
 	// http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
-	$TC = $w_temp; 		// Temperatur
-	$RP = $w_pressure;		// Luftdruck
-	$Pnn = 1023; // Druck auf NN
-	$RHo = $w_humidity;		// Luftfeuchtigkeit
+	$TC = $w_temp;			// Temperatur
+	$RP = $w_pressure;	// Luftdruck
+	$Pnn = 1023;				// Druck auf NN
+	$RHo = $w_humidity;	// Luftfeuchtigkeit
 
 	//Luftdichte (kg/m³)
 	$luftdichte = round((($Pnn*1000)/(287.058*($TC+273.15)))/10,2);
-	//Sättigungsdruck (hPa)
+	//Sättigungsdruck (hPa/mbar)
 	if ($TC > 0) {
 		$pS = round(exp(19.016-(4064.95/($TC+236.25))),2); // für Temperatur über 0°C
 	} else {
@@ -205,17 +212,26 @@ function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
 	//Schneefallgrenze
 	$sfg = round(($thetae-12)*(1000/12),0);
 /*
-	echo "Luftdichte $luftdichte kg/m&sup3;<br>";
-	echo "Saettigungsdruck $pS hPa<br>";
-	echo "Dampfdruck $pD hPa<br>";
-	echo "Thetae $thetae<br>";
-	echo "Schneefallgrenze $sfg m<br><br>";
+	echo "Luftdichte: $luftdichte kg/m&sup3;<br>";
+	echo "Saettigungsdruck: $pS mbar<br>";
+	echo "Dampfdruck: $pD mbar<br>";
+	echo "Theta E: $thetae &deg;C<br>";
+	echo "Schneefallgrenze: $sfg m<br><br>";
 */
 	return $thetae;
 }
 
 // not used
-function battery_status($the_value, $the_module) {
+function wifi_status($the_value) {
+	if ($the_value>=86) { $the_text = 'bad'; }
+	else if ($the_value<86 && $the_value>=71) { $the_text = 'average'; }
+	else if ($the_value<71 && $the_value>=56) { $the_text = 'average'; }
+	else if ($the_value<=56 ) { $the_text = 'good'; }
+	return $the_text;
+}
+
+// not used
+function battery_vp_status($the_value, $the_module) {
 	$the_text = '';
 	if ($the_module=='wind') {
 		if ($the_value>=6000) { $the_text = 'max'; }
@@ -239,15 +255,6 @@ function battery_status($the_value, $the_module) {
 		else if ($the_value<4500 && $the_value>=4000) { $the_text = 'low'; }
 		else if ($the_value<4000) { $the_text = 'very low'; }
 	}
-	return $the_text;
-}
-
-// not used
-function wifi_status($the_value) {
-	if ($the_value>=86) { $the_text = 'bad'; }
-	else if ($the_value<86 && $the_value>=71) { $the_text = 'average'; }
-	else if ($the_value<71 && $the_value>=56) { $the_text = 'average'; }
-	else if ($the_value<=56 ) { $the_text = 'good'; }
 	return $the_text;
 }
 
