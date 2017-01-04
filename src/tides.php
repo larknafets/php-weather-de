@@ -50,10 +50,10 @@ if ($bsh_tides=='yes') {
 	echo '
 <tr>
 <td>Gezeiten</td>
-<td align="center">'.$tide_text[$tide_date[$i]][0][3].'<br />'.$tide_text[$tide_date[$i]][0][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][1][3].'<br />'.$tide_text[$tide_date[$i]][1][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][2][3].'<br />'.$tide_text[$tide_date[$i]][2][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][3][3].'<br />'.$tide_text[$tide_date[$i]][3][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][0][2]).'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][1][2]).'"></i><br />'.$tide_text[$tide_date[$i]][1][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][2][2]).'"></i><br />'.$tide_text[$tide_date[$i]][2][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][3][2]).'"></i><br />'.$tide_text[$tide_date[$i]][3][1].'</td>
 </tr>
 ';
 }
@@ -84,5 +84,23 @@ echo 'Sonne: berechnet</div></td>
 
 </table>
 ';
+
+// --- FUNCTIONS ---
+
+function weather_icon($the_field) {
+	$replace_from = array();
+	$replace_to = array();
+	// BSH
+	$replace_from[] = 'H'; // high tide
+	$replace_to[] = 'wi-direction-up';
+	$replace_from[] = 'N'; // low tide
+	$replace_to[] = 'wi-direction-down';
+	// - replace -
+  $total = count($replace_from);
+  for ($i=0; $i<$total; $i++) {
+    $the_field = preg_replace('/'.$replace_from[$i].'/',$replace_to[$i],$the_field);
+  }
+  return $the_field;
+}
 
 ?>

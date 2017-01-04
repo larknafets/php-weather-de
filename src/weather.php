@@ -95,7 +95,7 @@ echo '
 <tr>
 <td>Temperatur</td>
 <td align="center"><span class="big"><b>'.$netatmo_temperature.'&nbsp;&deg;C</b></span><br /><span class="small">'.float_prefix($netatmo_temperature_trend_value).'&nbsp;/3h</span></td>
-<td align="center"><i class="wi '.netatmo_replace($netatmo_temperature_trend).'"></i></td>
+<td align="center"><i class="wi '.weather_icon($netatmo_temperature_trend).'"></i></td>
 <td align="center"><span class="small">min.&nbsp;'.$netatmo_temperature_min.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'<br />max.&nbsp;'.$netatmo_temperature_max.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'</span></td>
 </tr>
 ';
@@ -124,7 +124,7 @@ echo '
 <tr>
 <td>Luftdruck</td>
 <td align="center"><span class="big"><b>'.$netatmo_pressure.' mbar</b></span><br /><span class="small">'.float_prefix($netatmo_pressure_trend_value).'&nbsp;/3h</span></td>
-<td align="center"><i class="wi '.netatmo_replace($netatmo_pressure_trend).'"></i></td>
+<td align="center"><i class="wi '.weather_icon($netatmo_pressure_trend).'"></i></td>
 <td align="center">&nbsp;</td>
 </tr>
 
@@ -171,20 +171,20 @@ echo 'Sonne/Mond&sup1;</td>
 ';
 if ($bsh_tides=='yes') {
 	echo '<td align="center">';
-	if (intval($tide_text[$tide_date[0]][0][4])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Demnächst: '.$tide_text[$tide_date[0]][0][3].'</span> '.$tide_text[$tide_date[0]][0][0];
+	if (intval($tide_text[$tide_date[0]][0][3])>=intval($netatmo_station_time)) {
+		echo '<span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][0][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][4])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][0][3].'</span> '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst: '.$tide_text[$tide_date[0]][1][3].'</span> '.$tide_text[$tide_date[0]][1][0];
+	if (intval($tide_text[$tide_date[0]][0][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][3])>=intval($netatmo_station_time)) {
+		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][1][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][4])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][1][3].'</span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst:</span> '.$tide_text[$tide_date[0]][2][3].'</span> '.$tide_text[$tide_date[0]][2][0];
+	if (intval($tide_text[$tide_date[0]][1][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][3])>=intval($netatmo_station_time)) {
+		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][2][4])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][4])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][2][3].'</span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: '.$tide_text[$tide_date[0]][3][3].'</span> '.$tide_text[$tide_date[0]][3][0];
+	if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>=intval($netatmo_station_time)) {
+		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][3][4])<=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: '.$tide_text[$tide_date[0]][3][3].'</span> '.$tide_text[$tide_date[0]][3][0];
+	if (intval($tide_text[$tide_date[0]][3][3])<=intval($netatmo_station_time)) {
+		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
 	}
 	echo '</td>';
 } else {
@@ -294,10 +294,10 @@ for ($i=0; $i<=2; $i++) {
 <!-- Wolken, Regen, Sonne -->
 <tr>
 <td>&nbsp;</td>
-<td align="center"><i class="wi '.weathercom_replace(strval($forecast_data->forecast[0]->date[$i]->time[0]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->w_txt.'</span></td>
-<td align="center"><i class="wi '.weathercom_replace(strval($forecast_data->forecast[0]->date[$i]->time[1]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->w_txt.'</span></td>
-<td align="center"><i class="wi '.weathercom_replace(strval($forecast_data->forecast[0]->date[$i]->time[2]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->w_txt.'</span></td>
-<td align="center"><i class="wi '.weathercom_replace(strval($forecast_data->forecast[0]->date[$i]->time[3]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->w_txt.'</span></td>
+<td align="center"><i class="wi '.weather_icon(strval($forecast_data->forecast[0]->date[$i]->time[0]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->w_txt.'</span></td>
+<td align="center"><i class="wi '.weather_icon(strval($forecast_data->forecast[0]->date[$i]->time[1]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->w_txt.'</span></td>
+<td align="center"><i class="wi '.weather_icon(strval($forecast_data->forecast[0]->date[$i]->time[2]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->w_txt.'</span></td>
+<td align="center"><i class="wi '.weather_icon(strval($forecast_data->forecast[0]->date[$i]->time[3]->w)).'"></i><br /><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->w_txt.'</span></td>
 </tr>
 
 <!-- Regenwahrscheinlichkeit -->
@@ -377,10 +377,10 @@ if ($bsh_tides=='yes' && count($tide_text)>0) {
 	echo '<!-- Gezeiten -->
 <tr>
 <td><i class="wi wi-flood"></i></td>
-<td align="center">'.$tide_text[$tide_date[$i]][0][3].'<br />'.$tide_text[$tide_date[$i]][0][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][1][3].'<br />'.$tide_text[$tide_date[$i]][1][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][2][3].'<br />'.$tide_text[$tide_date[$i]][2][1].'</td>
-<td align="center">'.$tide_text[$tide_date[$i]][3][3].'<br />'.$tide_text[$tide_date[$i]][3][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][0][2]).'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][1][2]).'"></i><br />'.$tide_text[$tide_date[$i]][1][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][2][2]).'"></i><br />'.$tide_text[$tide_date[$i]][2][1].'</td>
+<td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][3][2]).'"></i><br />'.$tide_text[$tide_date[$i]][3][1].'</td>
 </tr>
 ';
 }
@@ -598,6 +598,122 @@ function wind_direction($the_wind_direction) {
 		$wd='N';
 	}
 	return $wd;
+}
+
+function weather_icon($the_field) {
+	$replace_from = array();
+	$replace_to = array();
+	// Netatmo weather station
+	$replace_from[] = 'up'; // trend up
+	$replace_to[] = 'wi-direction-up-right';
+	$replace_from[] = 'stable'; // trend stable
+	$replace_to[] = 'wi-direction-right';
+	$replace_from[] = 'down'; // trend down
+	$replace_to[] = 'wi-direction-down-right';
+	// BSH
+	$replace_from[] = 'H'; // high tide
+	$replace_to[] = 'wi-direction-up';
+	$replace_from[] = 'N'; // low tide
+	$replace_to[] = 'wi-direction-down';
+	// Wetter.com
+	$replace_from[] = '999'; // keine Angabe
+	$replace_to[] = 'wi-na';
+	$replace_from[] = '96'; // starkes Gewitter
+	$replace_to[] = 'wi-thunderstorm';
+	$replace_from[] = '95'; // leichtes Gewitter
+	$replace_to[] = 'wi-storm-showers';
+	$replace_from[] = '90'; // Gewitter
+	$replace_to[] = 'wi-thunderstorm';
+	$replace_from[] = '86'; // mäßiger oder starker Schnee - Schauer
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '85'; // leichter Schnee - Schauer
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '84'; // starker Schnee / Regen - Schauer
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '83'; // leichter Schnee / Regen - Schauer
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '82'; // starker Regen - Schauer
+	$replace_to[] = 'wi-showers';
+	$replace_from[] = '81'; // Regen - Schauer
+	$replace_to[] = 'wi-showers';
+	$replace_from[] = '80'; // leichter Regen - Schauer
+	$replace_to[] = 'wi-showers';
+	$replace_from[] = '75'; // starker Schneefall
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '73'; // mäßiger Schneefall
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '71'; // leichter Schneefall
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '70'; // leichter Schneefall
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '69'; // starker Schnee-Regen
+	$replace_to[] = 'wi-sleet';
+	$replace_from[] = '68'; // leichter Schnee-Regen
+	$replace_to[] = 'wi-sleet';
+	$replace_from[] = '67'; // mäßiger oder starker Regen, gefrierend
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '66'; // leichter Regen, gefrierend
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '65'; // starker Regen
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '63'; // mäßiger Regen
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '61'; // leichter Regen
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '60'; // leichter Regen
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '57'; // starker Sprühregen, gefrierend
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '56'; // leichter Sprühregen, gefrierend
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '55'; // starker Sprühregen
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '53'; // Sprühregen
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '51'; // leichter Sprühregen
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '50'; // Sprühregen
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '49'; // Nebel mit Reifbildung
+	$replace_to[] = 'wi-fog';
+	$replace_from[] = '48'; // Nebel mit Reifbildung
+	$replace_to[] = 'wi-fog';
+	$replace_from[] = '45'; // Nebel
+	$replace_to[] = 'wi-fog';
+	$replace_from[] = '40'; // Nebel
+	$replace_to[] = 'wi-fog';
+	$replace_from[] = '30'; // bedeckt
+	$replace_to[] = 'wi-cloudy';
+	$replace_from[] = '20'; // wolkig
+	$replace_to[] = 'wi-cloudy';
+	$replace_from[] = '10'; // leicht bewölkt
+	$replace_to[] = 'wi-cloud';
+	$replace_from[] = '9'; // Gewitter
+	$replace_to[] = 'wi-thunderstorm';
+	$replace_from[] = '8'; // Schauer
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '7'; // Schnee
+	$replace_to[] = 'wi-snow';
+	$replace_from[] = '6'; // Regen
+	$replace_to[] = 'wi-rain';
+	$replace_from[] = '5'; // Sprühregen
+	$replace_to[] = 'wi-sprinkle';
+	$replace_from[] = '4'; // Nebel
+	$replace_to[] = 'wi-fog';
+	$replace_from[] = '3'; // bedeckt
+	$replace_to[] = 'wi-cloudy';
+	$replace_from[] = '2'; // wolkig
+	$replace_to[] = 'wi-cloudy';
+	$replace_from[] = '1'; // leicht bewölkt
+	$replace_to[] = 'wi-cloud';
+	$replace_from[] = '0'; // sonnig
+	$replace_to[] = 'wi-day-sunny';
+	// - replace -
+  $total = count($replace_from);
+  for ($i=0; $i<$total; $i++) {
+    $the_field = preg_replace('/'.$replace_from[$i].'/',$replace_to[$i],$the_field);
+  }
+  return $the_field;
 }
 
 ?>

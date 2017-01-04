@@ -7,12 +7,9 @@ $config['client_id'] = $netatmo_client_id;
 $config['client_secret'] = $netatmo_client_secret;
 $config['scope'] = 'read_station';
 
-$username = $netatmo_username;
-$pwd = $netatmo_password;
-
 $client = new NAWSApiClient($config);
-$client->setVariable('username', $username);
-$client->setVariable('password', $pwd);
+$client->setVariable('username',$netatmo_username);
+$client->setVariable('password',$netatmo_password);
 try {
   $tokens = $client->getAccessToken();
   $refresh_token = $tokens['refresh_token'];
@@ -131,22 +128,7 @@ $netatmo_temperature_trend_value = $netatmo_temperature - $netatmo_temperature_3
 
 function float_prefix($int) {
 	$int = round($int,1);
-	return ($int>0)?"+$int":"$int";
-}
-
-function netatmo_replace($the_field) {
-	$replace_from = array('up'); // trend up
-	$replace_to = array('wi-direction-up-right');
-	$replace_from[] = 'stable'; // trend stable
-	$replace_to[] = 'wi-direction-right';
-	$replace_from[] = 'down'; // trend down
-	$replace_to[] = 'wi-direction-down-right';
-
-  $total = count($replace_from);
-  for ($i=0; $i<$total; $i++) {
-    $the_field = preg_replace('/'.$replace_from[$i].'/',$replace_to[$i],$the_field);
-  }
-  return $the_field;
+	return ($int>0)?'+$int':'$int';
 }
 
 function calculate_windchill($w_temp, $w_wind) {
