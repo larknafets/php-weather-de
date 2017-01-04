@@ -27,6 +27,9 @@ $ws_out_id = $netatmo_ws_out_id;
 $ws_rain_id = $netatmo_ws_rain_id;
 $ws_wind_id = $netatmo_ws_wind_id;
 
+$netatmo_rain_module = false;
+$netatmo_wind_module = false;
+
 $data = $client->getData(NULL, FALSE);
 foreach($data['devices'] as $device) {
 	if ($device['_id']==$ws_id) {
@@ -58,8 +61,9 @@ foreach($data['devices'] as $device) {
 				$netatmo_temperature_max = $module['dashboard_data']['max_temp'];
 				$netatmo_temperature_max_time = $module['dashboard_data']['date_max_temp'];
 		    $netatmo_humidity = $module['dashboard_data']['Humidity'];
-			}
+			} else
 			if ($module['type']=='NAModule3') {
+				$netatmo_rain_module = true;
 				$netatmo_rain_name = $module['module_name'];
 				$netatmo_rain_lastseen = $module['last_seen'];
 	      $netatmo_rain_batterystatus = $module['battery_percent'];
@@ -70,8 +74,9 @@ foreach($data['devices'] as $device) {
 				$netatmo_rain = $module['dashboard_data']['Rain'];
 		    $netatmo_rain_1hrs = $module['dashboard_data']['sum_rain_1'];
 		    $netatmo_rain_24hrs = $module['dashboard_data']['sum_rain_24'];
-			}
+			} else
 			if ($module['type']=='NAModule2') {
+				$netatmo_wind_module = true;
 				$netatmo_wind_name = $module['module_name'];
 				$netatmo_wind_lastseen = $module['last_seen'];
 	      $netatmo_wind_batterystatus = $module['battery_percent'];

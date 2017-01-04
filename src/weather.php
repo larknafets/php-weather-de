@@ -78,7 +78,7 @@ echo '
 </tr>
 ';
 
-if ($netatmo_ws_wind_id!='') {
+if ($netatmo_wind_module==true) {
 	echo '<tr>
 <td>Windchill&sup1;</td>
 <td align="center"><span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).'&nbsp;&deg;C</b></span></td>
@@ -119,7 +119,7 @@ echo '
 </tr>
 ';
 
-if ($netatmo_ws_rain_id!='') {
+if ($netatmo_rain_module==true) {
 	echo '
 <tr>
 <td>Niederschlag</td>
@@ -130,7 +130,7 @@ if ($netatmo_ws_rain_id!='') {
 ';
 }
 
-if ($netatmo_ws_wind_id!='') {
+if ($netatmo_wind_module==true) {
 	echo '
 <tr>
 <td>Wind</td>
@@ -409,7 +409,7 @@ Die private Wetterstation befindet sich in '.$netatmo_station_place_city.', Posi
 Verwendet wird eine
 <a rel="nofollow" href="http://www.amazon.de/gp/product/B0098MGWA8/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B0098MGWA8&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Netatmo Wetterstation</a> mit
 ';
-if ($netatmo_ws_rain_id!='') {
+if ($netatmo_rain_module==true) {
 	echo '<a rel="nofollow" href="http://www.amazon.de/gp/product/B016OHME1A/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B016OHME1A&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Wind-</a> ';
 }
 echo 'und <a rel="nofollow" href="http://www.amazon.de/gp/product/B00J5OHDGG/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B00J5OHDGG&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Regenmesser</a>.
@@ -435,7 +435,7 @@ Es werden folgende Daten von der Station erfasst:
 Folgende Daten werden berechnet:
 <ul>
 ';
-if ($netatmo_ws_wind_id!='') {
+if ($netatmo_wind_module==true) {
 	echo '<li>Windchill / gefühlte Temperatur</li>';
 }
 echo '
@@ -450,7 +450,7 @@ echo '
 
 <a name="berechneteWerte"></a>
 ';
-if ($netatmo_ws_wind_id!='') {
+if ($netatmo_wind_module==true) {
 	echo '
 <p>
 <b>Windchill</b><br />
