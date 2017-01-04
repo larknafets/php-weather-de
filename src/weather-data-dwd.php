@@ -28,11 +28,11 @@ $LoginErgebnis = ftp_login($VerbindungsID, $FTPUser, $FTPPasswort);
 ftp_pasv($VerbindungsID, true);
 
 if($VerbindungsID && $LoginErgebnis) {
-  // Vorwarnungen
-  $Dateiliste = ftp_nlist($VerbindungsID, $VerzeichnisWarnings);
+  // Vor-/Warnungen
+  $Dateiliste = ftp_nlist($VerbindungsID, '-t '.$VerzeichnisWarnings);
   foreach($Dateiliste AS $Datei) {
     $meineRegion = strpos($Datei,'_'.$OrtCode);
-    if(!$meineRegion===FALSE ) {
+    if(!$meineRegion===FALSE) {
       $meineWarnings[] = $Datei;
     }
   }

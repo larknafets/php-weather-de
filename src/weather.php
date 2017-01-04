@@ -25,8 +25,8 @@ if ($warning_status==1) {
 		foreach($warning_data as $warning) {
 			echo '
 <tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$warning->info->eventCode[5]->value).')">&nbsp;</td></tr>
-<tr><td colspan="2"><span class="big"><b>'.$warning->info->headline.'</b></span></td></tr>
-<tr><td colspan="2"><b>';
+<tr><td colspan="2"><b><span class="big">'.$warning->info->headline.'</span></b></td></tr>
+<tr><td colspan="2">';
 			if ($warning->info->urgency=='Immediate') {
 				echo 'Herausgegebene Warnung';
 			} elseif ($warning->info->urgency=='Future') {
@@ -34,15 +34,37 @@ if ($warning_status==1) {
 			} else {
 				echo $warning->info->urgency;
 			}
-			echo '</b></td></tr>
-<tr><td><span class="small">Ausgegeben:</span></td><td><span class="small">'.strftime('%d.%m.%Y %H.%M',strtotime($warning->sent)).'</span></td></tr>
-<tr><td>Gebiet:</td><td>'.$warning->info->area->areaDesc.'</td></tr>
-<tr><td>Beginn:</td><td>'.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->onset)).'</td></tr>
-<tr><td>Ende:</td><td>'.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->expires)).'</td></tr>
-<tr><td colspan="2"><b>'.$warning->info->description.'</b></td></tr>
-<tr><td colspan="2">'.$warning->info->instruction.'</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
+			echo ' / ';
+			if ($warning->info->severity=='Minor') {
+				echo 'Wetterwarnung';
+			} elseif ($warning->info->severity=='Moderate') {
+				echo 'Markante Wetterwarnung';
+			} elseif ($warning->info->severity=='Severe') {
+				echo 'Unwetterwarnung';
+			} elseif ($warning->info->severity=='Extreme') {
+				echo 'Extreme Unwetterwarnung';
+			} else {
+				echo $warning->info->severity;
+			}
+			echo '</td></tr>
+<tr><td><span class="small">';
+			if ($warning->msgType=='Alert') {
+				echo 'Neuausgabe';
+			} elseif ($warning->msgType=='Update') {
+				echo 'Aktualisierung';
+			} elseif ($warning-->msgType=='Cancel') {
+				echo 'Aufhebung';
+			} else {
+				echo $warning->msgType;
+			}
+echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtotime($warning->sent)).' Uhr für '.$warning->info->area->areaDesc.'</span></td></tr>
+<tr><td><span class="small">Zeitraum</span></td><td><b>'.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->onset)).' - '.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->expires)).'</b></td></tr>
+<tr><td colspan="2">'.$warning->info->description.'</td></tr>
 ';
+			if ($warning->info->instruction!='') {
+				echo '<tr><td colspan="2"><span class="small">'.$warning->info->instruction.'</span></td></tr>';
+			}
+			echo '<tr><td colspan="2" align="right"><span class="small">'.$warning->info->senderName.'</span></td></tr>';
 		}
 	}
 	echo '<tr><td colspan="2" align="right"><span class="small"><hr /><a rel="nofollow" target="_blank" title="Wettergefahren (DWD)" href="http://www.wettergefahren.de/">Wettergefahren (DWD)</a></span></td></tr>
@@ -135,7 +157,7 @@ if ($netatmo_wind_module==true) {
 <tr>
 <td>Wind</td>
 <td align="center"><span class="big"><b>'.$netatmo_wind_strength.'&nbsp;km/h</b> </span><span class="small">Böen: '.$netatmo_gust_strength.'&nbsp;km/h</span><br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span></td>
-<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength).'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
+<td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
 <td align="center"><span class="small">max.&nbsp;'.$netatmo_wind_strength_max.'&nbsp;km/h @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span></td>
 </tr>
 ';
@@ -485,7 +507,7 @@ function get_file_buffer($request_url) {
     $cache = new Buffer();
     $content = $cache->data($request_url,$buffer_cache_time,dirname(__FILE__).'/'.$buffer_cache_dir);
   } else {
-    $stream_options = array("ssl"=>array("verify_peer"=>false,"verify_peer_name"=>false));
+    $stream_options = array('ssl'=>array('verify_peer'=>false,'verify_peer_name'=>false));
     $content = file_get_contents($request_url, false, stream_context_create($stream_options));
   }
   return $content;
@@ -495,85 +517,85 @@ function wind_strength($the_wind_strength) {
 	$wind_bft = array();
 	if ($the_wind_strength>=0 and $the_wind_strength<=1) {
 		$wind_bft[0]=0;
-		$wind_bft[1]="Windstille, Flaute";
+		$wind_bft[1]='Windstille, Flaute';
 	} elseif ($the_wind_strength>=1 and $the_wind_strength<=5) {
 		$wind_bft[0]=1;
-		$wind_bft[1]="leiser Zug";
+		$wind_bft[1]='leiser Zug';
 	} elseif ($the_wind_strength>=6 and $the_wind_strength<=11) {
 		$wind_bft[0]=2;
-		$wind_bft[1]="leichte Brise";
+		$wind_bft[1]='leichte Brise';
 	} elseif ($the_wind_strength>=12 and $the_wind_strength<=19) {
 		$wind_bft[0]=3;
-		$wind_bft[1]="schwache Brise";
+		$wind_bft[1]='schwache Brise';
 	} elseif ($the_wind_strength>=20 and $the_wind_strength<=28) {
 		$wind_bft[0]=4;
-		$wind_bft[1]="mäßige Brise";
+		$wind_bft[1]='mäßige Brise';
 	} elseif ($the_wind_strength>=29 and $the_wind_strength<=38) {
 		$wind_bft[0]=5;
-		$wind_bft[1]="frische Brise";
+		$wind_bft[1]='frische Brise';
 	} elseif ($the_wind_strength>=39 and $the_wind_strength<=49) {
 		$wind_bft[0]=6;
-		$wind_bft[1]="starker Wind";
+		$wind_bft[1]='starker Wind';
 	} elseif ($the_wind_strength>=50 and $the_wind_strength<=61) {
 		$wind_bft[0]=7;
-		$wind_bft[1]="steifer Wind";
+		$wind_bft[1]='steifer Wind';
 	} elseif ($the_wind_strength>=62 and $the_wind_strength<=74) {
 		$wind_bft[0]=8;
-		$wind_bft[1]="stürmischer Wind";
+		$wind_bft[1]='stürmischer Wind';
 	} elseif ($the_wind_strength>=75 and $the_wind_strength<=88) {
 		$wind_bft[0]=9;
-		$wind_bft[1]="Sturm";
+		$wind_bft[1]='Sturm';
 	} elseif ($the_wind_strength>=89 and $the_wind_strength<=102) {
 		$wind_bft[0]=10;
-		$wind_bft[1]="schwerer Sturm";
+		$wind_bft[1]='schwerer Sturm';
 	} elseif ($the_wind_strength>=103 and $the_wind_strength<=117) {
 		$wind_bft[0]=11;
-		$wind_bft[1]="orkanartiger Sturm";
+		$wind_bft[1]='orkanartiger Sturm';
 	} elseif ($the_wind_strength>=117) {
 		$wind_bft[0]=12;
-		$wind_bft[1]="Orkan";
+		$wind_bft[1]='Orkan';
 	} else {
 		$wind_bft[0]=0;
-		$wind_bft[1]="";
+		$wind_bft[1]='';
 	}
 	return $wind_bft;
 }
 
 function wind_direction($the_wind_direction) {
-	if ($the_wind_direction>=348.75 and $the_wind_direction<=11.25) {
-		$wd="N";
-	} elseif ($the_wind_direction>=11.25 and $the_wind_direction<=33.75) {
-		$wd="NNO";
-	} elseif ($the_wind_direction>=33.75 and $the_wind_direction<=56.25) {
-		$wd="NO";
-	} elseif ($the_wind_direction>=56.25 and $the_wind_direction<=78.75) {
-		$wd="ONO";
-	} elseif ($the_wind_direction>=78.75 and $the_wind_direction<=101.25) {
-		$wd="O";
-	} elseif ($the_wind_direction>=101.25 and $the_wind_direction<=123.75) {
-		$wd="OSO";
-	} elseif ($the_wind_direction>=123.75 and $the_wind_direction<=146.25) {
-		$wd="SO";
-	} elseif ($the_wind_direction>=146.25 and $the_wind_direction<=168.75) {
-		$wd="SSO";
-	} elseif ($the_wind_direction>=168.75 and $the_wind_direction<=191.25) {
-		$wd="S";
-	} elseif ($the_wind_direction>=191.25 and $the_wind_direction<=213.75) {
-		$wd="SSW";
-	} elseif ($the_wind_direction>=213.75 and $the_wind_direction<=236.75) {
-		$wd="SW";
-	} elseif ($the_wind_direction>=236.75 and $the_wind_direction<=258.75) {
-		$wd="WSW";
-	} elseif ($the_wind_direction>=258.75 and $the_wind_direction<=281.25) {
-		$wd="W";
-	} elseif ($the_wind_direction>=281.25 and $the_wind_direction<=303.75) {
-		$wd="WNW";
-	} elseif ($the_wind_direction>=303.75 and $the_wind_direction<=326.25) {
-		$wd="NW";
-	} elseif ($the_wind_direction>=326.75 and $the_wind_direction<=348.25) {
-		$wd="NNW";
-	} else {
-		$wd="";
+	if ($the_wind_direction<33.75) {
+		$wd='N';
+	} elseif ($the_wind_direction>=11.25 and $the_wind_direction<33.75) {
+		$wd='NNO';
+	} elseif ($the_wind_direction>=33.75 and $the_wind_direction<56.25) {
+		$wd='NO';
+	} elseif ($the_wind_direction>=56.25 and $the_wind_direction<78.75) {
+		$wd='ONO';
+	} elseif ($the_wind_direction>=78.75 and $the_wind_direction<101.25) {
+		$wd='O';
+	} elseif ($the_wind_direction>=101.25 and $the_wind_direction<123.75) {
+		$wd='OSO';
+	} elseif ($the_wind_direction>=123.75 and $the_wind_direction<146.25) {
+		$wd='SO';
+	} elseif ($the_wind_direction>=146.25 and $the_wind_direction<168.75) {
+		$wd='SSO';
+	} elseif ($the_wind_direction>=168.75 and $the_wind_direction<191.25) {
+		$wd='S';
+	} elseif ($the_wind_direction>=191.25 and $the_wind_direction<213.75) {
+		$wd='SSW';
+	} elseif ($the_wind_direction>=213.75 and $the_wind_direction<236.75) {
+		$wd='SW';
+	} elseif ($the_wind_direction>=236.75 and $the_wind_direction<258.75) {
+		$wd='WSW';
+	} elseif ($the_wind_direction>=258.75 and $the_wind_direction<281.25) {
+		$wd='W';
+	} elseif ($the_wind_direction>=281.25 and $the_wind_direction<303.75) {
+		$wd='WNW';
+	} elseif ($the_wind_direction>=303.75 and $the_wind_direction<326.25) {
+		$wd='NW';
+	} elseif ($the_wind_direction>=326.75 and $the_wind_direction<348.25) {
+		$wd='NNW';
+	} else if ($the_wind_direction>=348.75) {
+		$wd='N';
 	}
 	return $wd;
 }
