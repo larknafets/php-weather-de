@@ -4,7 +4,7 @@ include(dirname(__FILE__).'/'.$buffer_lib);
 include(dirname(__FILE__).'/weather-data-netatmo.php');
 $weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
 $weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
-include(dirname(__FILE__).'/weather-moonsun.php');
+include(dirname(__FILE__).'/weather-lib-moonsun.php');
 include(dirname(__FILE__).'/weather-data-wettercom.php');
 include(dirname(__FILE__).'/weather-data-dwd.php');
 if ($bsh_tides=='yes') {
@@ -13,65 +13,65 @@ if ($bsh_tides=='yes') {
 
 // Start page output
 
-if ($warning_status==1) {
+if ($dwd_alert_status==1) {
 	echo '
 <h2>Wetterwarnungen</h2>
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Warnungen">
 ';
 
-	if (count($warning_data)==0) {
-		echo '<tr><td colspan="2">'.$warning_info.'</td></tr>';
+	if (count($dwd_alert_data)==0) {
+		echo '<tr><td colspan="2">'.$dwd_alert_info.'</td></tr>';
 	} else {
-		foreach($warning_data as $warning) {
+		foreach($dwd_alert_data as $dwd_alert) {
 			echo '
-<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$warning->info->eventCode[5]->value).')">&nbsp;</td></tr>
-<tr><td colspan="2"><b><span class="big">'.$warning->info->headline.'</span></b></td></tr>
+<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>
+<tr><td colspan="2"><b><span class="big">'.$dwd_alert->info->headline.'</span></b></td></tr>
 <tr><td colspan="2">';
-			if ($warning->info->urgency=='Immediate') {
+			if ($dwd_alert->info->urgency=='Immediate') {
 				echo 'Herausgegebene Warnung';
-			} elseif ($warning->info->urgency=='Future') {
+			} elseif ($dwd_alert->info->urgency=='Future') {
 				echo 'Vorabinformation';
 			} else {
-				echo $warning->info->urgency;
+				echo $dwd_alert->info->urgency;
 			}
 			echo ' / ';
-			if ($warning->info->severity=='Minor') {
+			if ($dwd_alert->info->severity=='Minor') {
 				echo 'Wetterwarnung';
-			} elseif ($warning->info->severity=='Moderate') {
+			} elseif ($dwd_alert->info->severity=='Moderate') {
 				echo 'Markante Wetterwarnung';
-			} elseif ($warning->info->severity=='Severe') {
+			} elseif ($dwd_alert->info->severity=='Severe') {
 				echo 'Unwetterwarnung';
-			} elseif ($warning->info->severity=='Extreme') {
+			} elseif ($dwd_alert->info->severity=='Extreme') {
 				echo 'Extreme Unwetterwarnung';
 			} else {
-				echo $warning->info->severity;
+				echo $dwd_alert->info->severity;
 			}
 			echo '</td></tr>
 <tr><td><span class="small">';
-			if ($warning->msgType=='Alert') {
+			if ($dwd_alert->msgType=='Alert') {
 				echo 'Neuausgabe';
-			} elseif ($warning->msgType=='Update') {
+			} elseif ($dwd_alert->msgType=='Update') {
 				echo 'Aktualisierung';
-			} elseif ($warning-->msgType=='Cancel') {
+			} elseif ($dwd_alert-->msgType=='Cancel') {
 				echo 'Aufhebung';
 			} else {
-				echo $warning->msgType;
+				echo $dwd_alert->msgType;
 			}
-echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtotime($warning->sent)).' Uhr für '.$warning->info->area->areaDesc.'</span></td></tr>
-<tr><td><span class="small">Zeitraum</span></td><td><b>'.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->onset)).' - '.strftime('%d.%m.%Y %H.%M',strtotime($warning->info->expires)).'</b></td></tr>
-<tr><td colspan="2">'.$warning->info->description.'</td></tr>
+echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->sent)).' Uhr für '.$dwd_alert->info->area->areaDesc.'</span></td></tr>
+<tr><td><span class="small">Zeitraum</span></td><td><b>'.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->info->onset)).' - '.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->info->expires)).'</b></td></tr>
+<tr><td colspan="2">'.$dwd_alert->info->description.'</td></tr>
 ';
-			if ($warning->info->instruction!='') {
-				echo '<tr><td colspan="2"><span class="small">'.$warning->info->instruction.'</span></td></tr>';
+			if ($dwd_alert->info->instruction!='') {
+				echo '<tr><td colspan="2"><span class="small">'.$dwd_alert->info->instruction.'</span></td></tr>';
 			}
-			echo '<tr><td colspan="2" align="right"><span class="small">'.$warning->info->senderName.'</span></td></tr>';
+			echo '<tr><td colspan="2" align="right"><span class="small">'.$dwd_alert->info->senderName.'</span></td></tr>';
 		}
 	}
 	echo '<tr><td colspan="2" align="right"><span class="small"><hr /><a rel="nofollow" target="_blank" title="Wettergefahren (DWD)" href="http://www.wettergefahren.de/">Wettergefahren (DWD)</a></span></td></tr>
 </table><br /><br />
 ';
 } else {
-	echo '<p><div align="center">'.$warning_info.'</div></p>';
+	echo '<p><div align="center">'.$dwd_alert_info.'</div></p>';
 }
 
 /* ================================================= */

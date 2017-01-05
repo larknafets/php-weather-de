@@ -3,7 +3,7 @@
 include(dirname(__FILE__).'/weather-data-netatmo.php');
 $weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
 $weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
-include(dirname(__FILE__).'/weather-moonsun.php');
+include(dirname(__FILE__).'/weather-lib-moonsun.php');
 if ($bsh_tides=='yes') {
 	include(dirname(__FILE__).'/weather-data-bsh.php');
 }

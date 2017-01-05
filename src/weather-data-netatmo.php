@@ -128,7 +128,7 @@ $netatmo_temperature_trend_value = $netatmo_temperature - $netatmo_temperature_3
 
 function float_prefix($int) {
 	$int = round($int,1);
-	return ($int>0)?'+$int':'$int';
+	return ($int>0)?"+$int":"$int";
 }
 
 function calculate_windchill($w_temp, $w_wind) {
