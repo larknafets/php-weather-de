@@ -19,17 +19,12 @@ catch(NAClientException $ex) {
   echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
 }
 
-$ws_id = $netatmo_ws_id;
-$ws_out_id = $netatmo_ws_out_id;
-$ws_rain_id = $netatmo_ws_rain_id;
-$ws_wind_id = $netatmo_ws_wind_id;
-
 $netatmo_rain_module = false;
 $netatmo_wind_module = false;
 
 $data = $client->getData(NULL, FALSE);
 foreach($data['devices'] as $device) {
-	if ($device['_id']==$ws_id) {
+	if ($device['_id']==$netatmo_ws_id) {
 		$netatmo_station_name = $device['station_name'];
 		$netatmo_station_laststatusstore = $device['last_status_store'];
 		$netatmo_station_wifistatus = $device['wifi_status'];
@@ -44,6 +39,7 @@ foreach($data['devices'] as $device) {
 		$netatmo_pressure_trend = $device['dashboard_data']['pressure_trend'];
 		foreach($device['modules'] as $module) {
 			if ($module['type']=='NAModule1') {
+        $netatmo_outdoor_id = $module['_id'];
 				$netatmo_outdoor_name = $module['module_name'];
 				$netatmo_outdoor_lastseen = $module['last_seen'];
 	      $netatmo_outdoor_batterystatus = $module['battery_percent'];
@@ -60,6 +56,7 @@ foreach($data['devices'] as $device) {
 		    $netatmo_humidity = $module['dashboard_data']['Humidity'];
 			} else
 			if ($module['type']=='NAModule3') {
+        $netatmo_rain_id = $module['_id'];
 				$netatmo_rain_module = true;
 				$netatmo_rain_name = $module['module_name'];
 				$netatmo_rain_lastseen = $module['last_seen'];
@@ -73,6 +70,7 @@ foreach($data['devices'] as $device) {
 		    $netatmo_rain_24hrs = $module['dashboard_data']['sum_rain_24'];
 			} else
 			if ($module['type']=='NAModule2') {
+        $netatmo_wind_id = $module['_id'];
 				$netatmo_wind_module = true;
 				$netatmo_wind_name = $module['module_name'];
 				$netatmo_wind_lastseen = $module['last_seen'];
@@ -94,7 +92,7 @@ foreach($data['devices'] as $device) {
 
 $optimized = FALSE;
 $real_time = FALSE;
-$device = $ws_id;
+$device = $netatmo_ws_id;
 
 $limit = 1;
 $scale = "3hours";
@@ -111,7 +109,7 @@ foreach ($netatmo_pressure_3hrs_tmp as $date => $values) {
   }
 }
 
-$module = $ws_out_id;
+$module = $netatmo_outdoor_id;
 $type = 'Temperature';
 $netatmo_temperature_3hrs_tmp = $client->getMeasure($device, $module, $scale, $type, $date_begin, $date_end, $limit, $optimized, $real_time);
 
@@ -121,15 +119,7 @@ foreach ($netatmo_temperature_3hrs_tmp as $date => $values) {
   }
 }
 
-$netatmo_pressure_trend_value = $netatmo_pressure - $netatmo_pressure_3hrs;
-$netatmo_temperature_trend_value = $netatmo_temperature - $netatmo_temperature_3hrs;
-
 // --- FUNCTIONS ---
-
-function float_prefix($int) {
-	$int = round($int,1);
-	return ($int>0)?"+$int":"$int";
-}
 
 function calculate_windchill($w_temp, $w_wind) {
   // $w_temp in Celsius, $w_wind in km/h
@@ -206,43 +196,6 @@ function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
 	echo "Schneefallgrenze: $sfg m<br><br>";
 */
 	return $thetae;
-}
-
-// not used
-function wifi_status($the_value) {
-	if ($the_value>=86) { $the_text = 'bad'; }
-	else if ($the_value<86 && $the_value>=71) { $the_text = 'average'; }
-	else if ($the_value<71 && $the_value>=56) { $the_text = 'average'; }
-	else if ($the_value<=56 ) { $the_text = 'good'; }
-	return $the_text;
-}
-
-// not used
-function battery_vp_status($the_value, $the_module) {
-	$the_text = '';
-	if ($the_module=='wind') {
-		if ($the_value>=6000) { $the_text = 'max'; }
-		else if ($the_value<6000 && $the_value>=5590) { $the_text = 'full'; }
-		else if ($the_value<5590 && $the_value>=5180) { $the_text = 'high'; }
-		else if ($the_value<5180 && $the_value>=4770) { $the_text = 'medium'; }
-		else if ($the_value<4770 && $the_value>=4360) { $the_text = 'low'; }
-		else if ($the_value<4360) { $the_text = 'very low'; }
-	} else if ($the_module=='in') {
-		if ($the_value>=6000) { $the_text = 'max'; }
-		else if ($the_value<6000 && $the_value>=5640) { $the_text = 'full'; }
-		else if ($the_value<5540 && $the_value>=5280) { $the_text = 'high'; }
-		else if ($the_value<5280 && $the_value>=4920) { $the_text = 'medium'; }
-		else if ($the_value<4920 && $the_value>=4560) { $the_text = 'low'; }
-		else if ($the_value<4560) { $the_text = 'very low'; }
-	} else {
-		if ($the_value>=6000) { $the_text = 'max'; }
-		else if ($the_value<6000 && $the_value>=5500) { $the_text = 'full'; }
-		else if ($the_value<5500 && $the_value>=5000) { $the_text = 'high'; }
-		else if ($the_value<5000 && $the_value>=4500) { $the_text = 'medium'; }
-		else if ($the_value<4500 && $the_value>=4000) { $the_text = 'low'; }
-		else if ($the_value<4000) { $the_text = 'very low'; }
-	}
-	return $the_text;
 }
 
 ?>

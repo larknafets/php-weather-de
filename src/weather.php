@@ -94,7 +94,7 @@ echo '
 
 <tr>
 <td>Temperatur</td>
-<td align="center"><span class="big"><b>'.$netatmo_temperature.'&nbsp;&deg;C</b></span><br /><span class="small">'.float_prefix($netatmo_temperature_trend_value).'&nbsp;/3h</span></td>
+<td align="center"><span class="big"><b>'.$netatmo_temperature.'&nbsp;&deg;C</b></span><br /><span class="small">'.$netatmo_temperature_3hrs.'&nbsp;/3h</span></td>
 <td align="center"><i class="wi '.weather_icon($netatmo_temperature_trend).'"></i></td>
 <td align="center"><span class="small">min.&nbsp;'.$netatmo_temperature_min.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'<br />max.&nbsp;'.$netatmo_temperature_max.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'</span></td>
 </tr>
@@ -123,7 +123,7 @@ echo '
 
 <tr>
 <td>Luftdruck</td>
-<td align="center"><span class="big"><b>'.$netatmo_pressure.' mbar</b></span><br /><span class="small">'.float_prefix($netatmo_pressure_trend_value).'&nbsp;/3h</span></td>
+<td align="center"><span class="big"><b>'.$netatmo_pressure.' mbar</b></span><br /><span class="small">'.$netatmo_pressure_3hrs.'&nbsp;/3h</span></td>
 <td align="center"><i class="wi '.weather_icon($netatmo_pressure_trend).'"></i></td>
 <td align="center">&nbsp;</td>
 </tr>
