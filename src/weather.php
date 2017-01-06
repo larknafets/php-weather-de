@@ -23,8 +23,7 @@ if ($dwd_alert_status==1) {
 		echo '<tr><td colspan="2">'.$dwd_alert_info.'</td></tr>';
 	} else {
 		foreach($dwd_alert_data as $dwd_alert) {
-			echo '
-<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>
+			echo '<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>
 <tr><td colspan="2"><b><span class="big">'.$dwd_alert->info->headline.'</span></b></td></tr>
 <tr><td colspan="2">';
 			if ($dwd_alert->info->urgency=='Immediate') {
@@ -69,9 +68,12 @@ echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtoti
 	}
 	echo '<tr><td colspan="2" align="right"><span class="small"><hr /><a rel="nofollow" target="_blank" title="Wettergefahren (DWD)" href="http://www.wettergefahren.de/">Wettergefahren (DWD)</a></span></td></tr>
 </table><br /><br />
+
 ';
 } else {
-	echo '<p><div align="center">'.$dwd_alert_info.'</div></p>';
+	echo '<p><div align="center">'.$dwd_alert_info.'</div></p>
+
+';
 }
 
 /* ================================================= */
@@ -94,49 +96,51 @@ echo '
 
 <tr>
 <td>Temperatur</td>
-<td align="center"><span class="big"><b>'.$netatmo_temperature.'&nbsp;&deg;C</b></span><br /><span class="small">'.$netatmo_temperature_3hrs.'&nbsp;/3h</span></td>
+<td align="center"><span class="big"><b>'.$netatmo_temperature.unit('temp').'</b></span><br /><span class="small">'.$netatmo_temperature_3hrs.unit('temp').'&nbsp;/3h</span></td>
 <td align="center"><i class="wi '.weather_icon($netatmo_temperature_trend).'"></i></td>
-<td align="center"><span class="small">min.&nbsp;'.$netatmo_temperature_min.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'<br />max.&nbsp;'.$netatmo_temperature_max.'&nbsp;&deg;C @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'</span></td>
+<td align="center"><span class="small">min.&nbsp;'.$netatmo_temperature_min.unit('temp').' @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'<br />max.&nbsp;'.$netatmo_temperature_max.unit('temp').' @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'</span></td>
 </tr>
 ';
 
 if ($netatmo_wind_module==true) {
-	echo '<tr>
+	echo '
+<tr>
 <td>Windchill&sup1;</td>
-<td align="center"><span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).unit('temp').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
-</tr>';
+</tr>
+';
 }
 
 echo '
 <tr>
 <td>Hitzeindex&sup1;</td>
-<td align="center"><span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).unit('temp').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Taupunkt&sup1;</td>
-<td align="center"><span class="big"><b>'.round(calculate_dewpoint($netatmo_temperature, $netatmo_humidity),1).'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.round(calculate_dewpoint($netatmo_temperature, $netatmo_humidity),1).unit('temp').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Luftdruck</td>
-<td align="center"><span class="big"><b>'.$netatmo_pressure.' mbar</b></span><br /><span class="small">'.$netatmo_pressure_3hrs.'&nbsp;/3h</span></td>
+<td align="center"><span class="big"><b>'.$netatmo_pressure.unit('pressure').'</b></span><br /><span class="small">'.$netatmo_pressure_3hrs.unit('pressure').'&nbsp;/3h</span></td>
 <td align="center"><i class="wi '.weather_icon($netatmo_pressure_trend).'"></i></td>
 <td align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Luftfeuchtigkeit</td>
-<td align="center"><span class="big"><b>'.$netatmo_humidity.'&nbsp;%</b></span></td>
+<td align="center"><span class="big"><b>'.$netatmo_humidity.unit('hum').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
 <td>Theta-E&sup1; (experimentell)</td>
-<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),0).'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),0).unit('temp').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
@@ -145,9 +149,9 @@ if ($netatmo_rain_module==true) {
 	echo '
 <tr>
 <td>Niederschlag</td>
-<td align="center"><span class="big"><b>'.round($netatmo_rain,1).'&nbsp;mm</b></span></td>
+<td align="center"><span class="big"><b>'.round($netatmo_rain,1).unit('rain').'</b></span></td>
 <td align="center">&nbsp;</td>
-<td align="center"><span class="small">'.round($netatmo_rain_1hrs,1).'&nbsp;mm&nbsp;/1h<br />'.round($netatmo_rain_24hrs,1).'&nbsp;mm&nbsp;/24h</span></td>
+<td align="center"><span class="small">'.round($netatmo_rain_1hrs,1).unit('rain').'&nbsp;/1h<br />'.round($netatmo_rain_24hrs,1).unit('rain').'&nbsp;/24h</span></td>
 </tr>
 ';
 }
@@ -156,9 +160,9 @@ if ($netatmo_wind_module==true) {
 	echo '
 <tr>
 <td>Wind</td>
-<td align="center"><span class="big"><b>'.$netatmo_wind_strength.'&nbsp;km/h</b> </span><span class="small">Böen: '.$netatmo_gust_strength.'&nbsp;km/h</span><br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.'&deg;)</span></td>
+<td align="center"><span class="big"><b>'.$netatmo_wind_strength.unit('strength').'</b> </span><span class="small">Böen: '.$netatmo_gust_strength.unit('strength').'</span><br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.unit('angle').')</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($netatmo_wind_strength)[0].'"></i><i class="wi wi-wind from-'.$netatmo_wind_angle.'-deg"></i></td>
-<td align="center"><span class="small">max.&nbsp;'.$netatmo_wind_strength_max.'&nbsp;km/h @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span></td>
+<td align="center"><span class="small">max.&nbsp;'.$netatmo_wind_strength_max.unit('strength').' @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span></td>
 </tr>
 ';
 }
@@ -180,13 +184,16 @@ if ($bsh_tides=='yes') {
 	if (intval($tide_text[$tide_date[0]][1][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][3])>=intval($netatmo_station_time)) {
 		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>=intval($netatmo_station_time)) {
+  if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
 		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
 	} else
-	if (intval($tide_text[$tide_date[0]][3][3])<=intval($netatmo_station_time)) {
+	if (intval($tide_text[$tide_date[0]][3][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
 		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
+	} else
+  if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])==0) {
+		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
 	}
-	echo '</td>';
+  echo '</td>';
 } else {
 	echo '<td align="center"></td>';
 }
@@ -217,6 +224,7 @@ echo '
 <tr>
 <td colspan="4"><span class="small">'.$dwd_actual.'</span></td>
 </tr>
+
 <tr>
 <td colspan="4" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />';
 
@@ -237,7 +245,6 @@ echo '
 <p><span class="small"><a href="#heute" title="Heute">Heute</a> | <a href="#morgen" title="Morgen">Morgen</a> | <a href="#uebermorgen" title="Übermorgen">übermorgen</a></span></p>
 
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Vorhersage">
-
 ';
 
 for ($i=0; $i<=2; $i++) {
@@ -258,8 +265,8 @@ for ($i=0; $i<=2; $i++) {
       break;
 	}
 	echo '
+<!-- Vorhersage: '.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])).' -->
 <tr>
-<!-- Vorhersage für: '.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])),' (Wetter.com: '.strftime('%A, der %d.%m.%Y',intval($forecast_data->forecast[0]->date[$i]->d)),') -->
 <td colspan="5"><br />'.$today_anchor.'<span class="big"><b>'.$today.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])).'</b></span><br />&nbsp;</td>
 </tr>
 
@@ -279,16 +286,16 @@ for ($i=0; $i<=2; $i++) {
 <!-- Temperatur -->
 <tr>
 <td rowspan="2"><i class="wi wi-thermometer"></i></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[0]->tx.'&nbsp;&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[1]->tx.'&nbsp;&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[2]->tx.'&nbsp;&deg;C</b></span></td>
-<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[3]->tx.'&nbsp;&deg;C</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[0]->tx.unit('temp').'</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[1]->tx.unit('temp').'</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[2]->tx.unit('temp').'</b></span></td>
+<td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[3]->tx.unit('temp').'</b></span></td>
 </tr>
 <tr>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->tn.'&nbsp;&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->tn.'&nbsp;&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->tn.'&nbsp;&deg;C</span></td>
-<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->tn.'&nbsp;&deg;C</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[0]->tn.unit('temp').'</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[1]->tn.unit('temp').'</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[2]->tn.unit('temp').'</span></td>
+<td align="center"><span class="small">'.$forecast_data->forecast[0]->date[$i]->time[3]->tn.unit('temp').'</span></td>
 </tr>
 
 <!-- Wolken, Regen, Sonne -->
@@ -303,10 +310,10 @@ for ($i=0; $i<=2; $i++) {
 <!-- Regenwahrscheinlichkeit -->
 <tr>
 <td><i class="wi wi-umbrella"></i></td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[0]->pc.'&nbsp;%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[1]->pc.'&nbsp;%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[2]->pc.'&nbsp;%</td>
-<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[3]->pc.'&nbsp;%</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[0]->pc.unit('hum').'</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[1]->pc.unit('hum').'</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[2]->pc.unit('hum').'</td>
+<td align="center">'.$forecast_data->forecast[0]->date[$i]->time[3]->pc.unit('hum').'</td>
 </tr>
 
 <!-- Wind -->
@@ -315,22 +322,22 @@ for ($i=0; $i<=2; $i++) {
 <td align="center">
 <i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[0]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[0]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[0]->ws.'&nbsp;km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[0]->ws.unit('strength').'
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[0]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[0]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[1]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[1]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[1]->ws.'&nbsp;km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[1]->ws.unit('strength').'
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[1]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[1]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[2]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[2]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[2]->ws.'&nbsp;km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[2]->ws.unit('strength').'
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[2]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[2]->wd_txt.'</span></td>
 <td align="center"><i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[3]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[3]->wd.'-deg"></i>
-<br />'.$forecast_data->forecast[0]->date[$i]->time[3]->ws.'&nbsp;km/h
+<br />'.$forecast_data->forecast[0]->date[$i]->time[3]->ws.unit('strength').'
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[3]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[3]->wd_txt.'</span></td>
 </tr>
@@ -374,7 +381,8 @@ echo '<td align="center"><i class="wi '.moonphase_icon($moonphase[$i]).'"></i><b
 ';
 
 if ($bsh_tides=='yes' && count($tide_text)>0) {
-	echo '<!-- Gezeiten -->
+	echo '
+<!-- Gezeiten -->
 <tr>
 <td><i class="wi wi-flood"></i></td>
 <td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][0][2]).'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
@@ -385,7 +393,8 @@ if ($bsh_tides=='yes' && count($tide_text)>0) {
 ';
 }
 
-echo '<tr>
+echo '
+<tr>
 <td colspan="5"><hr /></td>
 </tr>
 ';
@@ -440,7 +449,7 @@ Die Daten werden alle 10 Minuten aktualisiert.
 <p>
 Die Aufstellung der Meßgeräte entspricht <u>nicht</u> den Anforderungen des Deutschen Wetterdienstes. Die Werte sind entsprechend ungenau.
 </p>
-<p>
+<span class="small">
 Es werden folgende Daten von der Station erfasst:
 <ul>
 <li>Temperatur</li>
@@ -451,14 +460,12 @@ Es werden folgende Daten von der Station erfasst:
 <li>Windgeschwindigkeit</li>
 <li>Windböen</li>
 </ul>
-</p>
-<p>
 <a name="berechnete_werte"></a>
 Folgende Daten werden berechnet:
-<ul>
-';
+<ul>';
 if ($netatmo_wind_module==true) {
-	echo '<li>Windchill / gefühlte Temperatur</li>';
+	echo '
+<li>Windchill / gefühlte Temperatur</li>';
 }
 echo '
 <li>Hitzeindex</li>
@@ -467,34 +474,25 @@ echo '
 <li>Sonnenauf- und -untergang</li>
 <li>Mondauf- und -untergang</li>
 <li>Mondphase</li>
-</ul>
-</p>
-
-<a name="berechneteWerte"></a>
-';
+</ul>';
 if ($netatmo_wind_module==true) {
 	echo '
-<p>
 <b>Windchill</b><br />
 Der Windchill ist ein Maß für die gefühlte Temperatur. Er berechnet sich aus der Windstärke und der Lufttemperatur. Durch die Verdunstung über die Haut kommt es zu einer Abkühlung. Dieser Effekt wird duch den Wind verstärkt. Es scheint kühler zu sein, als es das Thermometer anzeigt.
-<br />Die Berechnung erfolgt unterhalb einer Temperatur von 10&deg;C und einer Windgeschwindigkeit von mindestens 4,8 km/h.
-</p>
-';
+<br />Die Berechnung erfolgt unterhalb einer Temperatur von 10 &deg;C und einer Windgeschwindigkeit von mindestens 4,8 km/h.
+<br /><br />';
 }
 echo '
-<p>
 <b>Hitzeindex</b><br />
 Der Hitzeindex ist eine weitere gefühlte Temperatur, die sich aus der Lufttemperatur und der Luftfeuchte ergibt. Da die Verdunstung über die Haut bei hohen Feuchtewerten (Schwüle) langsamer geht, ist auch der Kühlungseffekt schwächer. Es kommt einem heißer vor als es tatsächlich ist (drückende Hitze).
-<br />Die Berechnung erfolgt ab einer Temperatur von 26,7&deg;C und einer Luftfeuchtigkeit von mindestens 40%.
-</p>
-<p>
+<br />Die Berechnung erfolgt ab einer Temperatur von 26,7 &deg;C und einer Luftfeuchtigkeit von mindestens 40 %.
+<br /><br />
 <b>Taupunkt</b><br />
-Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Taupunkt gibt die Temperatur an, auf die man die Luft bei konstantem Wasserdampfgehalt abkühlen muß, damit die Luftfeuchtigkeit 100% beträgt. Die Luft ist dann mit Wasserdampf gesättigt. Bei einer weiteren Abkühlung würde sich der Wasserdampf als Nebel, Tau oder Reif aus der Luft ausscheiden.
-</p>
-<p>
+Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Taupunkt gibt die Temperatur an, auf die man die Luft bei konstantem Wasserdampfgehalt abkühlen muß, damit die Luftfeuchtigkeit 100 % beträgt. Die Luft ist dann mit Wasserdampf gesättigt. Bei einer weiteren Abkühlung würde sich der Wasserdampf als Nebel, Tau oder Reif aus der Luft ausscheiden.
+<br /><br />
 <b>Theta-E / Feuchteenergie</b><br />
 Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
-</p>
+</span>
 ';
 
 // --- FUNCTIONS ---
@@ -511,6 +509,15 @@ function get_file_buffer($request_url) {
     $content = file_get_contents($request_url, false, stream_context_create($stream_options));
   }
   return $content;
+}
+
+function unit($key) {
+	$type_unit = array('temp' => '&nbsp;&deg;C', 'hum' => '&nbsp;%', 'strength' => '&nbsp;km/h', 'angle' => '&deg;', 'rain' => '&nbsp;mm', 'pressure' => '&nbsp;mbar');
+	foreach($type_unit as $type => $unit) {
+		if(preg_match('/'.$type.'/', $key)) {
+			return $unit;
+		}
+	}
 }
 
 function wind_strength($the_wind_strength) {
