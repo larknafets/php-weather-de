@@ -18,7 +18,6 @@ if ($dwd_alert_status==1) {
 <h2>Wetterwarnungen</h2>
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Warnungen">
 ';
-
 	if (count($dwd_alert_data)==0) {
 		echo '<tr><td colspan="2">'.$dwd_alert_info.'</td></tr>';
 	} else {
@@ -51,7 +50,7 @@ if ($dwd_alert_status==1) {
 				echo 'Neuausgabe';
 			} elseif ($dwd_alert->msgType=='Update') {
 				echo 'Aktualisierung';
-			} elseif ($dwd_alert-->msgType=='Cancel') {
+			} elseif ($dwd_alert->msgType=='Cancel') {
 				echo 'Aufhebung';
 			} else {
 				echo $dwd_alert->msgType;
@@ -225,6 +224,7 @@ echo '
 <td colspan="4"><span class="small">'.$dwd_actual.'</span></td>
 </tr>
 
+<!-- Credits -->
 <tr>
 <td colspan="4" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />';
 
