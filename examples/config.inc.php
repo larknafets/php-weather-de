@@ -84,8 +84,7 @@ $bsh_tides_file = '../data_tides.txt';
 
 
 // Your weather station
-// -- Location data, description, weathermap data
-$weather_station_zenith = 90+(50/60); // Zenith needed for Sunrise/-set, longitude and latitude taken from Netatmo
+// -- Description, weathermap data
 $weather_station_amazon_tag = ''; // Amazon promotion ID ("xxxxx-21") for netatmo weather station links
 // Short description if needed.
 $weather_station_text='<p>

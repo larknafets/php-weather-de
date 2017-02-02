@@ -198,19 +198,19 @@ if ($bsh_tides=='yes') {
 }
 echo '
 <td align="center">';
-if (intval($sunrise[0])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[0]));
+if (intval($sun_data[0]['sunrise'])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunrise']));
 } else
-if (intval($sunset[0])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[0]));
+if (intval($sun_data[0]['sunset'])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunset']));
 } else { echo '<i class="wi wi-stars"></i>'; }
 echo '</td>
 <td align="center">';
-if (intval($moonrise[0])>=intval($netatmo_station_time) && intval($moonrise[0])>intval($moonset[0])) {
-	echo '<i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[0]));
+if (intval($moon_data[0]['moonrise'])>=intval($netatmo_station_time) && intval($moon_data[0]['moonrise'])>intval($moon_data[0]['moonset'])) {
+	echo '<i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonrise']));
 } else
-if (intval($moonset[0])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[0]));
+if (intval($moon_data[0]['moonset'])>=intval($netatmo_station_time)) {
+	echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonset']));
 }
 echo '</td>
 </tr>
@@ -271,11 +271,11 @@ for ($i=0; $i<=2; $i++) {
 </tr>
 
 <tr>
-<th width="20%">&nbsp;</th>
-<th width="20%">Morgens</th>
-<th width="20%">Mittags</th>
-<th width="20%">Abends</th>
-<th width="20%">Nachts</th>
+<th width="8%">&nbsp;</th>
+<th width="23%">Morgens</th>
+<th width="23%">Mittags</th>
+<th width="23%">Abends</th>
+<th width="23%">Nachts</th>
 </tr>
 
 <tr>
@@ -356,27 +356,35 @@ for ($i=0; $i<=2; $i++) {
 <!-- Sonne -->
 <tr>
 <td><i class="wi wi-day-sunny"></i></td>
-<td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sunrise[$i])).'</td>
-<td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sunset[$i])).'</td>
-<td align="center"><i class="wi wi-time-'.intval(gmdate('H',intval($suntime[$i]))).'"></i><br />'.gmdate('H:i',intval($suntime[$i])).'</td>
-<td align="center">&nbsp;</td>
+<td align="center"><span class="small">
+AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_begin'])).'<br />
+ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_begin'])).'<br />
+BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_begin'])).'
+</span></td>
+<td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunrise'])).'<br /><span class="small">(Zenith: '.strftime('%H:%M',intval($sun_data[$i]['transit'])).')</span></td>
+<td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunset'])).'</td>
+<td align="center"><span class="small">
+BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_end'])).'<br />
+ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_end'])).'<br />
+AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_end'])).'
+</span></td>
 </tr>
 
 <!-- Mond -->
 <tr>
 <td><i class="wi wi-night-clear"></i></td>
 ';
-if ($moonrise[$i] > $moonset[$i]) {
-echo '<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[$i])).'</td>
-<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[$i])).'</td>
+if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
+	echo '<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>
+<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonrise'])).'</td>
 ';
 } else {
-echo '<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moonrise[$i])).'</td>
-<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moonset[$i])).'</td>
+	echo '<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonrise'])).'</td>
+<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>
 ';
 }
-echo '<td align="center"><i class="wi '.moonphase_icon($moonphase[$i]).'"></i><br /><span class="small">'.$moonphase_text[$i].$moonfull[$i].'</span></td>
-<td align="center"><span class="small">Mondalter: '.$moonage[$i].'<br />Entfernung: '.$moondistance[$i].'<br />Sichtbar: '.$moonilluminated[$i].'</span></td>
+echo '<td align="center"><i class="wi '.moonphase_icon($moon_data[$i]['phase']).'"></i><br /><span class="small">'.$moon_data[$i]['phase_name'].'<br />('.$moon_data[$i]['illuminated'].' sichtbar)</span></td>
+<td align="center"><span class="small">Mondalter: '.$moon_data[$i]['age'].'<br />Mondphase: '.$moon_data[$i]['phase'].'&nbsp;%<br />Entfernung: '.$moon_data[$i]['distance'].'</span></td>
 </tr>
 ';
 
@@ -492,6 +500,11 @@ Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Ta
 <br /><br />
 <b>Theta-E / Feuchteenergie</b><br />
 Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
+<br /><br />
+<b>Sonne/Mond</b><br />
+AD: Astronomische Dämmerung (Beginn/Ende)<br />
+ND: Nautische Dämmerung (Beginn/Ende)<br />
+BD: Bügerliche Dämmerung (Beginn/Ende)<br />
 </span>
 ';
 
