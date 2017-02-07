@@ -88,7 +88,16 @@ echo '
 <h2>Aktuell</h2>
 
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Aktuell">
+';
 
+if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
+	echo '
+<tr>
+<td colspan="4"><p><div align="center">Es liegen keine aktuellen Stationsdaten vor!<br />Letzte Meldung: '.strftime('%d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</div></p></td>
+</tr>
+';
+} else {
+	echo '
 <tr>
 <td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
 </tr>
@@ -101,8 +110,8 @@ echo '
 </tr>
 ';
 
-if ($netatmo_wind_module==true) {
-	echo '
+	if ($netatmo_wind_module==true) {
+		echo '
 <tr>
 <td>Windchill&sup1;</td>
 <td align="center"><span class="big"><b>'.round(calculate_windchill($netatmo_temperature, $netatmo_wind_strength),1).unit('temp').'</b></span></td>
@@ -111,7 +120,7 @@ if ($netatmo_wind_module==true) {
 ';
 }
 
-echo '
+		echo '
 <tr>
 <td>Hitzeindex&sup1;</td>
 <td align="center"><span class="big"><b>'.round(calculate_heatindex($netatmo_temperature, $netatmo_humidity),1).unit('temp').'</b></span></td>
@@ -144,8 +153,8 @@ echo '
 </tr>
 ';
 
-if ($netatmo_rain_module==true) {
-	echo '
+	if ($netatmo_rain_module==true) {
+		echo '
 <tr>
 <td>Niederschlag</td>
 <td align="center"><span class="big"><b>'.round($netatmo_rain,1).unit('rain').'</b></span></td>
@@ -153,10 +162,10 @@ if ($netatmo_rain_module==true) {
 <td align="center"><span class="small">'.round($netatmo_rain_1hrs,1).unit('rain').'&nbsp;/1h<br />'.round($netatmo_rain_24hrs,1).unit('rain').'&nbsp;/24h</span></td>
 </tr>
 ';
-}
+	}
 
-if ($netatmo_wind_module==true) {
-	echo '
+	if ($netatmo_wind_module==true) {
+		echo '
 <tr>
 <td>Wind</td>
 <td align="center"><span class="big"><b>'.$netatmo_wind_strength.unit('strength').'</b> </span><span class="small">Böen: '.$netatmo_gust_strength.unit('strength').'</span><br /><span class="small">'.wind_strength($netatmo_wind_strength)[1].' aus '.wind_direction($netatmo_wind_angle).' ('.$netatmo_wind_angle.unit('angle').')</span></td>
@@ -164,57 +173,58 @@ if ($netatmo_wind_module==true) {
 <td align="center"><span class="small">max.&nbsp;'.$netatmo_wind_strength_max.unit('strength').' @'.strftime('%H:%M',intval($netatmo_wind_strength_max_time)).'</span></td>
 </tr>
 ';
-}
+	}
 
-echo '
+	echo '
 <tr>
 <td>';
-if ($bsh_tides=='yes') { echo 'Gezeiten<br />'; }
-echo 'Sonne/Mond&sup1;</td>
+	if ($bsh_tides=='yes') { echo 'Gezeiten<br />'; }
+	echo 'Sonne/Mond&sup1;</td>
 ';
-if ($bsh_tides=='yes') {
-	echo '<td align="center">';
-	if (intval($tide_text[$tide_date[0]][0][3])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0];
-	} else
-	if (intval($tide_text[$tide_date[0]][0][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][3])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0];
-	} else
-	if (intval($tide_text[$tide_date[0]][1][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][3])>=intval($netatmo_station_time)) {
-		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
-	} else
-  if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
-		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
-	} else
-	if (intval($tide_text[$tide_date[0]][3][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
-		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
-	} else
-  if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])==0) {
-		echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
+	if ($bsh_tides=='yes') {
+		echo '<td align="center">';
+		if (intval($tide_text[$tide_date[0]][0][3])>=intval($netatmo_station_time)) {
+			echo '<span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0];
+		} else
+		if (intval($tide_text[$tide_date[0]][0][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][1][3])>=intval($netatmo_station_time)) {
+			echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][0][2]).'"></i></span> '.$tide_text[$tide_date[0]][0][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0];
+		} else
+		if (intval($tide_text[$tide_date[0]][1][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][2][3])>=intval($netatmo_station_time)) {
+			echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][1][2]).'"></i></span> '.$tide_text[$tide_date[0]][1][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
+		} else
+		if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
+			echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0].'<br /><span class="small">Demnächst: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
+		} else
+		if (intval($tide_text[$tide_date[0]][3][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])>0) {
+			echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][3][2]).'"></i></span> '.$tide_text[$tide_date[0]][3][0];
+		} else
+		if (intval($tide_text[$tide_date[0]][2][3])<=intval($netatmo_station_time) && intval($tide_text[$tide_date[0]][3][3])==0) {
+			echo '<span class="small">Zuletzt: <i class="wi '.weather_icon($tide_text[$tide_date[0]][2][2]).'"></i></span> '.$tide_text[$tide_date[0]][2][0];
+		}
+		echo '</td>';
+	} else {
+		echo '<td align="center"></td>';
 	}
-  echo '</td>';
-} else {
-	echo '<td align="center"></td>';
-}
-echo '
+	echo '
 <td align="center">';
-if (intval($sun_data[0]['sunrise'])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunrise']));
-} else
-if (intval($sun_data[0]['sunset'])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunset']));
-} else { echo '<i class="wi wi-stars"></i>'; }
-echo '</td>
+	if (intval($sun_data[0]['sunrise'])>=intval($netatmo_station_time)) {
+		echo '<i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunrise']));
+	} else
+	if (intval($sun_data[0]['sunset'])>=intval($netatmo_station_time)) {
+		echo '<i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[0]['sunset']));
+	} else { echo '<i class="wi wi-stars"></i>'; }
+	echo '</td>
 <td align="center">';
-if (intval($moon_data[0]['moonrise'])>=intval($netatmo_station_time) && intval($moon_data[0]['moonrise'])>intval($moon_data[0]['moonset'])) {
-	echo '<i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonrise']));
-} else
-if (intval($moon_data[0]['moonset'])>=intval($netatmo_station_time)) {
-	echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonset']));
-}
-echo '</td>
+	if (intval($moon_data[0]['moonrise'])>=intval($netatmo_station_time) && intval($moon_data[0]['moonrise'])>intval($moon_data[0]['moonset'])) {
+		echo '<i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonrise']));
+	} else
+	if (intval($moon_data[0]['moonset'])>=intval($netatmo_station_time)) {
+		echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonset']));
+	}
+	echo '</td>
 </tr>
 ';
+}
 
 echo '
 <tr>
@@ -265,9 +275,9 @@ for ($i=0; $i<=2; $i++) {
       break;
 	}
 	echo '
-<!-- Vorhersage: '.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])).' -->
+<!-- Vorhersage: '.strftime('%A, der %d.%m.%Y',intval($sun_data[$i]['date'])).' -->
 <tr>
-<td colspan="5"><br />'.$today_anchor.'<span class="big"><b>'.$today.strftime('%A, der %d.%m.%Y',intval($forecast_date[$i])).'</b></span><br />&nbsp;</td>
+<td colspan="5"><br />'.$today_anchor.'<span class="big"><b>'.$today.strftime('%A, der %d.%m.%Y',intval($sun_data[$i]['date'])).'</b></span><br />&nbsp;</td>
 </tr>
 
 <tr>
