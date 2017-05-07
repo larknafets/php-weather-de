@@ -18,6 +18,7 @@ Following additional scripts/fonts are needed:
 - Buffer, see https://github.com/leo/buffer
 - Weather icons font from Eric Flowers, see https://erikflowers.github.io/weather-icons/
 - Moon phase php class from Samir Shah, see https://github.com/solarissmoke/php-moon-phase
+- Sun calc php class from Greg (gregseth), see https://github.com/gregseth/suncalc-php
 
 ## Installation
 Drop the "src" files to your webspace, wherever you want. Also download the additional resources, see prerequisites.
