@@ -27,7 +27,11 @@ $netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station main module
 
 // Include moon phase library from Samir Shah (solarissmoke):
 // -- https://github.com/solarissmoke/php-moon-phase
-$moonphase_lib = '../solaris/MoonPhase.php';
+$lib_moonphase = '../lib/MoonPhase.php';
+
+// Include suncalc php library from Greg (gregseth):
+// -- https://github.com/gregseth/suncalc-php
+$lib_suncalc = '../lib/suncalc.php';
 
 
 // DWD - Deutscher Wetter Dienst

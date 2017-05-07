@@ -46,21 +46,34 @@ for ($i=0; $i<=30; $i++) {
 
 echo '
 <tr>
-<td>Sonne</td>
-<td align="center"><span class="small">
+<td rowspan="2">Sonne</td>
+<td><span class="small">
 AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_begin'])).'<br />
 ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_begin'])).'<br />
 BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_begin'])).'
 </span></td>
 <td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunrise'])).'</span></td>
-<td align="center"><span class="small">Zenith:</span><br />'.strftime('%H:%M',intval($sun_data[$i]['transit'])).'</td>
+<td align="center"><span class="small">Zenit:</span><br />'.strftime('%H:%M',intval($sun_data[$i]['transit'])).'</td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunset'])).'</td>
-<td align="center"><span class="small">
+<td><span class="small">
 BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_end'])).'<br />
 ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_end'])).'<br />
 AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_end'])).'
 </span></td>
 </tr>
+<tr>
+<td colspan="2" align="left"><span class="small">
+Blaue Stunde: '.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_end'])).'<br />
+Goldene Stunde: '.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_end'])).'
+</span></td>
+<td>&nbsp;</td>
+<td colspan="2" align="left"><span class="small">
+Goldene Stunde: '.strftime('%H:%M',intval($sun_data[$i]['evening_golden_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['evening_golden_hour_end'])).'<br />
+Blaue Stunde: '.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_end'])).'
+</span></td>
+</tr>
+
+
 
 <tr>
 <td>Mond</td>

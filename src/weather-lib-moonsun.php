@@ -6,25 +6,8 @@ $longitude = $weather_station_longitude;
 $calculate_days = 30;
 
 include('weather-lib-moon.php');
-include(dirname(__FILE__).'/'.$moonphase_lib);
-/*
-phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
-illumination(): the illuminated fraction of the Moon (0 = New, 1 = Full).
-age(): the age of the Moon, in days.
-distance(): the distance of the Moon from the centre of the Earth (kilometres).
-diameter(): the angular diameter subtended by the Moon as seen by an observer at the centre of the Earth (degrees).
-sundistance(): the distance to the Sun (kilometres).
-sundiameter(): the angular diameter subtended by the Sun as seen by an observer at the centre of the Earth (degrees).
-new_moon(): the time of the last New Moon (UNIX timestamp).
-next_new_moon(): the time of the next New Moon (UNIX timestamp).
-full_moon(): the time of the Full Moon in the current lunar cycle (UNIX timestamp).
-next_full_moon(): the time of the next Full Moon in the current lunar cycle (UNIX timestamp).
-first_quarter(): the time of the first quarter in the current lunar cycle (UNIX timestamp).
-next_first_quarter(): the time of the next first quarter in the current lunar cycle (UNIX timestamp).
-last_quarter(): the time of the last quarter in the current lunar cycle (UNIX timestamp).
-next_last_quarter(): the time of the next last quarter in the current lunar cycle (UNIX timestamp).
-phase_name(): the phase name.
-*/
+include(dirname(__FILE__).'/'.$lib_moonphase);
+include(dirname(__FILE__).'/'.$lib_suncalc);
 
 $c_now = mktime(0,0,0,date('m'),date('d'),date('Y'));
 $c_now_moonphase = mktime(12,0,0,date('m'),date('d'),date('Y'));
@@ -42,16 +25,41 @@ for ($i=0; $i<=$calculate_days; $i++) {
 	$c_day = date('d', $c_now);
 
   $sun_data[$i] = date_sun_info($c_now, $latitude, $longitude);
+	// astronomical_twilight_begin: 04:21:32
+	// nautical_twilight_begin: 04:52:25
+	// civil_twilight_begin: 05:24:08
   // sunrise: 05:52:11
+	// transit: 10:46:46 // Zenith
   // sunset: 15:41:21
-  // transit: 10:46:46 // Zenith
-  // civil_twilight_begin: 05:24:08
   // civil_twilight_end: 16:09:24
-  // nautical_twilight_begin: 04:52:25
   // nautical_twilight_end: 16:41:06
-  // astronomical_twilight_begin: 04:21:32
   // astronomical_twilight_end: 17:12:00
-	$sun_data[$i]['date'] = $c_now;
+  $sun_data[$i]['morning_blue_hour_begin'] = $sun_data[$i]['civil_twilight_begin'];
+  $sun_data[$i]['morning_blue_hour_end'] = $sun_data[$i]['sunrise']; // sunrise
+  $sun_data[$i]['evening_blue_hour_begin'] = $sun_data[$i]['sunset']; // sunset
+  $sun_data[$i]['evening_blue_hour_end'] = $sun_data[$i]['civil_twilight_end'];
+  $sc = new SunCalc(new DateTime(gmdate("Y-m-d\TH:i:s\Z", $c_now)), $latitude, $longitude);
+  $sunTimes = $sc->getSunTimes();
+  // sunrise: sunrise (top edge of the sun appears on the horizon)
+  // sunriseEnd: sunrise ends (bottom edge of the sun touches the horizon)
+  // goldenHourEnd: morning golden hour (soft light, best time for photography) ends
+  // solarNoon: solar noon (sun is in the highest position)
+  // goldenHour: evening golden hour starts
+  // sunsetStart: sunset starts (bottom edge of the sun touches the horizon)
+  // sunset: sunset (sun disappears below the horizon, evening civil twilight starts)
+  // dusk: dusk (evening nautical twilight starts)
+  // nauticalDusk: nautical dusk (evening astronomical twilight starts)
+  // night: night starts (dark enough for astronomical observations)
+  // nadir: nadir (darkest moment of the night, sun is in the lowest position)
+  // nightEnd: night ends (morning astronomical twilight starts)
+  // nauticalDawn: nautical dawn (morning nautical twilight starts)
+  // dawn: dawn (morning nautical twilight ends, morning civil twilight starts)
+  $sun_data[$i]['morning_golden_hour_begin'] = $sunTimes['sunrise']->format('U');
+  $sun_data[$i]['morning_golden_hour_end'] = $sunTimes['goldenHourEnd']->format('U');
+  $sun_data[$i]['evening_golden_hour_begin'] = $sunTimes['goldenHour']->format('U');
+  $sun_data[$i]['evening_golden_hour_end'] = $sunTimes['sunset']->format('U');
+  $sun_data[$i]['test'] = $sunTimes['sunrise']->format('U');
+  $sun_data[$i]['date'] = $c_now;
 
 	$tmp_moon = (Moon::calculateMoonTimes($c_month, $c_day, $c_year, $latitude, $longitude));
   $moon = new Solaris\MoonPhase($c_now_moonphase);
@@ -73,7 +81,6 @@ for ($i=0; $i<=$calculate_days; $i++) {
 	} else {
 		$moonphase_name = moonphase_name($moon->phase_name());
 	}
-
   $moon_data[$i]['moonrise'] = $tmp_moon->moonrise;
   $moon_data[$i]['moonset'] = $tmp_moon->moonset;
   $moon_data[$i]['phase'] = $moonphase_tmp;
@@ -82,7 +89,15 @@ for ($i=0; $i<=$calculate_days; $i++) {
   $moon_data[$i]['age'] = $moonage_tmp;
   $moon_data[$i]['distance'] = round(($moon->distance()/1000),1).'&nbsp;tkm';
   $moon_data[$i]['illuminated'] = round(($moon->illumination()*100),0).'&nbsp;%';
-	// phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
+  $moon_data[$i]['new_moon'] = $moon->new_moon();
+  $moon_data[$i]['first_quarter'] = $moon->first_quarter();
+  $moon_data[$i]['last_quarter'] = $moon->last_quarter();
+  $moon_data[$i]['full_moon'] = $moon->full_moon();
+  $moon_data[$i]['next_new_moon'] = $moon->next_new_moon();
+  $moon_data[$i]['next_first_quarter'] = $moon->next_first_quarter();
+  $moon_data[$i]['next_last_quarter'] = $moon->next_last_quarter();
+  $moon_data[$i]['next_full_moon'] = $moon->next_full_moon();
+  // phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
 	// illumination(): the illuminated fraction of the Moon (0 = New, 1 = Full).
 	// age(): the age of the Moon, in days.
 	// distance(): the distance of the Moon from the centre of the Earth (kilometres).

@@ -22,7 +22,12 @@ if ($dwd_alert_status==1) {
 		echo '<tr><td colspan="2">'.$dwd_alert_info.'</td></tr>';
 	} else {
 		foreach($dwd_alert_data as $dwd_alert) {
-			echo '<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>
+      if ($dwd_alert->info->eventCode[5]->valueName=='AREA_COLOR') {
+			  echo '<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>';
+      } else {
+        echo '<tr><td colspan="2">&nbsp;</td></tr>';
+      }
+      echo '
 <tr><td colspan="2"><b><span class="big">'.$dwd_alert->info->headline.'</span></b></td></tr>
 <tr><td colspan="2">';
 			if ($dwd_alert->info->urgency=='Immediate') {
@@ -145,12 +150,6 @@ if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
 <td align="center"><span class="big"><b>'.$netatmo_humidity.unit('hum').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
-
-<tr>
-<td>Theta-E&sup1; (experimentell)</td>
-<td align="center"><span class="big"><b>'.round(calculate_thetae($netatmo_temperature, $netatmo_pressure, $netatmo_humidity),0).unit('temp').'</b></span></td>
-<td colspan="2" align="center">&nbsp;</td>
-</tr>
 ';
 
 	if ($netatmo_rain_module==true) {
@@ -203,7 +202,7 @@ if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
 		}
 		echo '</td>';
 	} else {
-		echo '<td align="center"></td>';
+		echo '<td align="center">&nbsp;</td>';
 	}
 	echo '
 <td align="center">';
@@ -222,6 +221,14 @@ if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
 		echo '<i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[0]['moonset']));
 	}
 	echo '</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td colspan="2"><span class="small">
+Nächster Neumond: '.strftime('%d.%m.%Y',intval($moon_data[0]['next_new_moon'])).'<br />
+Nächster Vollmond: '.strftime('%d.%m.%Y',intval($moon_data[0]['full_moon'])).'
+</span></td>
 </tr>
 ';
 }
@@ -366,17 +373,15 @@ for ($i=0; $i<=2; $i++) {
 <!-- Sonne -->
 <tr>
 <td><i class="wi wi-day-sunny"></i></td>
-<td align="center"><span class="small">
-AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_begin'])).'<br />
-ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_begin'])).'<br />
-BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_begin'])).'
+<td align="left"><span class="small">
+Blaue Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_end'])).'<br />
+Goldene Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_end'])).'
 </span></td>
-<td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunrise'])).'<br /><span class="small">(Zenith: '.strftime('%H:%M',intval($sun_data[$i]['transit'])).')</span></td>
+<td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunrise'])).'<br /><span class="small">(Zenit: '.strftime('%H:%M',intval($sun_data[$i]['transit'])).')</span></td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunset'])).'</td>
-<td align="center"><span class="small">
-BD: '.strftime('%H:%M',intval($sun_data[$i]['civil_twilight_end'])).'<br />
-ND: '.strftime('%H:%M',intval($sun_data[$i]['nautical_twilight_end'])).'<br />
-AD: '.strftime('%H:%M',intval($sun_data[$i]['astronomical_twilight_end'])).'
+<td align="left"><span class="small">
+Goldene Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['evening_golden_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['evening_golden_hour_end'])).'<br />
+Blaue Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_end'])).'
 </span></td>
 </tr>
 
@@ -394,7 +399,7 @@ if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
 ';
 }
 echo '<td align="center"><i class="wi '.moonphase_icon($moon_data[$i]['phase']).'"></i><br /><span class="small">'.$moon_data[$i]['phase_name'].'<br />('.$moon_data[$i]['illuminated'].' sichtbar)</span></td>
-<td align="center"><span class="small">Mondalter: '.$moon_data[$i]['age'].'<br />Mondphase: '.$moon_data[$i]['phase'].'&nbsp;%<br />Entfernung: '.$moon_data[$i]['distance'].'</span></td>
+<td align="left"><span class="small">Mondalter: '.$moon_data[$i]['age'].'<br />Mondphase: '.$moon_data[$i]['phase'].'&nbsp;%<br />Entfernung: '.$moon_data[$i]['distance'].'</span></td>
 </tr>
 ';
 
@@ -488,7 +493,6 @@ if ($netatmo_wind_module==true) {
 echo '
 <li>Hitzeindex</li>
 <li>Taupunkt</li>
-<li>Theta-E / Feuchteenergie</li>
 <li>Sonnenauf- und -untergang</li>
 <li>Mondauf- und -untergang</li>
 <li>Mondphase</li>
@@ -508,10 +512,8 @@ Der Hitzeindex ist eine weitere gefühlte Temperatur, die sich aus der Lufttempe
 <b>Taupunkt</b><br />
 Der Taupunkt errechnet sich aus der aktuellen Lufttemperatur und Feuchte. Der Taupunkt gibt die Temperatur an, auf die man die Luft bei konstantem Wasserdampfgehalt abkühlen muß, damit die Luftfeuchtigkeit 100 % beträgt. Die Luft ist dann mit Wasserdampf gesättigt. Bei einer weiteren Abkühlung würde sich der Wasserdampf als Nebel, Tau oder Reif aus der Luft ausscheiden.
 <br /><br />
-<b>Theta-E / Feuchteenergie</b><br />
-Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
-<br /><br />
 <b>Sonne/Mond</b><br />
+Goldene Stunde nennt man die Zeit direkt nach Sonnenaufgang und direkt vor Sonnenuntergang. Die Blaue Stunde findet hingegen vor Sonnenaufgang und nach Sonnenuntergang statt. Beide Begriffe beziehen sich auf die besondere Färbung des Himmels.<br />
 AD: Astronomische Dämmerung (Beginn/Ende)<br />
 ND: Nautische Dämmerung (Beginn/Ende)<br />
 BD: Bügerliche Dämmerung (Beginn/Ende)<br />

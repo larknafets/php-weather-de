@@ -194,6 +194,10 @@ function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
 	echo "Dampfdruck: $pD mbar<br>";
 	echo "Theta E: $thetae &deg;C<br>";
 	echo "Schneefallgrenze: $sfg m<br><br>";
+
+  <b>Theta-E / Feuchteenergie</b><br />
+  Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
+  <br /><br />
 */
 	return $thetae;
 }
