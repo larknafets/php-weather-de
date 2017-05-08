@@ -34,10 +34,7 @@ for ($i=0; $i<=$calculate_days; $i++) {
   // civil_twilight_end: 16:09:24
   // nautical_twilight_end: 16:41:06
   // astronomical_twilight_end: 17:12:00
-  $sun_data[$i]['morning_blue_hour_begin'] = $sun_data[$i]['civil_twilight_begin'];
-  $sun_data[$i]['morning_blue_hour_end'] = $sun_data[$i]['sunrise']; // sunrise
-  $sun_data[$i]['evening_blue_hour_begin'] = $sun_data[$i]['sunset']; // sunset
-  $sun_data[$i]['evening_blue_hour_end'] = $sun_data[$i]['civil_twilight_end'];
+
   $sc = new SunCalc(new DateTime(gmdate("Y-m-d\TH:i:s\Z", $c_now)), $latitude, $longitude);
   $sunTimes = $sc->getSunTimes();
   // sunrise: sunrise (top edge of the sun appears on the horizon)
@@ -54,11 +51,17 @@ for ($i=0; $i<=$calculate_days; $i++) {
   // nightEnd: night ends (morning astronomical twilight starts)
   // nauticalDawn: nautical dawn (morning nautical twilight starts)
   // dawn: dawn (morning nautical twilight ends, morning civil twilight starts)
-  $sun_data[$i]['morning_golden_hour_begin'] = $sunTimes['sunrise']->format('U');
+
+  $sun_data[$i]['morning_blue_hour_begin'] = $sun_data[$i]['civil_twilight_begin'];
+  $sun_data[$i]['morning_blue_hour_end'] = $sun_data[$i]['sunrise']; // sunrise
+  $sun_data[$i]['evening_blue_hour_begin'] = $sun_data[$i]['sunset']; // sunset
+  $sun_data[$i]['evening_blue_hour_end'] = $sun_data[$i]['civil_twilight_end'];
+//  $sun_data[$i]['morning_golden_hour_begin'] = $sunTimes['sunrise']->format('U');
+  $sun_data[$i]['morning_golden_hour_begin'] = $sun_data[$i]['sunrise']; // sunrise
   $sun_data[$i]['morning_golden_hour_end'] = $sunTimes['goldenHourEnd']->format('U');
   $sun_data[$i]['evening_golden_hour_begin'] = $sunTimes['goldenHour']->format('U');
-  $sun_data[$i]['evening_golden_hour_end'] = $sunTimes['sunset']->format('U');
-  $sun_data[$i]['test'] = $sunTimes['sunrise']->format('U');
+//  $sun_data[$i]['evening_golden_hour_end'] = $sunTimes['sunset']->format('U');
+  $sun_data[$i]['evening_golden_hour_end'] = $sun_data[$i]['sunset']; // sunset
   $sun_data[$i]['date'] = $c_now;
 
 	$tmp_moon = (Moon::calculateMoonTimes($c_month, $c_day, $c_year, $latitude, $longitude));
