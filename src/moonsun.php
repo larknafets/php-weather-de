@@ -40,7 +40,7 @@ for ($i=0; $i<=30; $i++) {
 	}
 	echo '
 <tr>
-<td colspan="6"><br /><big><b>'.$today.strftime('%A, der %d.%m.%Y',intval($sun_data[$i]['date'])).'</b></big><br />&nbsp;</td>
+<td colspan="6"><a name="'.strftime('%Y-%m-%d',intval($sun_data[$i]['date'])).'"></a><br /><big><b>'.$today.strftime('%A, der %d.%m.%Y',intval($sun_data[$i]['date'])).'</b></big><br />&nbsp;</td>
 </tr>
 ';
 
@@ -88,7 +88,7 @@ if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
 ';
 }
 echo '<td align="center"><i class="wi '.moonphase_icon($moon_data[$i]['phase']).'"></i><br /><span class="small">'.$moon_data[$i]['phase_name'].'<br />('.$moon_data[$i]['illuminated'].' sichtbar)</span></td>
-<td colspan="2" align="center"><span class="small">Mondalter: '.$moon_data[$i]['age'].'<br />Mondphase: '.$moon_data[$i]['phase'].'&nbsp;%<br />Entfernung: '.$moon_data[$i]['distance'].'</span></td>
+<td colspan="2" align="left"><span class="small">Mondalter: '.$moon_data[$i]['age'].'<br />Mondphase: '.$moon_data[$i]['phase'].'&nbsp;%<br />Entfernung: '.$moon_data[$i]['distance'].'</span></td>
 </tr>
 
 <tr>
