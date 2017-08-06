@@ -25,6 +25,11 @@ $netatmo_nawsapiclient = '../netatmo/Clients/NAWSApiClient.php'; // Path to NAWS
 $netatmo_ws_id = 'xx:xx:xx:xx:xx:xx'; // ID of your weather station main module
 
 
+// Latitude and longitude, will be overwritten by Netatmo data. In case Netatmo is not reachable ...
+$weather_station_latitude = '12.123456';
+$weather_station_longitude = '1.123456';
+
+
 // Include moon phase library from Samir Shah (solarissmoke):
 // -- https://github.com/solarissmoke/php-moon-phase
 $lib_moonphase = '../lib/MoonPhase.php';

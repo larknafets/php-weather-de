@@ -1,8 +1,14 @@
 <?php
 
-include(dirname(__FILE__).'/weather-data-netatmo.php');
-$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
-$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
+include(dirname(__FILE__).'/'.$buffer_lib);
+$fp = @fsockopen('api.netatmo.com', 80, $errno, $errstr, 30);
+if (!$fp) {
+	// do nothing
+} else {
+	include(dirname(__FILE__).'/weather-data-netatmo.php');
+	$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
+	$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
+}
 include(dirname(__FILE__).'/weather-lib-moonsun.php');
 
 
@@ -72,7 +78,6 @@ Goldene Stunde: '.strftime('%H:%M',intval($sun_data[$i]['evening_golden_hour_beg
 Blaue Stunde: '.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_end'])).'
 </span></td>
 </tr>
-
 
 
 <tr>

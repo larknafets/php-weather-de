@@ -1,8 +1,14 @@
 <?php
 
-include(dirname(__FILE__).'/weather-data-netatmo.php');
-$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
-$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
+include(dirname(__FILE__).'/'.$buffer_lib);
+$fp = @fsockopen('api.netatmo.com', 80, $errno, $errstr, 30);
+if (!$fp) {
+	// do nothing
+} else {
+	include(dirname(__FILE__).'/weather-data-netatmo.php');
+	$weather_station_longitude = str_replace(',','.',$netatmo_station_place_longitude);
+	$weather_station_latitude = str_replace(',','.',$netatmo_station_place_latitude);
+}
 include(dirname(__FILE__).'/weather-lib-moonsun.php');
 if ($bsh_tides=='yes') {
 	include(dirname(__FILE__).'/weather-data-bsh.php');
@@ -71,10 +77,11 @@ if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
 	echo '<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonrise'])).'</td>
 <td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>';
 }
-
 echo '
 </tr>
+';
 
+echo '
 <tr>
 <td colspan="5"><hr></td>
 </tr>

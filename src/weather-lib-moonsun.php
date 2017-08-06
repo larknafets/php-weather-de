@@ -130,6 +130,9 @@ for ($i=0; $i<=$calculate_days; $i++) {
 	$c_now_moonphase = $c_now_moonphase + (60*60*24);
 }
 
+
+// --- FUNCTIONS ---
+
 function moonphase_name($the_field) {
 	$replace_from = array();
 	$replace_to = array();
