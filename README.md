@@ -7,7 +7,7 @@ The software uses data from Wetter.com and Deutscher Wetterdienst (DWD) as well 
 ## Prerequisites
 You need a netatmo weather station and the following accounts:
 - Netatmo dev account and app, see https://dev.netatmo.com/
-- Deutscher Wetter Dienst GDS account, see http://www.dwd.de/DE/leistungen/gds/gds.html
+- Deutscher Wetter Dienst GDS account (no longer needed as DWD switched FTP GDS to Open Data Server)
 - Wetter.com API account, see http://www.wetter.com
 
 Optional:
@@ -30,4 +30,3 @@ The following calculations and libraries are used (and also marked as in the cod
 - Wind chill calculation taken from: http://www.freemathhelp.com/wind-chill.html
 - Heat index calculation taken from: https://www.easycalculation.com/weather/Heat-index.php
 - Dew point calculation taken from: http://www.opto22.com/community/showthread.php?t=588
-- Theta-E calculation taken from: http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
