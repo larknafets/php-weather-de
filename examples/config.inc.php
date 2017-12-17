@@ -40,14 +40,9 @@ $lib_suncalc = '../lib/suncalc.php';
 
 
 // DWD - Deutscher Wetter Dienst
-// -- A free GDS account is needed to access dwd ftp server.
-// -- http://www.dwd.de/DE/leistungen/gds/gds.html
-$dwd_ftp_server = 'ftp-outgoingxxx.dwd.de';
-$dwd_ftp_user = 'user';
-$dwd_ftp_password = 'password';
-$dwd_city_code = 'BRK';
+// -- https://www.dwd.de/DE/leistungen/opendata/opendata.html
+$dwd_city_code = '803461003'; // Warncell ID
 $dwd_city_text = 'Kreis Wesermarsch - Küste';
-// See ftp: gds/help/legend_warnings.pdf / column: DWD-Kennung
 $dwd_region = 'DWHG';
 // DWHG = Hamburg / Niedersachsen/Bremen
 // DWHH	= Hamburg /	Schleswig-Holstein/Hamburg
@@ -61,7 +56,6 @@ $dwd_region = 'DWHG';
 // DWOI	= Offenbach /	Rheinland-Pfalz/Saarland
 // DWSG	= Stuttgart /	Baden-Württemberg
 // DWMG	= München /	Bayern
-// See ftp: gds/help/legend_warnings.xls / table: Warnlage_Vorabinfo
 
 
 // Wetter.com

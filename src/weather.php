@@ -101,22 +101,33 @@ echo '
 
 <table cellpadding="'.$table_cellpadding.'" cellspacing="0" width="'.$table_width.'" summary="Aktuell">
 
+';
+
+if ($stat_netatmo=='off') {
+	echo '
+  <tr>
+  <td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
+  </tr>
+
+  <tr><td colspan="4"><p><div align="center">Es konnte keine Verbindung zur Wetterstation hergestellt werden!</div></p></td></tr>';
+} else {
+	if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
+    echo '
+<tr>
+<td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval(time())).' Uhr</b></span><br />&nbsp;</td>
+</tr>
+';
+		echo '
+<tr>
+<td colspan="4"><p><div align="center">Es liegen keine aktuellen Stationsdaten vor!<br />Letzte Meldung am '.strftime('%d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr.</div></p></td>
+</tr>
+';
+	} else {
+    echo '
 <tr>
 <td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
 </tr>
 ';
-
-if ($stat_netatmo=='off') {
-	echo '<tr><td colspan="4"><p><div align="center">Es konnte keine Verbindung zur Wetterstation hergestellt werden!</div></p></td></tr>';
-} else {
-
-	if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
-		echo '
-<tr>
-<td colspan="4"><p><div align="center">Es liegen keine aktuellen Stationsdaten vor!<br />Letzte Meldung: '.strftime('%d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</div></p></td>
-</tr>
-';
-	} else {
 		echo '
 <tr>
 <td>Temperatur</td>
@@ -247,14 +258,17 @@ Nächster Vollmond: '.strftime('%d.%m.%Y',intval($moon_data[0]['full_moon'])).'
 </tr>
 ';
 
-echo '
+if ($dwd_alert_status!=2) {
+  echo '
 <tr>
 <td colspan="4">Wetterlage</td>
 </tr>
 <tr>
 <td colspan="4"><span class="small">'.$dwd_actual.'</span></td>
-</tr>
+</tr>';
+}
 
+echo '
 <!-- Credits -->
 <tr>
 <td colspan="4" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />';
@@ -372,13 +386,19 @@ for ($i=0; $i<=2; $i++) {
 <br /><span class="small">'.wind_strength($forecast_data->forecast[0]->date[$i]->time[3]->ws)[1].'</span>
 <br /><span class="small">aus '.$forecast_data->forecast[0]->date[$i]->time[3]->wd_txt.'</span></td>
 </tr>
+';
 
+if ($dwd_alert_status!=2) {
+  echo '
 <!-- DWD Vorhersagetext -->
 <tr>
 <td valign="top">&nbsp;</td>
 <td colspan="4"><span class="small">'.$dwd_forecast[$i].'</span></td>
 </tr>
+';
+}
 
+echo '
 <tr>
 <td>&nbsp;</td>
 <td colspan="4"><hr /></td>
