@@ -57,18 +57,21 @@ dwd_get_alerts();
 $dwd_alert_info = '';
 $alert_files = array(); // Vor-/Warnungen
 $dwd_alert_data = array();
-$alert_file_list = array_diff(scandir($dwd_cache_download), array('..', '.'));
+$alert_file_list = glob($dwd_cache_unzip.'/*');
 
 // --- Check filtered file list for actual/relevant files
 foreach($alert_file_list as $the_alert_file) {
-	$alert_url = $dwd_cache_download.'/'.$the_alert_file;
+  $alert_url = $the_alert_file;
 	$tmp_alert_data = new SimpleXMLElement(file_get_contents($alert_url));
-  $tmp_alert_regioncode = $tmp_alert_data->info->area->geocode[0]->value;
-	$tmp_alert_expires = strtotime($tmp_alert_data->info->expires);
-	if ($tmp_alert_expires>=time() && $tmp_alert_regioncode==$dwd_city_code) {
-		$dwd_alert_data[] = $tmp_alert_data;
-	}
+  $tmp_alert_expires = strtotime($tmp_alert_data->info->expires);
+  foreach($tmp_alert_data->info->area as $area) {
+    $tmp_alert_regioncode = $area->geocode[0]->value;
+	  if ($tmp_alert_expires>=time() && $tmp_alert_regioncode==$dwd_city_code) {
+		  $dwd_alert_data[] = $tmp_alert_data;
+	  }
+  }
 }
+
 if (count($dwd_alert_data)==0 && $dwd_alert_info=='') {
 	$dwd_alert_info = 'Es liegen keine Wetterwarnungen für "'.$dwd_city_text.'" vor.';
   $dwd_alert_status = 0;
@@ -104,17 +107,19 @@ function dwd_get_alerts() {
         if(is_file($file)) unlink($file);
 	    }
 
+      file_put_contents($local_file, fopen($dwd_http_file_alerts, 'r'));
+
       $files = glob($dwd_cache_unzip.'/*');
       foreach($files as $file){
         if(is_file($file)) unlink($file);
       }
 
-      dwd_unzip($local_file,$dwd_cache_unzip.'/');
+      dwd_unzip($local_file, $dwd_cache_unzip.'/');
     }
   }
 }
 
-function dwd_unzip($zipFile,$unzipDir) {
+function dwd_unzip($zipFile, $unzipDir) {
   umask(0022); // 644
 	$zip = new ZipArchive;
 	$result = $zip->open($zipFile);

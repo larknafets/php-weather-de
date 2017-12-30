@@ -90,6 +90,26 @@ foreach($data['devices'] as $device) {
 	}
 }
 
+if (isset($netatmo_temperature) && isset($netatmo_humidity) && isset($netatmo_pressure)) {
+	$Pnn = 1023; // Druck auf NN
+	// Luftdichte (kg/m³)
+	$air_density = round((($Pnn*1000)/(287.058*($netatmo_temperature+273.15)))/10,2);
+	// Sättigungsdruck (hPa/mbar)
+	if ($netatmo_temperature > 0) {
+		$saturated_vapor_pressure = round(exp(19.016-(4064.95/($netatmo_temperature+236.25))),2); // für Temperatur über 0°C
+	} else {
+		$saturated_vapor_pressure = round(61.1657 * exp(22.509*(1-273.15/($netatmo_temperature+273.15))),2); // für Temperatur unter 0°C
+	}
+	// Dampfdruck
+	$dry_vapor_pressure_equivalent = round($saturated_vapor_pressure-($saturated_vapor_pressure-(($saturated_vapor_pressure/100)*$netatmo_humidity)),2);
+	// Aequivalent-Temperatur in Grad - Theta E - Feuchteenergie - Equivalent Potential Temperature
+	// - https://storm-chasers.de/lexicon/Entry/49-Theta-E/
+	// - http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
+	$equivalent_potential_temperature = ($Pnn/100)+($netatmo_temperature+2.5*(0.622*(($dry_vapor_pressure_equivalent/$netatmo_pressure)*1000)));
+	//Schneefallgrenze
+	$snow_line = round(($equivalent_potential_temperature-12)*(1000/12),0);
+}
+
 $optimized = FALSE;
 $real_time = FALSE;
 $device = $netatmo_ws_id;
@@ -163,43 +183,6 @@ function calculate_dewpoint($MeasuredAirTempC, $MeasuredHumidityPercent) {
 	$DewPointResultAlpha = ($DewPointFactorA * $MeasuredAirTempC) / ($DewPointFactorB + $MeasuredAirTempC) + log($MeasuredHumidityPercent / 100);
 	$CalcDewPointValue = ($DewPointFactorB * $DewPointResultAlpha) / ($DewPointFactorA - $DewPointResultAlpha);
 	return $CalcDewPointValue;
-}
-
-function calculate_thetae($w_temp, $w_pressure, $w_humidity) {
-	// Theta E - Feuchteenergie - Equivalent Potential Temperature
-	// https://storm-chasers.de/lexicon/Entry/49-Theta-E/
-	// http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
-	$TC = $w_temp;			// Temperatur
-	$RP = $w_pressure;	// Luftdruck
-	$Pnn = 1023;				// Druck auf NN
-	$RHo = $w_humidity;	// Luftfeuchtigkeit
-
-	//Luftdichte (kg/m³)
-	$luftdichte = round((($Pnn*1000)/(287.058*($TC+273.15)))/10,2);
-	//Sättigungsdruck (hPa/mbar)
-	if ($TC > 0) {
-		$pS = round(exp(19.016-(4064.95/($TC+236.25))),2); // für Temperatur über 0°C
-	} else {
-		$pS = round(61.1657 * exp(22.509*(1-273.15/($TC+273.15))),2); // für Temperatur unter 0°C
-	}
-	//Dampdruck
-	$pD = round($pS-($pS-(($pS/100)*$RHo)),2);
-	//Aequivalent-Temperatur in Grad
-	$thetae = ($Pnn/100)+($TC+2.5*(0.622*(($pD/$RP)*1000)));
-	//Schneefallgrenze
-	$sfg = round(($thetae-12)*(1000/12),0);
-/*
-	echo "Luftdichte: $luftdichte kg/m&sup3;<br>";
-	echo "Saettigungsdruck: $pS mbar<br>";
-	echo "Dampfdruck: $pD mbar<br>";
-	echo "Theta E: $thetae &deg;C<br>";
-	echo "Schneefallgrenze: $sfg m<br><br>";
-
-  <b>Theta-E / Feuchteenergie</b><br />
-  Theta E (Equivalent Potential Temperature), oder auch Feuchtenergie genannt, gibt Aufschluss darüber, wie viel Energie in einer Luftmasse steckt. Hieraus kann man die Wahrscheinlichkeit für ein Gewitter ableiten. Angegeben wird es in Grad Cellcius. Ab 60 &deg;C Theta E kann es einfacher zu schweren Unwettern kommen als bei 40 &deg;C, vorausgesetzt die Randbedingungen stimmen. Das Theta E ist abhängig von der Temperatur und der Luftfeuchtigkeit.
-  <br /><br />
-*/
-	return $thetae;
 }
 
 ?>

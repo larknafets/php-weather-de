@@ -29,8 +29,14 @@ if ($dwd_alert_status==1) {
 		echo '<tr><td colspan="2">'.$dwd_alert_info.'</td></tr>';
 	} else {
 		foreach($dwd_alert_data as $dwd_alert) {
-      if ($dwd_alert->info->eventCode[5]->valueName=='AREA_COLOR') {
-			  echo '<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_alert->info->eventCode[5]->value).')">&nbsp;</td></tr>';
+			$dwd_areacolor = '';
+			foreach($tmp_alert_data->info->eventCode as $eventcode) {
+			  if ($eventcode->valueName=='AREA_COLOR') {
+		      $dwd_areacolor = $eventcode->value;
+			  }
+		  }
+      if ($dwd_areacolor!='') {
+			  echo '<tr><td colspan="2" bgcolor="rgb('.str_replace(' ',',',$dwd_areacolor).')">&nbsp;</td></tr>';
       } else {
         echo '<tr><td colspan="2">&nbsp;</td></tr>';
       }
@@ -67,7 +73,12 @@ if ($dwd_alert_status==1) {
 			} else {
 				echo $dwd_alert->msgType;
 			}
-echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->sent)).' Uhr für '.$dwd_alert->info->area->areaDesc.'</span></td></tr>
+			foreach($dwd_alert->info->area as $area) {
+			  if ($area->geocode[0]->value==$dwd_city_code) {
+		      $dwd_areadesc = (string) $area->areaDesc;
+			  }
+			}
+echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->sent)).' Uhr für '.$dwd_areadesc.'</span></td></tr>
 <tr><td><span class="small">Zeitraum</span></td><td><b>'.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->info->onset)).' - '.strftime('%d.%m.%Y %H.%M',strtotime($dwd_alert->info->expires)).'</b></td></tr>
 <tr><td colspan="2">'.$dwd_alert->info->description.'</td></tr>
 ';
@@ -170,6 +181,24 @@ if ($stat_netatmo=='off') {
 <tr>
 <td>Luftfeuchtigkeit</td>
 <td align="center"><span class="big"><b>'.$netatmo_humidity.unit('hum').'</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
+</tr>
+
+<tr>
+<td>Luftdichte</td>
+<td align="center"><span class="big"><b>'.round($air_density).unit('airdensity').'</b></span></td>
+<td colspan="2" align="left"><span class="small">Sättigungsdruck:&nbsp;'.round($saturated_vapor_pressure).unit('pressure').'<br />Dampfdruck:s&nbsp;'.round($dry_vapor_pressure_equivalent).unit('pressure').' </span></td>
+</tr>
+
+<tr>
+<td>Theta-E</td>
+<td align="center"><span class="big"><b>'.round($equivalent_potential_temperature).unit('temp').'</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
+</tr>
+
+<tr>
+<td>Schneefallgrenze</td>
+<td align="center"><span class="big"><b>'.number_format(round($snow_line),0,',','.').unit('altitude').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
@@ -574,7 +603,16 @@ function get_file_buffer($request_url) {
 }
 
 function unit($key) {
-	$type_unit = array('temp' => '&nbsp;&deg;C', 'hum' => '&nbsp;%', 'strength' => '&nbsp;km/h', 'angle' => '&deg;', 'rain' => '&nbsp;mm', 'pressure' => '&nbsp;mbar');
+	$type_unit = array(
+		'temp' => '&nbsp;&deg;C',
+		'hum' => '&nbsp;%',
+		'strength' => '&nbsp;km/h',
+		'angle' => '&deg;',
+		'rain' => '&nbsp;mm',
+		'pressure' => '&nbsp;mbar',
+		'altitude' => '&nbsp;m',
+		'airdensity' => '&nbsp;kg/m&sup3;'
+	);
 	foreach($type_unit as $type => $unit) {
 		if(preg_match('/'.$type.'/', $key)) {
 			return $unit;

@@ -30,3 +30,4 @@ The following calculations and libraries are used (and also marked as in the cod
 - Wind chill calculation taken from: http://www.freemathhelp.com/wind-chill.html
 - Heat index calculation taken from: https://www.easycalculation.com/weather/Heat-index.php
 - Dew point calculation taken from: http://www.opto22.com/community/showthread.php?t=588
+- Theha-e, snow line, air density, additional pressures calculation taken from: http://www.wetterstationen.info/forum/allgemeines-softwareforum/schneefallgrenze-genau-berechnen-(theta_e)/
