@@ -537,6 +537,12 @@ Die Daten werden alle 10 Minuten aktualisiert.
 <p>
 Die Aufstellung der Meßgeräte entspricht <u>nicht</u> den Anforderungen des Deutschen Wetterdienstes. Die Werte sind entsprechend ungenau.
 </p>
+
+<p class="small">
+<a href="javascript:weather_legend()">Legende anzeigen/ausblenden</a>
+</p>
+
+<div id="weather_legend" style="display:none;">
 <span class="small">
 Es werden folgende Daten von der Station erfasst:
 <ul>
@@ -558,6 +564,9 @@ if ($netatmo_wind_module==true) {
 echo '
 <li>Hitzeindex</li>
 <li>Taupunkt</li>
+<li>Luftdichte, Sättigungsdruck, Dampfdruck</li>
+<li>Theta-E</li>
+<li>Schneefallgrenze</li>
 <li>Sonnenauf- und -untergang</li>
 <li>Mondauf- und -untergang</li>
 <li>Mondphase</li>
@@ -583,6 +592,19 @@ AD: Astronomische Dämmerung (Beginn/Ende)<br />
 ND: Nautische Dämmerung (Beginn/Ende)<br />
 BD: Bügerliche Dämmerung (Beginn/Ende)<br />
 </span>
+</div>
+
+<script type="text/javascript">
+  function weather_legend() {
+    if(document.getElementById("weather_legend").style.display == "none") {
+      document.getElementById("weather_legend").style.display = "block";
+    } else {
+      document.getElementById("weather_legend").style.display = "none";
+    }
+  }
+</script>
+
+
 ';
 
 
