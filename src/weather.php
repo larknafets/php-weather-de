@@ -187,7 +187,7 @@ if ($stat_netatmo=='off') {
 <tr>
 <td>Luftdichte</td>
 <td align="center"><span class="big"><b>'.round($air_density).unit('airdensity').'</b></span></td>
-<td colspan="2" align="left"><span class="small">Sättigungsdruck:&nbsp;'.round($saturated_vapor_pressure).unit('pressure').'<br />Dampfdruck:s&nbsp;'.round($dry_vapor_pressure_equivalent).unit('pressure').' </span></td>
+<td colspan="2" align="left"><span class="small">Sättigungsdruck:&nbsp;'.round($saturated_vapor_pressure).unit('pressure').'<br />Dampfdruck:&nbsp;'.round($dry_vapor_pressure_equivalent).unit('pressure').' </span></td>
 </tr>
 
 <tr>
