@@ -41,8 +41,7 @@ $lib_suncalc = '../lib/suncalc.php';
 
 // DWD - Deutscher Wetter Dienst
 // -- https://www.dwd.de/DE/leistungen/opendata/opendata.html
-$dwd_city_code = '803461003'; // Warncell ID
-$dwd_city_text = 'Kreis Wesermarsch - Küste';
+$dwd_warncellid = '803461003'; // WarnCell ID
 $dwd_region = 'DWHG';
 // DWHG = Hamburg / Niedersachsen/Bremen
 // DWHH	= Hamburg /	Schleswig-Holstein/Hamburg

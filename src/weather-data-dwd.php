@@ -66,23 +66,23 @@ foreach($alert_file_list as $the_alert_file) {
   $tmp_alert_expires = strtotime($tmp_alert_data->info->expires);
   foreach($tmp_alert_data->info->area as $area) {
     $tmp_alert_regioncode = $area->geocode[0]->value;
-	  if ($tmp_alert_expires>=time() && $tmp_alert_regioncode==$dwd_city_code) {
+	  if ($tmp_alert_expires>=time() && $tmp_alert_regioncode==$dwd_warncellid) {
 		  $dwd_alert_data[] = $tmp_alert_data;
 	  }
   }
 }
 
 if (count($dwd_alert_data)==0 && $dwd_alert_info=='') {
-	$dwd_alert_info = 'Es liegen keine Wetterwarnungen für "'.$dwd_city_text.'" vor.';
+	$dwd_alert_info = 'Es liegen keine Wetterwarnungen vor.';
   $dwd_alert_status = 0;
 } else {
-	$dwd_alert_info = 'Es liegen Wetterwarnungen für "'.$dwd_city_text.'" vor!';
+	$dwd_alert_info = 'Es liegen Wetterwarnungen vor!';
   $dwd_alert_status = 1;
 }
 
 $headers = get_headers('https://opendata.dwd.de/',1);
 if (!$headers) {
-  $dwd_alert_info = 'Es konnte keine Verbindung zum Deutschen Wetterdienst aufgebaut werden!';
+  $dwd_alert_info = 'Es konnte keine Verbindung zum Deutschen Wetterdienst hergestellt werden!';
   $dwd_alert_status = 2;
 }
 

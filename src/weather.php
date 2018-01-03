@@ -74,7 +74,7 @@ if ($dwd_alert_status==1) {
 				echo $dwd_alert->msgType;
 			}
 			foreach($dwd_alert->info->area as $area) {
-			  if ($area->geocode[0]->value==$dwd_city_code) {
+			  if ($area->geocode[0]->value==$dwd_warncellid) {
 		      $dwd_areadesc = (string) $area->areaDesc;
 			  }
 			}
@@ -185,19 +185,19 @@ if ($stat_netatmo=='off') {
 </tr>
 
 <tr>
-<td>Luftdichte</td>
+<td>Luftdichte&sup1;</td>
 <td align="center"><span class="big"><b>'.round($air_density).unit('airdensity').'</b></span></td>
 <td colspan="2" align="left"><span class="small">Sättigungsdruck:&nbsp;'.round($saturated_vapor_pressure).unit('pressure').'<br />Dampfdruck:&nbsp;'.round($dry_vapor_pressure_equivalent).unit('pressure').' </span></td>
 </tr>
 
 <tr>
-<td>Theta-E</td>
+<td>Theta-E&sup1;</td>
 <td align="center"><span class="big"><b>'.round($equivalent_potential_temperature).unit('temp').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 
 <tr>
-<td>Schneefallgrenze</td>
+<td>Schneefallgrenze&sup1;</td>
 <td align="center"><span class="big"><b>'.number_format(round($snow_line),0,',','.').unit('altitude').'</b></span></td>
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
@@ -280,10 +280,35 @@ echo '</td>
 <tr>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-<td colspan="2"><span class="small">
-Nächster Neumond: '.strftime('%d.%m.%Y',intval($moon_data[0]['next_new_moon'])).'<br />
-Nächster Vollmond: '.strftime('%d.%m.%Y',intval($moon_data[0]['full_moon'])).'
-</span></td>
+<td colspan="2"><span class="small">';
+
+
+if (intval($moon_data[0]['new_moon'])<intval($netatmo_station_time)) {
+	$the_next_new_moon = $moon_data[0]['next_new_moon'];
+} else {
+	$the_next_new_moon = $moon_data[0]['new_moon'];
+}
+
+if (intval($moon_data[0]['full_moon'])<intval($netatmo_station_time)) {
+	$the_next_full_moon = $moon_data[0]['next_full_moon'];
+} else {
+	$the_next_full_moon = $moon_data[0]['full_moon'];
+}
+
+if (intval($the_next_new_moon) < intval($the_next_full_moon)) {
+	echo '
+Nächster Neumond: '.strftime('%d.%m.%Y',intval($the_next_new_moon)).'
+<br />
+Nächster Vollmond: '.strftime('%d.%m.%Y',intval($the_next_full_moon)).'
+';
+} else {
+  echo '
+Nächster Vollmond: '.strftime('%d.%m.%Y',intval($the_next_full_moon)).'
+<br />
+Nächster Neumond: '.strftime('%d.%m.%Y',intval($the_next_new_moon)).'
+';
+}
+echo '</span></td>
 </tr>
 ';
 
@@ -542,6 +567,7 @@ Die Aufstellung der Meßgeräte entspricht <u>nicht</u> den Anforderungen des De
 <a href="javascript:weather_legend()">Legende anzeigen/ausblenden</a>
 </p>
 
+<a name="berechnete_werte"></a>
 <div id="weather_legend" style="display:none;">
 <span class="small">
 Es werden folgende Daten von der Station erfasst:
@@ -554,7 +580,6 @@ Es werden folgende Daten von der Station erfasst:
 <li>Windgeschwindigkeit</li>
 <li>Windböen</li>
 </ul>
-<a name="berechnete_werte"></a>
 Folgende Daten werden berechnet:
 <ul>';
 if ($netatmo_wind_module==true) {
