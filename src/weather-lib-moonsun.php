@@ -202,19 +202,19 @@ function moonphase_icon($moon_percent_tmp) {
 	elseif ($moon_percent >= 38 && $moon_percent <= 40) { // 12
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-waxing-gibbous-4';
 	}
-	elseif ($moon_percent >= 41 && $moon_percent <= 44) { // 13
+	elseif ($moon_percent >= 41 && $moon_percent <= 43) { // 13
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-waxing-gibbous-5';
 	}
-	elseif ($moon_percent >= 45 && $moon_percent <= 48) { // 14
+	elseif ($moon_percent >= 44 && $moon_percent <= 47) { // 14
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-waxing-gibbous-6';
 	}
-	elseif ($moon_percent >= 49 && $moon_percent <= 51) { // 15 - full moon
+	elseif ($moon_percent >= 48 && $moon_percent <= 53) { // 15 - full moon
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-full';
 	}
-	elseif ($moon_percent >= 52 && $moon_percent <= 55) { // 16
+	elseif ($moon_percent >= 54 && $moon_percent <= 56) { // 16
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-waning-gibbous-1';
 	}
-	elseif ($moon_percent >= 56 && $moon_percent <= 59) { // 17
+	elseif ($moon_percent >= 57 && $moon_percent <= 59) { // 17
 		$moon_phase = 'wi-moon'.$moon_icon_set.'-waning-gibbous-2';
 	}
 	elseif ($moon_percent >= 60 && $moon_percent <= 62) { // 18

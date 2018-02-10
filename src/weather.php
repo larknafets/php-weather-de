@@ -384,7 +384,7 @@ for ($i=0; $i<=2; $i++) {
 
 <!-- Temperatur -->
 <tr>
-<td rowspan="2"><i class="wi wi-thermometer"></i></td>
+<td align="center" rowspan="2"><i class="wi wi-thermometer"></i></td>
 <td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[0]->tx.unit('temp').'</b></span></td>
 <td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[1]->tx.unit('temp').'</b></span></td>
 <td align="center"><span class="big"><b>'.$forecast_data->forecast[0]->date[$i]->time[2]->tx.unit('temp').'</b></span></td>
@@ -408,7 +408,7 @@ for ($i=0; $i<=2; $i++) {
 
 <!-- Regenwahrscheinlichkeit -->
 <tr>
-<td><i class="wi wi-umbrella"></i></td>
+<td align="center"><i class="wi wi-umbrella"></i></td>
 <td align="center">'.$forecast_data->forecast[0]->date[$i]->time[0]->pc.unit('hum').'</td>
 <td align="center">'.$forecast_data->forecast[0]->date[$i]->time[1]->pc.unit('hum').'</td>
 <td align="center">'.$forecast_data->forecast[0]->date[$i]->time[2]->pc.unit('hum').'</td>
@@ -417,7 +417,7 @@ for ($i=0; $i<=2; $i++) {
 
 <!-- Wind -->
 <tr>
-<td><i class="wi wi-strong-wind"></i></td>
+<td align="center"><i class="wi wi-strong-wind"></i></td>
 <td align="center">
 <i class="wi wi-wind-beaufort-'.wind_strength($forecast_data->forecast[0]->date[$i]->time[0]->ws)[0].'"></i>
 <i class="wi wi-wind from-'.$forecast_data->forecast[0]->date[$i]->time[0]->wd.'-deg"></i>
@@ -462,7 +462,7 @@ echo '
 echo '
 <!-- Sonne -->
 <tr>
-<td><i class="wi wi-day-sunny"></i></td>
+<td align="center"><i class="wi wi-day-sunny"></i></td>
 <td align="left"><span class="small">
 Blaue Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_blue_hour_end'])).'<br />
 Goldene Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_begin'])).' - '.strftime('%H:%M',intval($sun_data[$i]['morning_golden_hour_end'])).'
@@ -477,7 +477,7 @@ Blaue Stunde:<br />'.strftime('%H:%M',intval($sun_data[$i]['evening_blue_hour_be
 
 <!-- Mond -->
 <tr>
-<td><i class="wi wi-night-clear"></i></td>
+<td align="center"><i class="wi wi-night-clear"></i></td>
 ';
 if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
 	echo '<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>
@@ -496,7 +496,7 @@ echo '<td align="center"><i class="wi '.moonphase_icon($moon_data[$i]['phase']).
 if ($bsh_tides=='yes' && count($tide_text)>0) {
 	echo '
 <!-- Gezeiten -->
-<tr>
+<tr align="center">
 <td><i class="wi wi-flood"></i></td>
 <td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][0][2]).'"></i><br />'.$tide_text[$tide_date[$i]][0][1].'</td>
 <td align="center"><i class="wi '.weather_icon($tide_text[$tide_date[$i]][1][2]).'"></i><br />'.$tide_text[$tide_date[$i]][1][1].'</td>
