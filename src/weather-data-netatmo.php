@@ -19,6 +19,7 @@ catch(NAClientException $ex) {
   echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
 }
 
+$netatmo_outdoor_module = false;
 $netatmo_rain_module = false;
 $netatmo_wind_module = false;
 
@@ -40,6 +41,7 @@ foreach($data['devices'] as $device) {
 		foreach($device['modules'] as $module) {
 			if ($module['type']=='NAModule1') {
         $netatmo_outdoor_id = $module['_id'];
+        $netatmo_outdoor_module = true;
 				$netatmo_outdoor_name = $module['module_name'];
 				$netatmo_outdoor_lastseen = $module['last_seen'];
 	      $netatmo_outdoor_batterystatus = $module['battery_percent'];

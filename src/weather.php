@@ -122,7 +122,7 @@ if ($stat_netatmo=='off') {
 
   <tr><td colspan="4"><p><div align="center">Es konnte keine Verbindung zur Wetterstation hergestellt werden!</div></p></td></tr>';
 } else {
-	if (intval($netatmo_station_time)<(time()-(60*60*24*1))) {
+	if (intval($netatmo_station_time)<(time()-(60*60*12*1))) {
     echo '
 <tr>
 <td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval(time())).' Uhr</b></span><br />&nbsp;</td>
@@ -139,7 +139,8 @@ if ($stat_netatmo=='off') {
 <td colspan="4"><span class="big"><b>'.strftime('%A, der %d.%m.%Y um %H:%M',intval($netatmo_station_time)).' Uhr</b></span><br />&nbsp;</td>
 </tr>
 ';
-		echo '
+    if ($netatmo_outdoor_module==true && intval($netatmo_outdoor_lastseen)>(time()-(60*60*12*1))) {
+      echo '
 <tr>
 <td>Temperatur</td>
 <td align="center"><span class="big"><b>'.$netatmo_temperature.unit('temp').'</b></span><br /><span class="small">'.$netatmo_temperature_3hrs.unit('temp').'&nbsp;/3h</span></td>
@@ -147,8 +148,9 @@ if ($stat_netatmo=='off') {
 <td align="center"><span class="small">min.&nbsp;'.$netatmo_temperature_min.unit('temp').' @'.strftime('%H:%M',intval($netatmo_temperature_min_time)).'<br />max.&nbsp;'.$netatmo_temperature_max.unit('temp').' @'.strftime('%H:%M',intval($netatmo_temperature_max_time)).'</span></td>
 </tr>
 ';
+		}
 
-		if ($netatmo_wind_module==true) {
+		if ($netatmo_wind_module==true && intval($netatmo_wind_lastseen)>(time()-(60*60*12*1))) {
 			echo '
 <tr>
 <td>Windchill&sup1;</td>
@@ -156,8 +158,9 @@ if ($stat_netatmo=='off') {
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
-}
+		}
 
+		if ($netatmo_outdoor_module==true && intval($netatmo_outdoor_lastseen)>(time()-(60*60*12*1))) {
 			echo '
 <tr>
 <td>Hitzeindex&sup1;</td>
@@ -202,8 +205,9 @@ if ($stat_netatmo=='off') {
 <td colspan="2" align="center">&nbsp;</td>
 </tr>
 ';
+		}
 
-		if ($netatmo_rain_module==true) {
+		if ($netatmo_rain_module==true && intval($netatmo_rain_lastseen)>(time()-(60*60*12*1))) {
 			echo '
 <tr>
 <td>Niederschlag</td>
@@ -212,9 +216,9 @@ if ($stat_netatmo=='off') {
 <td align="center"><span class="small">'.round($netatmo_rain_1hrs,1).unit('rain').'&nbsp;/1h<br />'.round($netatmo_rain_24hrs,1).unit('rain').'&nbsp;/24h</span></td>
 </tr>
 ';
-	}
+		}
 
-		if ($netatmo_wind_module==true) {
+		if ($netatmo_wind_module==true && intval($netatmo_wind_lastseen)>(time()-(60*60*12*1))) {
 			echo '
 <tr>
 <td>Wind</td>
