@@ -14,13 +14,15 @@ if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FIL
     $t_line = trim(fgets($t_file_open));
     if (strlen($t_line)>0) {
       $t_data = explode('#',$t_line);
-      $t_tmp_date = explode('.',$t_data[5]);
-      $t_tmp_time = explode(':',$t_data[6]);
-      $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
-      $c_tide_time_unix[] = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
-      $c_tide_type[] = trim($t_data[3]);
-    	$c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
-      $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+      if ($t_data[0]='VB1') {
+        $t_tmp_date = explode('.',$t_data[5]);
+        $t_tmp_time = explode(':',$t_data[6]);
+        $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+        $c_tide_time_unix[] = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+        $c_tide_type[] = trim($t_data[3]);
+    	  $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+        $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+       }
     }
   }
 

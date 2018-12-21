@@ -80,10 +80,9 @@ $buffer_cache_dir = '../../cache_buffer';
 // BSH - Tides
 // -- Tides are only allowed to be shown for 7 days for free.
 // -- http://www.bsh.de/de/Meeresdaten/Vorhersagen/Gezeiten/index.jsp
-// -- You need only to keep the tides data. So skip the first lines of the original file to not run into errors.
 $bsh_tides = 'no'; // yes/no
 $bsh_tides_file = '../data_tides.txt';
-
+//$bsh_tides_file = '../data_tides_'.date('Y').'.txt';
 
 // Your weather station
 // -- Description, weathermap data
