@@ -561,7 +561,8 @@ if ($netatmo_rain_module==true) {
 	echo '<a rel="nofollow" href="http://www.amazon.de/gp/product/B016OHME1A/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B016OHME1A&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Wind-</a> ';
 }
 echo 'und <a rel="nofollow" href="http://www.amazon.de/gp/product/B00J5OHDGG/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B00J5OHDGG&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Regenmesser</a>.
-Die Daten werden alle 10 Minuten aktualisiert.
+Die Daten werden alle 10 Minuten aktualisiert. Die Darstellung erfolgt mi Hilfe von
+<a rel="nofollow" href="https://github.com/stnkde/php-weather-de" target="_blank" title="GitHub: php-weather-de">PHP Scripten</a>.
 </p>
 <p>
 Die Aufstellung der Meßgeräte entspricht <u>nicht</u> den Anforderungen des Deutschen Wetterdienstes. Die Werte sind entsprechend ungenau.
