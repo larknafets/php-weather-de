@@ -637,6 +637,10 @@ BD: Bügerliche Dämmerung (Beginn/Ende)<br />
 
 ';
 
+// Clean-up buffer files in cache
+delete_old_buffer_files();
+
+
 
 // --- FUNCTIONS ---
 
@@ -652,6 +656,19 @@ function get_file_buffer($request_url) {
     $content = file_get_contents($request_url, false, stream_context_create($stream_options));
   }
   return $content;
+}
+
+function delete_old_buffer_files() {
+	if(!isset($buffer_cache_dir)) { $buffer_cache_dir = 'cache_buffer'; }
+	$files = glob(dirname(__FILE__).'/'.$buffer_cache_dir.'/'."*");
+	$now = time();
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			if ($now - filemtime($file) >= 60*6*24*2) { // 2 days
+				unlink($file);
+			}
+		}
+	}
 }
 
 function unit($key) {
@@ -874,5 +891,51 @@ function weather_icon($the_field) {
   }
   return $the_field;
 }
+
+
+// ---- BEGIN ---- not used ----
+function float_prefix($int) {
+	$int = round($int,1);
+	return ($int>0)?"+$int":"$int";
+}
+
+// Netatmo weather station
+
+function wifi_status($the_value) {
+	if ($the_value>=86) { $the_text = 'bad'; }
+	else if ($the_value<86 && $the_value>=71) { $the_text = 'average'; }
+	else if ($the_value<71 && $the_value>=56) { $the_text = 'average'; }
+	else if ($the_value<=56 ) { $the_text = 'good'; }
+	return $the_text;
+}
+
+function battery_vp_status($the_value, $the_module) {
+	$the_text = '';
+	if ($the_module=='wind') {
+		if ($the_value>=6000) { $the_text = 'max'; }
+		else if ($the_value<6000 && $the_value>=5590) { $the_text = 'full'; }
+		else if ($the_value<5590 && $the_value>=5180) { $the_text = 'high'; }
+		else if ($the_value<5180 && $the_value>=4770) { $the_text = 'medium'; }
+		else if ($the_value<4770 && $the_value>=4360) { $the_text = 'low'; }
+		else if ($the_value<4360) { $the_text = 'very low'; }
+	} else if ($the_module=='in') {
+		if ($the_value>=6000) { $the_text = 'max'; }
+		else if ($the_value<6000 && $the_value>=5640) { $the_text = 'full'; }
+		else if ($the_value<5540 && $the_value>=5280) { $the_text = 'high'; }
+		else if ($the_value<5280 && $the_value>=4920) { $the_text = 'medium'; }
+		else if ($the_value<4920 && $the_value>=4560) { $the_text = 'low'; }
+		else if ($the_value<4560) { $the_text = 'very low'; }
+	} else {
+		if ($the_value>=6000) { $the_text = 'max'; }
+		else if ($the_value<6000 && $the_value>=5500) { $the_text = 'full'; }
+		else if ($the_value<5500 && $the_value>=5000) { $the_text = 'high'; }
+		else if ($the_value<5000 && $the_value>=4500) { $the_text = 'medium'; }
+		else if ($the_value<4500 && $the_value>=4000) { $the_text = 'low'; }
+		else if ($the_value<4000) { $the_text = 'very low'; }
+	}
+	return $the_text;
+}
+// ---- END ---- not used ----
+
 
 ?>
