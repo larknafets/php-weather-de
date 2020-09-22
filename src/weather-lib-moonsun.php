@@ -162,7 +162,6 @@ function moonphase_name($the_field) {
 }
 
 function moonphase_icon($moon_percent_tmp) {
-//	$moon_icon_set = '-alt';
 	$moon_icon_set = '';
 	$moon_phase = '';
 	$moon_percent = intval($moon_percent_tmp);
