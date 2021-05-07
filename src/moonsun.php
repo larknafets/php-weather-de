@@ -104,8 +104,8 @@ echo '<td align="center"><i class="wi '.moonphase_icon($moon_data[$i]['phase']).
 
 echo '
 <tr>
-<td colspan="6"><div class="small" align="right">';
-echo 'Sonne/Mond: berechnet</div></td>
+<td colspan="6"><div class="small" align="right">
+<b>Datenquelle: </b>Sonne/Mond: berechnet</div></td>
 </tr>
 
 </table>

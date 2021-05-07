@@ -88,7 +88,7 @@ echo '</span></td><td><span class="small">am '.strftime('%d.%m.%Y %H.%M',strtoti
 			echo '<tr><td colspan="2" align="right"><span class="small">'.$dwd_alert->info->senderName.'</span></td></tr>';
 		}
 	}
-	echo '<tr><td colspan="2" align="right"><span class="small"><hr /><a rel="nofollow" target="_blank" title="Wettergefahren (DWD)" href="http://www.wettergefahren.de/">Wettergefahren (DWD)</a></span></td></tr>
+	echo '<tr><td colspan="2" align="right"><span class="small"><hr /><b>Datenquelle: </b><a rel="nofollow" target="_blank" title="Wettergefahren (Deutscher Wetterdienst)" href="http://www.wettergefahren.de/">Wettergefahren (Deutscher Wetterdienst)</a></span></td></tr>
 </table><br /><br />
 
 ';
@@ -329,10 +329,9 @@ if ($dwd_alert_status!=2) {
 echo '
 <!-- Credits -->
 <tr>
-<td colspan="4" align="right"><span class="small"><hr /><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a><br />';
-
+<td colspan="4" align="right"><span class="small"><hr /><b>Datenquellen: </b><a title="Private Wetterstation" href="#wetterstation">Private Wetterstation '.$netatmo_station_name.'</a> | &sup1;&nbsp;<a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>';
 if ($bsh_tides=='yes') {
-	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a><br />';
+	echo ' | '.$bsh_credit;
 }
 echo '</span></td>
 </tr>
@@ -520,9 +519,10 @@ echo '
 echo '
 <!-- Credits -->
 <tr>
-<td colspan="5" align="right"><span class="small"><a rel="nofollow" target="_blank" title="'.$forecast_data->credit[0]->text.'" href="'.$forecast_data->credit[0]->link.'">'.$forecast_data->credit[0]->text.'</a> | Sonne/Mond: <a title="berechnet" href="#berechnete_werte">berechnet</a> | Text: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>';
+<td colspan="5" align="right"><span class="small"><b>Datenquellen: </b>
+'.$wettercom_credit.' | Sonne/Mond: <a title="berechnet" href="#berechnete_werte">berechnet</a> | Wetterlage: <a rel="nofollow" target="_blank" title="Deutscher Wetterdienst" href="http://www.dwd.de/">Deutscher Wetterdienst</a>';
 if ($bsh_tides=='yes') {
-	echo '<br />Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a>';
+	echo ' | '.$bsh_credit;
 }
 echo '</span></td>
 </tr>
@@ -562,7 +562,7 @@ if ($netatmo_rain_module==true) {
 }
 echo 'und <a rel="nofollow" href="http://www.amazon.de/gp/product/B00J5OHDGG/ref=as_li_tl?ie=UTF8&camp=1638&creative=6742&creativeASIN=B00J5OHDGG&linkCode=as2'.$weather_station_amazon_tag.'" target="_blank">Regenmesser</a>.
 Die Daten werden alle 10 Minuten aktualisiert. Die Darstellung erfolgt mi Hilfe von
-<a rel="nofollow" href="https://github.com/stnkde/php-weather-de" target="_blank" title="GitHub: php-weather-de">PHP Scripten</a>.
+<a rel="nofollow" href="https://github.com/larknafets/php-weather-de" target="_blank" title="GitHub: php-weather-de">PHP Scripten</a>.
 </p>
 <p>
 Die Aufstellung der Meßgeräte entspricht <u>nicht</u> den Anforderungen des Deutschen Wetterdienstes. Die Werte sind entsprechend ungenau.

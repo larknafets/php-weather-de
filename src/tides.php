@@ -90,9 +90,10 @@ echo '
 
 echo '
 <tr>
-<td colspan="5"><div class="small" align="right">';
+<td colspan="5"><div class="small" align="right">
+<b>Datenquellen: </b>';
 if ($bsh_tides=='yes') {
-	echo 'Gezeiten: die Veröffentlichung erfolgt mit Genehmigung des <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">BSH</a> (7 Tage) | ';
+	echo $bsh_credit.' | ';
 }
 echo 'Sonne/Mond: berechnet</div></td>
 </tr>
