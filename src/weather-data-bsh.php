@@ -5,7 +5,7 @@ $bsh_credit = '';
 if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FILE__).'/'.$bsh_tides_file)>0) {
   $bsh_data_location = '';
   $bsh_data_year = '';
-  $bsh_data_mesz = 'no';
+  $bsh_data_mesz = '';
   $c_tide_date = array();
   $c_tide_time = array();
   $c_tide_type = array();
@@ -27,33 +27,20 @@ if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FIL
       if ($t_data[0]=='A06') {
         $bsh_data_year = trim($t_data[2]);
       }
-      // Data in MESZ --- unused
-      if ($t_data[0]=='B01' && strlen($trim($t_data[2]))>0) {
-        $bsh_data_mesz = 'yes';
+      // Data in MESZ
+      if ($t_data[0]=='B01') {
+        $bsh_data_mesz = trim($t_data[2]);
       }
       // Tides data
       if ($t_data[0]=='VB1') {
         $t_tmp_date = explode('.',$t_data[5]);
         $t_tmp_time = explode(':',$t_data[6]);
-        $t_tmp_unixtime = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
-        if ($bsh_data_mesz=='no') {
-            $t_tmp_unixtime = $t_tmp_unixtime - 3600;
-            $t_tmp_date = strftime('%Y', $t_tmp_unixtime).'-'.strftime('%m', $t_tmp_unixtime).'-'.strftime('%d', $t_tmp_unixtime);
-            $t_tmp_offset_date = new DateTime($t_tmp_date);
-            $t_tmp_offset = date_offset_get($t_tmp_offset_date);
-            $t_tmp_unixtime = $t_tmp_unixtime + $t_tmp_offset;
-        }
-        $c_tide_time_unix[] = $t_tmp_unixtime;
-        $c_tide_date[] = mktime(0,0,0,strftime('%m', $t_tmp_unixtime),strftime('%d', $t_tmp_unixtime),strftime('%Y', $t_tmp_unixtime));
-        $c_tide_time[] = strftime('%H:%M', $t_tmp_unixtime);
-    	  $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', $t_tmp_unixtime);
-
-//        $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
-//        $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
-//    	  $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
-
+        $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+        $c_tide_time_unix[] = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
         $c_tide_type[] = trim($t_data[3]);
-      }
+    	  $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+        $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+       }
     }
   }
 

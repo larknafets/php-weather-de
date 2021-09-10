@@ -73,14 +73,14 @@ for ($i=0; $i<=$calculate_days; $i++) {
 	} else {
 		$moonage_tmp.= '&nbsp;Tage';
 	}
-  if (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->full_moon())) {
-		$moonphase_name = 'Vollmond<br />um '.strftime('%H:%M',$moon->full_moon());
-	} elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->new_moon())) {
-		$moonphase_name = 'Neumond<br />um '.strftime('%H:%M',$moon->new_moon());
-  } elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->first_quarter())) {
-		$moonphase_name = 'Erstes Virtel<br />um '.strftime('%H:%M',$moon->first_quarter());
-  } elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->last_quarter())) {
-		$moonphase_name = 'Letztes Viertel<br />um '.strftime('%H:%M',$moon->last_quarter());
+  if (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->get_phase('full_moon'))) {
+		$moonphase_name = 'Vollmond<br />um '.strftime('%H:%M',$moon->get_phase('full_moon'));
+	} elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->get_phase('new_moon'))) {
+		$moonphase_name = 'Neumond<br />um '.strftime('%H:%M',$moon->get_phase('new_moon'));
+  } elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->get_phase('first_quarter'))) {
+		$moonphase_name = 'Erstes Virtel<br />um '.strftime('%H:%M',$moon->get_phase('first_quarter'));
+  } elseif (date('%Y%m%d',$c_now)==date('%Y%m%d',$moon->get_phase('last_quarter'))) {
+		$moonphase_name = 'Letztes Viertel<br />um '.strftime('%H:%M',$moon->get_phase('last_quarter'));
 	} else {
 		$moonphase_name = moonphase_name($moon->phase_name());
 	}
@@ -90,16 +90,16 @@ for ($i=0; $i<=$calculate_days; $i++) {
 	$moon_data[$i]['phase_name'] = $moonphase_name;
   $moon_data[$i]['phase'] = round(($moon->phase()*100),0);
   $moon_data[$i]['age'] = $moonage_tmp;
-  $moon_data[$i]['distance'] = round(($moon->distance()/1000),1).'&nbsp;tkm';
-  $moon_data[$i]['illuminated'] = round(($moon->illumination()*100),0).'&nbsp;%';
-  $moon_data[$i]['new_moon'] = $moon->new_moon();
-  $moon_data[$i]['first_quarter'] = $moon->first_quarter();
-  $moon_data[$i]['last_quarter'] = $moon->last_quarter();
-  $moon_data[$i]['full_moon'] = $moon->full_moon();
-  $moon_data[$i]['next_new_moon'] = $moon->next_new_moon();
-  $moon_data[$i]['next_first_quarter'] = $moon->next_first_quarter();
-  $moon_data[$i]['next_last_quarter'] = $moon->next_last_quarter();
-  $moon_data[$i]['next_full_moon'] = $moon->next_full_moon();
+  $moon_data[$i]['distance'] = round(($moon->get('distance')/1000),1).'&nbsp;tkm';
+  $moon_data[$i]['illuminated'] = round(($moon->get('illumination')*100),0).'&nbsp;%';
+  $moon_data[$i]['new_moon'] = $moon->get_phase('new_moon');
+  $moon_data[$i]['first_quarter'] = $moon->get_phase('first_quarter');
+  $moon_data[$i]['last_quarter'] = $moon->get_phase('last_quarter');
+  $moon_data[$i]['full_moon'] = $moon->get_phase('full_moon');
+  $moon_data[$i]['next_new_moon'] = $moon->get_phase('next_new_moon');
+  $moon_data[$i]['next_first_quarter'] = $moon->get_phase('next_first_quarter');
+  $moon_data[$i]['next_last_quarter'] = $moon->get_phase('next_last_quarter');
+  $moon_data[$i]['next_full_moon'] = $moon->get_phase('next_full_moon');
   // phase(): the terminator phase angle as a fraction of a full circle (i.e., 0 to 1). Both 0 and 1 correspond to a New Moon, and 0.5 corresponds to a Full Moon.
 	// illumination(): the illuminated fraction of the Moon (0 = New, 1 = Full).
 	// age(): the age of the Moon, in days.
