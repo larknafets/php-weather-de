@@ -66,18 +66,11 @@ if ($bsh_tides=='yes' && $i<=6) {
 
 echo '
 <tr>
-<td>Sonne / Mond</td>
+<td>Sonne</td>
 <td align="center"><i class="wi wi-sunrise"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunrise'])).'</td>
 <td align="center"><i class="wi wi-sunset"></i><br />'.strftime('%H:%M',intval($sun_data[$i]['sunset'])).'</td>
-';
-if ($moon_data[$i]['moonrise'] > $moon_data[$i]['moonset']) {
-	echo '<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>
-<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonrise'])).'</td>';
-} else {
-	echo '<td align="center"><i class="wi wi-moonrise"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonrise'])).'</td>
-<td align="center"><i class="wi wi-moonset"></i><br />'.strftime('%H:%M',intval($moon_data[$i]['moonset'])).'</td>';
-}
-echo '
+<td align="center">&nbsp;</td>
+<td align="center">&nbsp;</td>
 </tr>
 ';
 
@@ -95,7 +88,7 @@ echo '
 if ($bsh_tides=='yes') {
 	echo $bsh_credit.' | ';
 }
-echo 'Sonne/Mond: berechnet</div></td>
+echo 'Sonne: berechnet</div></td>
 </tr>
 
 </table>
