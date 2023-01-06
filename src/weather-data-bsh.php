@@ -32,7 +32,7 @@ if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FIL
         $bsh_data_mesz = trim($t_data[2]);
       }
       // Tides data
-      if ($t_data[0]=='VB1') {
+      if (substr($t_data[0],0,2)=='VB') {
         $t_tmp_date = explode('.',$t_data[5]);
         $t_tmp_time = explode(':',$t_data[6]);
         $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
