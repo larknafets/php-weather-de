@@ -147,9 +147,9 @@ function calculate_windchill($w_temp, $w_wind) {
   // $w_temp in Celsius, $w_wind in km/h
   // => http://www.freemathhelp.com/wind-chill.html
 	if ($w_wind<177 && $w_wind>=4.8 && $w_temp>(-50) && $w_temp<=10) {
-    $w_chill = 13.12 + 0.6215 * $w_temp - 11.37 * pow($w_wind,0.16) + 0.3965 * $w_temp * pow($w_wind,0.16);
-  } else {
-    $w_chill = $w_temp;
+    	$w_chill = 13.12 + 0.6215 * $w_temp - 11.37 * pow($w_wind,0.16) + 0.3965 * $w_temp * pow($w_wind,0.16);
+	} else {
+    	$w_chill = $w_temp;
 	}
   return $w_chill;
 }
@@ -160,10 +160,11 @@ function calculate_heatindex($w_temp, $w_humidity) {
   if ($w_temp>=26.7 && $w_humidity>=40) {
     $t = ($w_temp)*(9/5)+32; // convert to fahrenheit
     $r = ($w_humidity);
-    $t2 = pow($t,2);
-    $rh2 = pow($r,2);
-    $index = -42.379 + 2.04901523*$t + 10.14333127*$r - 0.22475541*$t*$r - 6.83783e-03*$t2 - 5.481717e-02*$rh2 + 1.22874e-03*$t2*$r + 8.5282e-04*$t*$rh2 - 1.99e-06*$t2*$rh2;
-    $heatindex = 5/9*($index-32); // convert to celsius
+#    $t2 = pow($t,2);
+#    $rh2 = pow($r,2);
+#    $index = -42.379 + 2.04901523*$t + 10.14333127*$r - 0.22475541*$t*$r - 6.83783e-03*$t2 - 5.481717e-02*$rh2 + 1.22874e-03*$t2*$r + 8.5282e-04*$t*$rh2 - 1.99e-06*$t2*$rh2;
+	$index = -42.379 + 2.04901523*$t + 10.14333127*$r - 0.22475541*$t*$r - 0.00683783*$t*$t - 0.05481717*$r*$r + 0.00122874*$t*$t*$r + 0.00085282*$t*$r*$r - 0.00000199*$t*$t*$r*$r;
+	$heatindex = 5/9*($index-32); // convert to celsius
   } else {
     $heatindex = $w_temp;
 	}
