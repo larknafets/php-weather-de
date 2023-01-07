@@ -11,12 +11,12 @@ $client = new NAWSApiClient($config);
 $client->setVariable('username',$netatmo_username);
 $client->setVariable('password',$netatmo_password);
 try {
-  $tokens = $client->getAccessToken();
-  $refresh_token = $tokens['refresh_token'];
-  $access_token = $tokens['access_token'];
+	$tokens = $client->getAccessToken();
+	$refresh_token = $tokens['refresh_token'];
+	$access_token = $tokens['access_token'];
 }
 catch(NAClientException $ex) {
-  echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
+	echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
 }
 
 $netatmo_outdoor_module = false;
@@ -40,53 +40,53 @@ foreach($data['devices'] as $device) {
 		$netatmo_pressure_trend = $device['dashboard_data']['pressure_trend'];
 		foreach($device['modules'] as $module) {
 			if ($module['type']=='NAModule1') {
-        $netatmo_outdoor_id = $module['_id'];
-        $netatmo_outdoor_module = true;
+        		$netatmo_outdoor_id = $module['_id'];
+        		$netatmo_outdoor_module = true;
 				$netatmo_outdoor_name = $module['module_name'];
 				$netatmo_outdoor_lastseen = $module['last_seen'];
-	      $netatmo_outdoor_batterystatus = $module['battery_percent'];
+	      		$netatmo_outdoor_batterystatus = $module['battery_percent'];
 				$netatmo_outdoor_battery = $module['battery_vp'];
-	      $netatmo_outdoor_rfstatus = $module['rf_status'];
-	      $netatmo_outdoor_firmware = $module['firmware'];
+	      		$netatmo_outdoor_rfstatus = $module['rf_status'];
+	      		$netatmo_outdoor_firmware = $module['firmware'];
 				$netatmo_outdoor_time = $module['dashboard_data']['time_utc'];
 				$netatmo_temperature = $module['dashboard_data']['Temperature'];
-		    $netatmo_temperature_trend = $module['dashboard_data']['temp_trend'];
+		    	$netatmo_temperature_trend = $module['dashboard_data']['temp_trend'];
 				$netatmo_temperature_min = $module['dashboard_data']['min_temp'];
 				$netatmo_temperature_min_time = $module['dashboard_data']['date_min_temp'];
 				$netatmo_temperature_max = $module['dashboard_data']['max_temp'];
 				$netatmo_temperature_max_time = $module['dashboard_data']['date_max_temp'];
-		    $netatmo_humidity = $module['dashboard_data']['Humidity'];
+		    	$netatmo_humidity = $module['dashboard_data']['Humidity'];
 			} else
 			if ($module['type']=='NAModule3') {
-        $netatmo_rain_id = $module['_id'];
+        		$netatmo_rain_id = $module['_id'];
 				$netatmo_rain_module = true;
 				$netatmo_rain_name = $module['module_name'];
 				$netatmo_rain_lastseen = $module['last_seen'];
-	      $netatmo_rain_batterystatus = $module['battery_percent'];
+	      		$netatmo_rain_batterystatus = $module['battery_percent'];
 				$netatmo_rain_battery = $module['battery_vp'];
-	      $netatmo_rain_rfstatus = $module['rf_status'];
-	      $netatmo_rain_firmware = $module['firmware'];
-		    $netatmo_rain_time = $module['dashboard_data']['time_utc'];
+	      		$netatmo_rain_rfstatus = $module['rf_status'];
+	      		$netatmo_rain_firmware = $module['firmware'];
+		    	$netatmo_rain_time = $module['dashboard_data']['time_utc'];
 				$netatmo_rain = $module['dashboard_data']['Rain'];
-		    $netatmo_rain_1hrs = $module['dashboard_data']['sum_rain_1'];
-		    $netatmo_rain_24hrs = $module['dashboard_data']['sum_rain_24'];
+		    	$netatmo_rain_1hrs = $module['dashboard_data']['sum_rain_1'];
+		    	$netatmo_rain_24hrs = $module['dashboard_data']['sum_rain_24'];
 			} else
 			if ($module['type']=='NAModule2') {
-        $netatmo_wind_id = $module['_id'];
+				$netatmo_wind_id = $module['_id'];
 				$netatmo_wind_module = true;
 				$netatmo_wind_name = $module['module_name'];
 				$netatmo_wind_lastseen = $module['last_seen'];
-	      $netatmo_wind_batterystatus = $module['battery_percent'];
+	      		$netatmo_wind_batterystatus = $module['battery_percent'];
 				$netatmo_wind_battery = $module['battery_vp'];
-	      $netatmo_wind_rfstatus = $module['rf_status'];
-	      $netatmo_wind_firmware = $module['firmware'];
-		    $netatmo_wind_time = $module['dashboard_data']['time_utc'];
-		    $netatmo_wind_strength = $module['dashboard_data']['WindStrength'];
+	      		$netatmo_wind_rfstatus = $module['rf_status'];
+	      		$netatmo_wind_firmware = $module['firmware'];
+				$netatmo_wind_time = $module['dashboard_data']['time_utc'];
+		    	$netatmo_wind_strength = $module['dashboard_data']['WindStrength'];
 				$netatmo_wind_strength_max = $module['dashboard_data']['max_wind_str'];
 				$netatmo_wind_strength_max_time = $module['dashboard_data']['date_max_wind_str'];
-		    $netatmo_wind_angle = $module['dashboard_data']['WindAngle'];
-		    $netatmo_gust_strength = $module['dashboard_data']['GustStrength'];
-	      $netatmo_gust_angle = $module['dashboard_data']['GustAngle'];
+		    	$netatmo_wind_angle = $module['dashboard_data']['WindAngle'];
+		    	$netatmo_gust_strength = $module['dashboard_data']['GustStrength'];
+	      		$netatmo_gust_angle = $module['dashboard_data']['GustAngle'];
 			}
 		}
 	}
@@ -126,9 +126,9 @@ $type = 'Pressure';
 $netatmo_pressure_3hrs_tmp = $client->getMeasure($device, $module, $scale, $type, $date_begin, $date_end, $limit, $optimized, $real_time);
 
 foreach ($netatmo_pressure_3hrs_tmp as $date => $values) {
-  foreach ($values as $value) {
+	foreach ($values as $value) {
 		$netatmo_pressure_3hrs = $value;
-  }
+	}
 }
 
 $module = $netatmo_outdoor_id;
@@ -136,44 +136,56 @@ $type = 'Temperature';
 $netatmo_temperature_3hrs_tmp = $client->getMeasure($device, $module, $scale, $type, $date_begin, $date_end, $limit, $optimized, $real_time);
 
 foreach ($netatmo_temperature_3hrs_tmp as $date => $values) {
-  foreach ($values as $value) {
+	foreach ($values as $value) {
 		$netatmo_temperature_3hrs = $value;
-  }
+	}
 }
 
 // --- FUNCTIONS ---
 
 function calculate_windchill($w_temp, $w_wind) {
-  // $w_temp in Celsius, $w_wind in km/h
-  // => http://www.freemathhelp.com/wind-chill.html
-	if ($w_wind<177 && $w_wind>=4.8 && $w_temp>(-50) && $w_temp<=10) {
-    	$w_chill = 13.12 + 0.6215 * $w_temp - 11.37 * pow($w_wind,0.16) + 0.3965 * $w_temp * pow($w_wind,0.16);
+	// $w_temp in Celsius, $w_wind in km/h
+	// => http://www.freemathhelp.com/wind-chill.html
+	if ($w_wind<177 && $w_wind>=5 && $w_temp>(-50) && $w_temp<=10) {
+		$w_chill = 13.12 + 0.6215 * $w_temp - 11.37 * pow($w_wind,0.16) + 0.3965 * $w_temp * pow($w_wind,0.16);
 	} else {
-    	$w_chill = $w_temp;
+		$w_chill = $w_temp;
 	}
-  return $w_chill;
+	return $w_chill;
 }
 
 function calculate_heatindex($w_temp, $w_humidity) {
-  // w_$w_temptemp in Celsius, $w_humidity in %
-  // => https://www.easycalculation.com/weather/Heat-index.php
-  if ($w_temp>=26.7 && $w_humidity>=40) {
-    $t = ($w_temp)*(9/5)+32; // convert to fahrenheit
-    $r = ($w_humidity);
-#    $t2 = pow($t,2);
-#    $rh2 = pow($r,2);
-#    $index = -42.379 + 2.04901523*$t + 10.14333127*$r - 0.22475541*$t*$r - 6.83783e-03*$t2 - 5.481717e-02*$rh2 + 1.22874e-03*$t2*$r + 8.5282e-04*$t*$rh2 - 1.99e-06*$t2*$rh2;
-	$index = -42.379 + 2.04901523*$t + 10.14333127*$r - 0.22475541*$t*$r - 0.00683783*$t*$t - 0.05481717*$r*$r + 0.00122874*$t*$t*$r + 0.00085282*$t*$r*$r - 0.00000199*$t*$t*$r*$r;
-	$heatindex = 5/9*($index-32); // convert to celsius
-  } else {
-    $heatindex = $w_temp;
+	// w_$w_temptemp in Celsius, $w_humidity in %
+	// => https://www.easycalculation.com/weather/Heat-index.php
+	if ($w_temp>=26.7 && $w_humidity>=40) {
+		$t = $w_temp;
+		$r = $w_humidity;
+		$heatindex = -8.784695 + 1.61139411*$t + 2.338549*$r - 0.14611605*$t*$r - 0.012308094*$t*$t - 0.016424828*$r*$r + 0.002211732*$t*$t*$r + 0.00072546*$t*$r*$r - 0.000003582*$t*$t*$r*$r;
+	} else {
+		$heatindex = $w_temp;
 	}
-  return $heatindex;
+	return $heatindex;
+}
+
+function calculate_australian_apparent_temperature($w_temp, $w_humidity, $w_wind) {
+	$apparent_temp = $w_temp + 0.33*($w_humidity/100)*6.105*exp(17.27*$w_temp/(237.7+$w_temp)) - 0.7*$w_wind/3.6 - 4;
+	return round($apparent_temp, 1);
+}
+
+function calculate_feels_like_temperature($w_temp, $w_humidity, $w_wind) {
+	if ($w_wind<177 && $w_wind>=5 && $w_temp>(-50) && $w_temp<=10) {
+		$feels_like_temperature = calculate_windchill($w_temp, $w_wind);
+	} elseif ($w_temp>=26.7 && $w_humidity>=40) {
+		$feels_like_temperature = calculate_heatindex($w_temp, $w_humidity);
+	} else {
+		$feels_like_temperature = calculate_australian_apparent_temperature($w_temp, $w_humidity, $w_wind);
+	}
+	return $feels_like_temperature;
 }
 
 function calculate_dewpoint($MeasuredAirTempC, $MeasuredHumidityPercent) {
-  // $MeasuredAirTempC in Celsius, $MeasuredHumidityPercent in %
-  // => http://www.opto22.com/community/showthread.php?t=588
+	// $MeasuredAirTempC in Celsius, $MeasuredHumidityPercent in %
+	// => http://www.opto22.com/community/showthread.php?t=588
 	// These algorithms are based on the Magnus-Tetens formula.
 	// Calculate dew point temperature using measured air temperature
 	// and measured relative humidity. Air temperature must be between

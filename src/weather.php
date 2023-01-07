@@ -150,6 +150,21 @@ if ($stat_netatmo=='off') {
 ';
 		}
 
+		if ( ($netatmo_outdoor_module==true && intval($netatmo_outdoor_lastseen)>(time()-(60*60*12*1))) AND ($netatmo_wind_module==true && intval($netatmo_wind_lastseen)>(time()-(60*60*12*1))) ) {
+			echo '
+<tr>
+<td>Gefühlte Temperatur&sup1;</td>
+<td align="center"><span class="big"><b>'.round(calculate_feels_like_temperature($netatmo_temperature, $netatmo_humidity, $netatmo_wind_strength),1).unit('temp').'</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
+</tr>
+<tr>
+<td>Australische scheinbare Temperatur&sup1;</td>
+<td align="center"><span class="big"><b>'.round(calculate_australian_apparent_temperature($netatmo_temperature, $netatmo_humidity, $netatmo_wind_strength),1).unit('temp').'</b></span></td>
+<td colspan="2" align="center">&nbsp;</td>
+</tr>
+';
+		}
+
 		if ($netatmo_wind_module==true && intval($netatmo_wind_lastseen)>(time()-(60*60*12*1))) {
 			echo '
 <tr>
