@@ -79,7 +79,7 @@ $buffer_cache_dir = '../../cache_buffer';
 
 // BSH - Tides
 // -- Tides are only allowed to be shown for 7 days for free.
-// -- http://www.bsh.de/de/Meeresdaten/Vorhersagen/Gezeiten/index.jsp
+// -- https://www.bsh.de/DE/DATEN/Vorhersagen/Gezeiten/gezeiten_node.html
 $bsh_tides = 'no'; // yes/no
 $bsh_tides_file = '../data_tides.txt';
 //$bsh_tides_file = '../data_tides_'.date('Y').'.txt';
