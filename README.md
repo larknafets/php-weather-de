@@ -10,7 +10,7 @@ You need a netatmo weather station and the following accounts:
 - Wetter.com API account, see http://www.wetter.com
 
 Optional:
-- Tides data that has to be ordered from BSH, please read the terms and conditions, see https://www.bsh.de/DE/DATEN/Gezeiten/gezeiten_node.html
+- Tides data that has to be ordered/downloaded from BSH, please read the terms and conditions, see https://www.bsh.de/DE/DATEN/Vorhersagen/Gezeiten/gezeiten_node.html
 
 Following additional scripts/fonts are needed:
 - Netatmo-API-PHP, see https://github.com/Netatmo/Netatmo-API-PHP
@@ -21,7 +21,7 @@ Following additional scripts/fonts are needed:
 
 ## Installation
 Drop the "src" files to your webspace, wherever you want. Also download the additional resources, see prerequisites.
-Please see "examples" how to implement in existing php/html files. Herein you also find a "config" file example to fill all your accounts information, paths and location data.
+Please see "examples" how to implement in existing php/html files. Herein you also find a "config" file example to fill all your account information, paths and location data.
 
 ## Credits: calculations/libraries
 The following calculations and libraries are used (and also marked as in the code):
