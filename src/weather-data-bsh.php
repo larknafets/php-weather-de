@@ -27,19 +27,19 @@ if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FIL
       if ($t_data[0]=='A06') {
         $bsh_data_year = trim($t_data[2]);
       }
-      // Data in MESZ
-      if ($t_data[0]=='B01') {
-        $bsh_data_mesz = trim($t_data[2]);
-      }
       // Tides data
       if (substr($t_data[0],0,2)=='VB') {
         $t_tmp_date = explode('.',$t_data[5]);
         $t_tmp_time = explode(':',$t_data[6]);
-        $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
-        $c_tide_time_unix[] = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+        $c_tide_time_unix = mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+        $c_tide_time_utc = $c_tide_time_unix + (60*60);
         $c_tide_type[] = trim($t_data[3]);
-    	  $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
-        $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+#    	   $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+#        $c_tide_date[] = mktime(0,0,0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2]));
+#        $c_tide_time[] = strftime('%H:%M', mktime(trim($t_tmp_time[0]),trim($t_tmp_time[1]),0,trim($t_tmp_date[1]),trim($t_tmp_date[0]),trim($t_tmp_date[2])));
+        $c_tide_text[] = trim($t_data[3]).'W: '.strftime('%H:%M', $c_tide_time_utc);
+        $c_tide_date[] = mktime(0,0,0,strftime('%m',$c_tide_time_utc),strftime('%d',$c_tide_time_utc),strftime('%Y',$c_tide_time_utc));
+        $c_tide_time[] = strftime('%H:%M', $c_tide_time_utc);
        }
     }
   }
@@ -56,7 +56,7 @@ if (file_exists(dirname(__FILE__).'/'.$bsh_tides_file) || filesize(dirname(__FIL
   			$tide_date[] = $c_tide_date[$i];
   			$tmp_date = $c_tide_date[$i];
   		}
-  		$tide_text[$c_tide_date[$i]][] = array($c_tide_text[$i],$c_tide_time[$i],$c_tide_type[$i],$c_tide_time_unix[$i]);
+  		$tide_text[$c_tide_date[$i]][] = array($c_tide_text[$i],$c_tide_time[$i],$c_tide_type[$i]);
   	}
   }
   $bsh_credit = 'Gezeiten: <a rel="nofollow" target="_blank" title="Bundesamt für Seeschifffahrt und Hydrographie" href="http://www.bsh.de/">Bundesamt für Seeschifffahrt und Hydrographie</a>, '.$bsh_data_location.', '.$bsh_data_year;
