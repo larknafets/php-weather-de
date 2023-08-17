@@ -8,16 +8,23 @@ $config['client_secret'] = $netatmo_client_secret;
 $config['scope'] = 'read_station';
 
 $client = new NAWSApiClient($config);
-$client->setVariable('username',$netatmo_username);
-$client->setVariable('password',$netatmo_password);
-try {
-	$tokens = $client->getAccessToken();
-	$refresh_token = $tokens['refresh_token'];
-	$access_token = $tokens['access_token'];
-}
-catch(NAClientException $ex) {
-	echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
-}
+
+# --- Auth #1 - not working anymore
+#$client->setVariable('username',$netatmo_username);
+#$client->setVariable('password',$netatmo_password);
+#try {
+#  $tokens = $client->getAccessToken();
+#  $refresh_token = $tokens['refresh_token'];
+#  $access_token = $tokens['access_token'];
+#}
+#catch(Netatmo\Exceptions\NAClientException $ex) {
+#  echo 'Netatmo Wetterstation Daten: Es ist ein Fehler bei der Authorisation aufgetreten.';
+#}
+
+# --- Auth #2 - working for now
+$tokens = array("access_token" => $netatmo_access_token,
+                "refresh_token" => $netatmo_refresh_token);
+$client->setTokensFromStore($tokens);
 
 $netatmo_outdoor_module = false;
 $netatmo_rain_module = false;

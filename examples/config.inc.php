@@ -17,8 +17,12 @@ Make sure to laod the font before.
 // -- https://dev.netatmo.com/
 $netatmo_client_id = 'client id';
 $netatmo_client_secret = 'client secret';
-$netatmo_username = 'your email';
-$netatmo_password = 'your password';
+$netatmo_username = 'your email'; // depricated
+$netatmo_password = 'your password'; // deprecated
+// Generate tokens first with you app: https://dev.netatmo.com/apps/
+$netatmo_access_token = 'access|token';
+$netatmo_refresh_token = 'refresh|token';
+
 // Netatmo-API-PHP is used.
 // -- https://github.com/Netatmo/Netatmo-API-PHP
 $netatmo_nawsapiclient = '../netatmo/Clients/NAWSApiClient.php'; // Path to NAWSApiClient.php
